@@ -34,10 +34,20 @@ pip install -r requirements.txt
 
 ## Running the backend
 
-After activating the virtual environment, you need to run the following command:
+After activating the virtual environment, you need to add environment variables. To do so, create a file named `.env` in the root directory of the project and add the following environment variables:
 
-```bash
-uvicorn main:app --reload
+```env
+MONGODB_URI=<MONGODB_URI>
+PROJECT_NAME="OptySys"
+PROJECT_DESCRIPTION="Opportunity management system."
+PROJECT_VERSION="1.0.0"
+DEBUG=true
 ```
 
-This will start the OptSys backend server on `http://localhost:8000`.
+After adding the environment variables, you can run the backend using the following command:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+This will start the OptySys backend server on `http://localhost:8000`.
