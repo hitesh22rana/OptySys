@@ -31,3 +31,18 @@ Access level for an organization member (Enum)
 class Role(str, Enum):
     ADMIN = "admin"
     MEMBER = "member"
+
+
+class SocialLinks(str, Enum):
+    RESUME = "resume"
+    LINKEDIN = "linkedin"
+    GITHUB = "github"
+    TWITTER = "twitter"
+    BEHANCE = "behance"
+    DRIBBLE = "dribble"
+
+
+class Experience(str, Enum):
+    TITLE: str
+    COMPANY: str
+    DESCRIPTION: str

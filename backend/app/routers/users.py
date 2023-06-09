@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, status, Body
 from bson import ObjectId
-from pymongo.errors import DuplicateKeyError, ConnectionFailure
+from fastapi import APIRouter, Body, HTTPException, status
+from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 router = APIRouter(
     tags=["Users"],
