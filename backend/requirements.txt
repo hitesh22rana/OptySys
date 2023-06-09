@@ -1,0 +1,3 @@
+fastapi==0.96.0
+uvicorn[standard]
+pydantic[email]
