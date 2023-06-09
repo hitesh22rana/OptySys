@@ -9,7 +9,7 @@ Connect to MongoDB server and return database object
 db = None
 
 
-async def connect_to_db():
+async def get_database_connection():
     global db
     if db is not None:
         return db

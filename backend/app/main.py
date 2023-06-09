@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database import connect_to_db
+from app.database import get_database_connection
+from app.routers import organizations
 
 """FastAPI Instance"""
 app = FastAPI(
@@ -15,9 +16,13 @@ app = FastAPI(
 """MiddleWares"""
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"])
 
+"""Routers"""
+app.include_router(organizations.router)
+
+
 """Database Connection"""
 
 
 @app.on_event("startup")
 async def startup_db_client():
-    await connect_to_db()
+    await get_database_connection()

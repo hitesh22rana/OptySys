@@ -14,12 +14,10 @@
 | name | String | First name of the user |
 | summary | String | Summary of the user |
 | social_links | Array[SocialLinks] | Social links of the user |
-| role | String | Role of the user |
 | experience | Array[Experience] | Experience of the user |
 | skills | Array[String] | Skills of the user |
 | organization | ObjectId | Organization of the user |
 | created_at | DateTime | Date and time of user creation |
-| updated_at | DateTime | Date and time of user update |
 
 ## Organization
 
@@ -32,4 +30,3 @@
 | admins | Array[ObjectId] | Admins of the organization |
 | members | Array[ObjectId] | Members of the organization |
 | created_at | DateTime | Date and time of organization creation |
-| updated_at | DateTime | Date and time of organization update |
