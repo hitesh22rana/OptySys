@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database import get_database_connection
 from app.routers import organizations, users
+from app.utils.database import get_database_connection
 
 """FastAPI Instance"""
 app = FastAPI(

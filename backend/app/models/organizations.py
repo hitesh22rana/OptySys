@@ -6,7 +6,7 @@ from typing import List
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
-from app.lib.shared import PyObjectId
+from app.utils.shared import PyObjectId
 
 """
 ModelName:

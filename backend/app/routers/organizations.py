@@ -2,9 +2,9 @@ from bson import ObjectId
 from fastapi import APIRouter, Body, HTTPException, status
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
-from app.database import get_database_connection
-from app.lib.validators import validate_db_connection, validate_fields_not_empty
 from app.models.organizations import OrganizationBaseModel
+from app.utils.database import get_database_connection
+from app.utils.validators import validate_db_connection, validate_fields_not_empty
 
 router = APIRouter(
     tags=["Organizations"],

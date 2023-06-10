@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
 
-from .config import settings
+from app.config import settings
 
 """
 Connect to MongoDB server and return database object

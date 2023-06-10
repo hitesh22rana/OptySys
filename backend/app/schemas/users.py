@@ -5,7 +5,7 @@ from typing import Dict, List
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
-from app.lib.shared import Experience, PyObjectId, SocialLinks
+from app.utils.shared import Experience, PyObjectId, SocialLinks
 
 
 class UserBaseSchema(BaseModel):
