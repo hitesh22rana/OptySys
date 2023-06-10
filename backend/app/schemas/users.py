@@ -55,7 +55,7 @@ class UserBaseSchema(BaseModel):
         }
 
 
-class UserLoginSchema(BaseModel):
+class UserLoginRequestSchema(BaseModel):
     email: EmailStr = Field(..., description="Email address of the user")
     password: str = Field(..., description="Password of the user")
 

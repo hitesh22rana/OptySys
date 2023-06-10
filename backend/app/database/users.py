@@ -25,6 +25,10 @@ class Users:
         cls.jwt = JwtTokenHandler()
 
     @classmethod
+    def _set_expires(cls):
+        return (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+
+    @classmethod
     async def __initiate_db(cls):
         if cls.db is not None:
             return cls.db
@@ -50,7 +54,7 @@ class Users:
             user = UserBaseModel(**user_details.dict())
             result = await cls.db[cls.name].insert_one(user.dict(by_alias=True))
 
-            expiry = (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+            expiry = cls._set_expires()
 
             jwt_token = cls.jwt.encode(
                 {"user_id": str(result.inserted_id), "expiry": expiry}
@@ -88,13 +92,13 @@ class Users:
             await MongoDBConnector().close()
 
     @classmethod
-    async def get_user(cls, user_id: str):
+    async def get_user(cls, user_details: dict):
         await cls.__initiate_db()
 
-        validate_string_fields(user_id)
+        validate_string_fields(user_details.email, user_details.password)
 
         try:
-            user = await cls.db[cls.name].find_one({"_id": ObjectId(user_id)})
+            user = await cls.db[cls.name].find_one({"email": user_details.email})
 
             if user is None:
                 raise HTTPException(
@@ -102,9 +106,25 @@ class Users:
                     detail="User not found",
                 )
 
-            user = UserResponseSchema(user).response()
+            if not cls.hasher.verify_password(user_details.password, user["password"]):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Incorrect password",
+                )
 
-            return OK(user)
+            expiry = cls._set_expires()
+
+            jwt_token = cls.jwt.encode({"user_id": str(user["_id"]), "expiry": expiry})
+
+            response = OK({"id": str(user["_id"])})
+            response.set_cookie(
+                key="authorization",
+                value=f"Bearer {jwt_token}",
+                httponly=True,
+                expires=expiry,
+            )
+
+            return response
 
         except ConnectionFailure:
             raise HTTPException(
@@ -115,8 +135,8 @@ class Users:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: {e}",
-            )
+                detail=f"Error: User not found",
+            ) from e
 
         finally:
             await MongoDBConnector().close()

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body
 
 from app.database.users import Users
-from app.schemas.users import UserBaseSchema, UserLoginSchema
+from app.schemas.users import UserBaseSchema, UserLoginRequestSchema
 
 router = APIRouter(
     tags=["Organizations"],
@@ -26,6 +26,6 @@ async def signup(user: UserBaseSchema = Body(...)):
     return await Users().create_user(user)
 
 
-# @router.post("/login", response_description="Login a user")
-# async def login(user: UserLoginSchema = Body(...)):
-#     return await Users().login_user(user)
+@router.post("/login", response_description="Login a user")
+async def login(user: UserLoginRequestSchema = Body(...)):
+    return await Users().get_user(user)

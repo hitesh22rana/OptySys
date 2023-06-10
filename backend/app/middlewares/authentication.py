@@ -5,6 +5,7 @@ from app.utils.jwt_handler import JwtTokenHandler
 
 PUBLIC_ENDPOINTS = [
     {"path": "/auth/signup", "method": "POST"},
+    {"path": "/auth/login", "method": "POST"},
 ]
 
 
