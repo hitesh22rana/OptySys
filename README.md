@@ -27,3 +27,7 @@ We welcome contributions from the community to improve OptySys. If you'd like to
 - Fork the repository and create a new branch.
 - Make your changes and ensure that the code follows the project's coding conventions.
 - Submit a pull request detailing your changes and their benefits.
+
+## License
+
+OptySys is licensed under the [MIT License](LICENSE.md)
