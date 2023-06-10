@@ -1,6 +1,6 @@
+import json
 from datetime import datetime, timedelta, timezone
 
-from bson import ObjectId
 from fastapi import HTTPException, status
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
@@ -54,13 +54,13 @@ class Users:
             user = UserBaseModel(**user_details.dict())
             result = await cls.db[cls.name].insert_one(user.dict(by_alias=True))
 
-            expiry = cls._set_expires()
+            response = UserResponseSchema(user).response()
+            response = Created(response)
 
+            expiry = cls._set_expires()
             jwt_token = cls.jwt.encode(
                 {"user_id": str(result.inserted_id), "expiry": expiry}
             )
-
-            response = Created({"id": result.inserted_id})
             response.set_cookie(
                 key="authorization",
                 value=f"Bearer {jwt_token}",
@@ -112,11 +112,12 @@ class Users:
                     detail="Incorrect password",
                 )
 
-            expiry = cls._set_expires()
+            response = UserResponseSchema(user).response()
+            response = OK(response)
 
+            expiry = cls._set_expires()
             jwt_token = cls.jwt.encode({"user_id": str(user["_id"]), "expiry": expiry})
 
-            response = OK({"id": str(user["_id"])})
             response.set_cookie(
                 key="authorization",
                 value=f"Bearer {jwt_token}",
@@ -133,6 +134,7 @@ class Users:
             )
 
         except Exception as e:
+            print(e)
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Error: User not found",

@@ -4,6 +4,8 @@ from starlette.datastructures import Headers
 from app.utils.jwt_handler import JwtTokenHandler
 
 PUBLIC_ENDPOINTS = [
+    {"path": "/docs", "method": "GET"},
+    {"path": "/openapi.json", "method": "GET"},
     {"path": "/auth/signup", "method": "POST"},
     {"path": "/auth/login", "method": "POST"},
 ]
@@ -36,6 +38,7 @@ class AuthenticationMiddleware:
 
 
 def is_public_endpoint(request_path, request_method):
+    print(request_path, request_method)
     return {"path": request_path, "method": request_method} in PUBLIC_ENDPOINTS
 
 

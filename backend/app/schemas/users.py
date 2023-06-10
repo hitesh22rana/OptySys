@@ -73,7 +73,7 @@ class UserLoginRequestSchema(BaseModel):
 
 class UserResponseSchema:
     def __init__(self, user: dict):
-        self._id = user["_id"]
+        self.id = user["_id"]
         self.email = user["email"]
         self.name = user["name"]
         self.summary = user["summary"]
@@ -81,11 +81,10 @@ class UserResponseSchema:
         self.experience = user["experience"]
         self.skills = user["skills"]
         self.organization = user["organization"]
-        self.created_at = user["created_at"]
 
-    def response(self):
+    def response(self) -> dict:
         return {
-            "_id": str(self._id),
+            "id": str(self.id),
             "email": self.email,
             "name": self.name,
             "summary": self.summary,
@@ -93,5 +92,4 @@ class UserResponseSchema:
             "experience": self.experience,
             "skills": self.skills,
             "organization": self.organization,
-            "created_at": self.created_at,
         }
