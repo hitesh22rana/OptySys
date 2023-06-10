@@ -53,3 +53,29 @@ class UserBaseSchema(BaseModel):
                 "organization": ["60f7b1f9e13b4a4a9c5e9b3a"],
             }
         }
+
+
+class UserResponseSchema:
+    def __init__(self, user: dict):
+        self._id = user["_id"]
+        self.email = user["email"]
+        self.name = user["name"]
+        self.summary = user["summary"]
+        self.social_links = user["social_links"]
+        self.experience = user["experience"]
+        self.skills = user["skills"]
+        self.organization = user["organization"]
+        self.created_at = user["created_at"]
+
+    def response(self):
+        return {
+            "_id": str(self._id),
+            "email": self.email,
+            "name": self.name,
+            "summary": self.summary,
+            "social_links": self.social_links,
+            "experience": self.experience,
+            "skills": self.skills,
+            "organization": self.organization,
+            "created_at": self.created_at,
+        }

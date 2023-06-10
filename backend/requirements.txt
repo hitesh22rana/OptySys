@@ -4,3 +4,5 @@ pydantic[email]
 pymongo==4.3.3
 motor==3.1.2
 orjson==3.9.1
+passlib==1.7.4
+passlib[bcrypt]

@@ -22,6 +22,24 @@ router = APIRouter(
 """
 
 
-@router.post("/")
+@router.post("/", response_description="Create new user")
 async def create_user(user: UserBaseSchema = Body(...)):
     return await Users().create_new_user(user)
+
+
+"""
+    Get method for getting a user.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: User Response
+"""
+
+
+@router.get("/{user_id}", response_description="Get user")
+async def get_user(user_id: str):
+    return await Users().get_user(user_id=user_id)

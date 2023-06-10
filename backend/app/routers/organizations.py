@@ -3,7 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, status
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.organizations import OrganizationBaseModel
-from app.utils.database import get_database_connection
+from app.utils.database import MongoDBConnector
 from app.utils.validators import validate_db_connection, validate_fields_not_empty
 
 router = APIRouter(
@@ -26,7 +26,7 @@ router = APIRouter(
 
 @router.post("/", response_description="Create a new organization")
 async def create_organization(organization: OrganizationBaseModel = Body(...)):
-    db = await get_database_connection()
+    db = await MongoDBConnector().get_database_connection()
     validate_db_connection(db)
 
     validate_fields_not_empty(
