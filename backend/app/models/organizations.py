@@ -6,7 +6,21 @@ from typing import List
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
-from app.models import PyObjectId
+from app.lib.shared import PyObjectId
+
+"""
+ModelName:
+    Base model for Organization
+
+Fields:
+    id: Id of the user
+    name: Name of the organization
+    description: Description of the organization
+    created_by: Creator of the organization
+    admins: List of admins of the organization
+    members: List of members of the organization
+    created_at: Created at timestamp of the organization
+"""
 
 
 class OrganizationBaseModel(BaseModel):

@@ -1,15 +1,28 @@
 # Path: backend\app\models\users.py
 
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
-from app.models import Experience, PyObjectId, Role, SocialLinks
+from app.lib.shared import Experience, PyObjectId, SocialLinks
 
 """
-Request model for creating a new user
+ModelName:
+    Base model for user
+
+Fields:
+    id: Id of the user
+    email: Email address of the user
+    password: Password of the user
+    name: Name of the user
+    summary: Summary of the user
+    social_links: List of social links of the user
+    experience: List of experiences of the user
+    skills: List of skills of the user
+    organization: List of organizations of the user
+    created_at: Created at timestamp of the user
 """
 
 
@@ -20,13 +33,16 @@ class UserBaseModel(BaseModel):
     password: str = Field(..., description="Password of the user")
     name: str = Field(..., description="Name of the user")
     summary: str = Field("", description="Summary of the user")
-    social_links: List[SocialLinks] = Field(
+    social_links: List[Dict[SocialLinks, str]] = Field(
         [], description="List of social links of the user"
     )
     experience: List[Experience] = Field(
         [], description="List of experiences of the user"
     )
     skills: List[str] = Field([], description="List of skills of the user")
+    organization: List[PyObjectId] = Field(
+        [], description="List of organizations of the user"
+    )
 
     # Default Fields
     created_at: datetime = datetime.utcnow()
@@ -35,61 +51,3 @@ class UserBaseModel(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        schema_extra = {
-            "example": {
-                "email": "email@domain.com",
-                "password": "password",
-                "name": "John Doe",
-                "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "social_links": [
-                    "resume",
-                    "linkedin",
-                    "github",
-                    "twitter",
-                    "behance",
-                    "dribble",
-                ],
-                "experience": [
-                    {
-                        "title": "Software Engineer",
-                        "company": "Google",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    }
-                ],
-                "skills": ["Python", "JavaScript", "HTML", "CSS"],
-            }
-        }
-
-
-class UserModel(UserBaseModel):
-    organization: List[PyObjectId] = Field(
-        [], description="List of organizations of the user"
-    )
-
-    class Config:
-        json_encoders = {ObjectId: str}
-        schema_extra = {
-            "example": {
-                "email": "email@domain.com",
-                "password": "password",
-                "name": "John Doe",
-                "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "social_links": [
-                    "resume",
-                    "linkedin",
-                    "github",
-                    "twitter",
-                    "behance",
-                    "dribble",
-                ],
-                "experience": [
-                    {
-                        "title": "Software Engineer",
-                        "company": "Google",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    }
-                ],
-                "skills": ["Python", "JavaScript", "HTML", "CSS"],
-                "organization": ["60f7b1f9e13b4a4a9c5e9b3a"],
-            }
-        }
