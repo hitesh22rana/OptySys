@@ -42,6 +42,8 @@ PROJECT_NAME="OptySys"
 PROJECT_DESCRIPTION="Opportunity management system."
 PROJECT_VERSION="1.0.0"
 DEBUG=true
+JWT_SECRET="secret"
+JWT_ALGORITHM="HS256"
 ```
 
 After adding the environment variables, you can run the backend using the following command:

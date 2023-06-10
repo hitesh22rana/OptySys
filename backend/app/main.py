@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.middlewares.authentication import AuthenticationMiddleware
-from app.routers import organizations, users
+from app.routers import authentication, organizations, users
 from app.utils.database import MongoDBConnector
 
 """FastAPI Instance"""
@@ -34,6 +34,7 @@ v1 = FastAPI(
 app.mount("/api/v1", v1)
 
 """Routers"""
+v1.include_router(authentication.router)
 v1.include_router(users.router)
 v1.include_router(organizations.router)
 

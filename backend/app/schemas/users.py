@@ -55,6 +55,22 @@ class UserBaseSchema(BaseModel):
         }
 
 
+class UserLoginSchema(BaseModel):
+    email: EmailStr = Field(..., description="Email address of the user")
+    password: str = Field(..., description="Password of the user")
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "email": "email@domain.com",
+                "password": "password",
+            }
+        }
+
+
 class UserResponseSchema:
     def __init__(self, user: dict):
         self._id = user["_id"]

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, timezone
+
 from bson import ObjectId
 from fastapi import HTTPException, status
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
@@ -6,18 +8,21 @@ from app.models.users import UserBaseModel
 from app.schemas.users import UserResponseSchema
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
+from app.utils.jwt_handler import JwtTokenHandler
 from app.utils.responses import OK, Created
 from app.utils.validators import validate_db_connection, validate_string_fields
 
 
 class Users:
     name = "Users"
-    db = None
-    hasher = None
+    db: MongoDBConnector = None
+    hasher: Hasher
+    jwt: JwtTokenHandler
 
     @classmethod
     def __init__(cls) -> None:
         cls.hasher = Hasher()
+        cls.jwt = JwtTokenHandler()
 
     @classmethod
     async def __initiate_db(cls):
@@ -45,7 +50,21 @@ class Users:
             user = UserBaseModel(**user_details.dict())
             result = await cls.db[cls.name].insert_one(user.dict(by_alias=True))
 
-            return Created({"id": result.inserted_id})
+            expiry = (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+
+            jwt_token = cls.jwt.encode(
+                {"user_id": str(result.inserted_id), "expiry": expiry}
+            )
+
+            response = Created({"id": result.inserted_id})
+            response.set_cookie(
+                key="authorization",
+                value=f"Bearer {jwt_token}",
+                httponly=True,
+                expires=expiry,
+            )
+
+            return response
 
         except DuplicateKeyError:
             raise HTTPException(

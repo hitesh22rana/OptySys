@@ -1,31 +1,11 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 
 from app.database.users import Users
-from app.schemas.users import UserBaseSchema
 
 router = APIRouter(
     tags=["Users"],
     prefix="/users",
 )
-
-"""
-    Post method for creating a new user.
-    
-    Raises:
-        HTTPException: Fields validation error
-        HTTPException: Duplicate user error
-        HTTPException: Internal server error
-        HTTPException: Bad request error
-    
-    Returns:
-        _type_: user id
-"""
-
-
-@router.post("/", response_description="Create new user")
-async def create_user(user: UserBaseSchema = Body(...)):
-    return await Users().create_user(user)
-
 
 """
     Get method for getting a user.
