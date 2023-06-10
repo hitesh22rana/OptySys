@@ -52,11 +52,13 @@ class Users:
                 status_code=status.HTTP_409_CONFLICT,
                 detail="User already exists",
             )
+
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Database connection error",
             )
+
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
