@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body
 
-from app.database.users import create_new_user
+from app.database.users import Users
 from app.schemas.users import UserBaseSchema
 
 router = APIRouter(
@@ -15,12 +15,13 @@ router = APIRouter(
         HTTPException: Fields validation error
         HTTPException: Duplicate user error
         HTTPException: Internal server error
+        HTTPException: Bad request error
     
     Returns:
-        _type_: User
+        _type_: user id
 """
 
 
 @router.post("/")
 async def create_user(user: UserBaseSchema = Body(...)):
-    return await create_new_user(user.dict())
+    return await Users().create_new_user(user)
