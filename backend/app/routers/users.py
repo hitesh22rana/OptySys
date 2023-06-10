@@ -24,7 +24,7 @@ router = APIRouter(
 
 @router.post("/", response_description="Create new user")
 async def create_user(user: UserBaseSchema = Body(...)):
-    return await Users().create_new_user(user)
+    return await Users().create_user(user)
 
 
 """

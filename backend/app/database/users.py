@@ -7,11 +7,7 @@ from app.schemas.users import UserResponseSchema
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.responses import OK, Created
-from app.utils.validators import (
-    validate_db_connection,
-    validate_fields_not_empty,
-    validate_string_fields,
-)
+from app.utils.validators import validate_db_connection, validate_string_fields
 
 
 class Users:
@@ -32,15 +28,8 @@ class Users:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def create_new_user(cls, user_details: dict):
+    async def create_user(cls, user_details: dict):
         await cls.__initiate_db()
-
-        validate_fields_not_empty(
-            user_details.name,
-            user_details.email,
-            user_details.password,
-            detail="Fields cannot be empty",
-        )
 
         validate_string_fields(
             user_details.name,
@@ -81,7 +70,6 @@ class Users:
     async def get_user(cls, user_id: str):
         await cls.__initiate_db()
 
-        validate_fields_not_empty(user_id, detail="User id cannot be empty")
         validate_string_fields(user_id)
 
         try:

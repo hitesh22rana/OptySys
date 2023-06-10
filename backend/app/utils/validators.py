@@ -14,7 +14,7 @@ def validate_db_connection(db):
 
 def validate_string_fields(*fields: list[str]):
     for field in fields:
-        if not isinstance(field, str):
+        if field == "" or field is None or not isinstance(field, str):
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=f"Invalid field type: {field}",
