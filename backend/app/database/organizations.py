@@ -1,13 +1,11 @@
 import json
 
-from bson import ObjectId
 from fastapi import HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
 
 from app.config import settings
 from app.models.organizations import OrganizationBaseModel
-from app.schemas.organizations import OrganizationBaseSchema
 from app.utils.database import MongoDBConnector
 from app.utils.responses import Created
 from app.utils.validators import (

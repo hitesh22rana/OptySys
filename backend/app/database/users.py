@@ -10,7 +10,12 @@ from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
 from app.utils.responses import OK, Created
-from app.utils.validators import validate_db_connection, validate_string_fields
+from app.utils.validators import (
+    validate_db_connection,
+    validate_object_id_fields,
+    validate_string_fields,
+    validate_user_id,
+)
 
 
 class Users:
@@ -142,3 +147,14 @@ class Users:
 
         finally:
             await MongoDBConnector().close()
+
+    @classmethod
+    async def logout_user(cls, user_id: str, current_user: str):
+        validate_object_id_fields(user_id, current_user)
+        validate_user_id(user_id, current_user)
+
+        response = OK("Logged out successfully")
+
+        response.delete_cookie(key="authorization")
+
+        return response
