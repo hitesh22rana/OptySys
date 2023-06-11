@@ -48,23 +48,36 @@ class Organizations:
         validate_user_id(organization_details.created_by, current_user)
 
         try:
-            organization = json.loads(
-                OrganizationBaseModel(**organization_details.dict()).json(by_alias=True)
-            )
-
-            organization["admins"] = [str(organization_details.created_by)]
-            organization["members"] = [str(organization_details.created_by)]
-
-            result = await cls.db[cls.name].insert_one(organization)
-
-            if result:
-                # update the organization id in the user collection
-                await cls.db["Users"].update_one(
-                    {"_id": current_user},
-                    {"$push": {"organizations": result.inserted_id}},
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                organization = json.loads(
+                    OrganizationBaseModel(**organization_details.dict()).json(
+                        by_alias=True
+                    )
                 )
 
-            return Created({"id": result.inserted_id})
+                organization["admins"] = [str(organization_details.created_by)]
+                organization["members"] = [str(organization_details.created_by)]
+
+                result = await cls.db[cls.name].insert_one(
+                    organization, session=session
+                )
+
+                if result:
+                    # update the organization id in the user collection
+                    res = await cls.db["Users"].update_one(
+                        {"_id": result.inserted_id},
+                        {"$push": {"organizations": result.inserted_id}},
+                        session=session,
+                    )
+
+                    if res.modified_count == 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Error: Failed to update the user collection",
+                        )
+
+                return Created({"id": result.inserted_id})
 
         except ConnectionFailure:
             raise HTTPException(
@@ -75,9 +88,9 @@ class Organizations:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to create organization.",
+                detail=f"Error: Unable to create organization. {e}",
             ) from e
 
         finally:
-            # await session.end_session()
+            session.end_session()
             await MongoDBConnector().close()
