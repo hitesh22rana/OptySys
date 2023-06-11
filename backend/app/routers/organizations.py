@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Request
 
 from app.database.organizations import Organizations
-from app.models.organizations import OrganizationBaseModel
+from app.schemas.organizations import OrganizationBaseSchema
 
 router = APIRouter(
     tags=["Organizations"],
@@ -21,6 +21,9 @@ router = APIRouter(
 """
 
 
-@router.post("/", response_description="Create a new organization")
-async def create_organization(organization: OrganizationBaseModel = Body(...)):
-    return await Organizations().create_organization(organization)
+@router.post("", response_description="Create a new organization")
+async def create_organization(
+    request: Request, organization: OrganizationBaseSchema = Body(...)
+):
+    current_user = request.scope["current_user"]
+    return await Organizations().create_organization(current_user, organization)

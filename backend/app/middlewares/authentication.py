@@ -28,17 +28,16 @@ class AuthenticationMiddleware:
         authorization = headers.get("authorization")
 
         try:
-            user_id = authentication_handler(authorization)
+            current_user = authentication_handler(authorization)
         except Exception as e:
             response = JSONResponse({"status_code": 401, "message": e.args}, 401)
             return await response(scope, receive, send)
 
-        scope["user_id"] = user_id
+        scope["current_user"] = current_user
         return await self.app(scope, receive, send)
 
 
 def is_public_endpoint(request_path, request_method):
-    print(request_path, request_method)
     return {"path": request_path, "method": request_method} in PUBLIC_ENDPOINTS
 
 
@@ -46,6 +45,6 @@ def authentication_handler(authorization: str):
     try:
         bearer_token = authorization.split(" ")[1]
         data = JwtTokenHandler().decode(bearer_token)
-        return data
+        return data["user_id"]
     except Exception as e:
         raise Exception("Please login to access this resource.") from e

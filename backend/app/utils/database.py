@@ -12,6 +12,8 @@ class MongoDBConnector:
     def __init__(self):
         self.client = None
         self.db = None
+        self.users = "Users"
+        self.organizations = "Organizations"
 
     async def connect(self):
         if self.db is not None:
@@ -20,6 +22,9 @@ class MongoDBConnector:
         try:
             self.client = AsyncIOMotorClient(settings.mongodb_uri)
             self.db = self.client.optysys
+
+            # Create unique index on email
+            await self.db[self.users].create_index("email", unique=True)
 
             print("Connected to MongoDB server")
             return self.db

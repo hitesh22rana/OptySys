@@ -26,6 +26,19 @@ async def signup(user: UserBaseSchema = Body(...)):
     return await Users().create_user(user)
 
 
+"""
+    Post method for logging in a user.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: User
+"""
+
+
 @router.post("/login", response_description="Login a user")
 async def login(user: UserLoginRequestSchema = Body(...)):
     return await Users().get_user(user)

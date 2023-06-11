@@ -28,7 +28,7 @@ Fields:
 
 class UserBaseModel(BaseModel):
     # Required Fields
-    _id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     email: EmailStr = Field(..., description="Email address of the user")
     password: str = Field(..., description="Password of the user")
     name: str = Field(..., description="Name of the user")
@@ -36,16 +36,16 @@ class UserBaseModel(BaseModel):
     social_links: List[Dict[SocialLinks, str]] = Field(
         [], description="List of social links of the user"
     )
-    experience: List[Experience] = Field(
+    experiences: List[Experience] = Field(
         [], description="List of experiences of the user"
     )
     skills: List[str] = Field([], description="List of skills of the user")
-    organization: List[PyObjectId] = Field(
+    organizations: List[PyObjectId] = Field(
         [], description="List of organizations of the user"
     )
 
     # Default Fields
-    created_at: datetime = datetime.utcnow()
+    created_at: datetime = datetime.utcnow().isoformat()
 
     class Config:
         allow_population_by_field_name = True

@@ -14,9 +14,9 @@
 | name | String | First name of the user |
 | summary | String | Summary of the user |
 | social_links | Array[SocialLinks] | Social links of the user |
-| experience | Array[Experience] | Experience of the user |
+| experiences | Array[Experience] | Experience of the user |
 | skills | Array[String] | Skills of the user |
-| organization | ObjectId | Organization of the user |
+| organizations | ObjectId | Organization of the user |
 | created_at | DateTime | Date and time of user creation |
 
 ## Organization

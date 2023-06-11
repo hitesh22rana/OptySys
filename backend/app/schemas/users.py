@@ -16,13 +16,10 @@ class UserBaseSchema(BaseModel):
     social_links: List[Dict[SocialLinks, str]] = Field(
         [], description="List of social links of the user"
     )
-    experience: List[Experience] = Field(
+    experiences: List[Experience] = Field(
         [], description="List of experiences of the user"
     )
     skills: List[str] = Field([], description="List of skills of the user")
-    organization: List[PyObjectId] = Field(
-        [], description="List of organizations of the user"
-    )
 
     class Config:
         allow_population_by_field_name = True
@@ -42,7 +39,7 @@ class UserBaseSchema(BaseModel):
                     {"behance": "https://behance.com/johndoe"},
                     {"dribble": "https://dribble.com/johndoe"},
                 ],
-                "experience": [
+                "experiences": [
                     {
                         "title": "Software Engineer",
                         "company": "Google",
@@ -50,7 +47,7 @@ class UserBaseSchema(BaseModel):
                     }
                 ],
                 "skills": ["Python", "JavaScript", "HTML", "CSS"],
-                "organization": ["60f7b1f9e13b4a4a9c5e9b3a"],
+                "organizations": ["60f7b1f9e13b4a4a9c5e9b3a"],
             }
         }
 
@@ -78,9 +75,10 @@ class UserResponseSchema:
         self.name = user["name"]
         self.summary = user["summary"]
         self.social_links = user["social_links"]
-        self.experience = user["experience"]
+        self.experiences = user["experiences"]
         self.skills = user["skills"]
-        self.organization = user["organization"]
+        self.organizations = user["organizations"]
+        self.created_at = user["created_at"]
 
     def response(self) -> dict:
         return {
@@ -89,7 +87,8 @@ class UserResponseSchema:
             "name": self.name,
             "summary": self.summary,
             "social_links": self.social_links,
-            "experience": self.experience,
+            "experiences": self.experiences,
             "skills": self.skills,
-            "organization": self.organization,
+            "organizations": self.organizations,
+            "created_at": self.created_at,
         }

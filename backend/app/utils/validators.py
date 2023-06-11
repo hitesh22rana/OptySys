@@ -14,7 +14,7 @@ def validate_db_connection(db):
 
 def validate_string_fields(*fields: list[str]):
     for field in fields:
-        if field == "" or field is None or not isinstance(field, str):
+        if not isinstance(field, str) or field == "" or field is None:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=f"Invalid field type: {field}",
@@ -23,7 +23,7 @@ def validate_string_fields(*fields: list[str]):
 
 def validate_object_id_fields(*fields: list[str]):
     for field in fields:
-        if not isinstance(field, ObjectId):
+        if not ObjectId.is_valid(field):
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=f"Invalid field type: {field}",
@@ -33,6 +33,23 @@ def validate_object_id_fields(*fields: list[str]):
 def validate_fields_not_empty(*fields: list[str], detail: str):
     for field in fields:
         if field == "" or field is None:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=detail,
+            )
+
+
+def validate_user_id(user_id: ObjectId, current_user: ObjectId):
+    if ObjectId(user_id) != ObjectId(current_user):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid user id",
+        )
+
+
+def validate_empty_fields(*fields: list[str], detail: str):
+    for field in fields:
+        if field != "" or field is not None:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=detail,

@@ -51,8 +51,8 @@ class Users:
         user_details.password = hashed_password
 
         try:
-            user = UserBaseModel(**user_details.dict())
-            result = await cls.db[cls.name].insert_one(user.dict(by_alias=True))
+            user = json.loads(UserBaseModel(**user_details.dict()).json(by_alias=True))
+            result = await cls.db[cls.name].insert_one(user)
 
             response = UserResponseSchema(user).response()
             response = Created(response)
