@@ -6,6 +6,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
 from app.models.organizations import OrganizationBaseModel
+from app.schemas.organizations import OrganizationSchema
 from app.utils.database import MongoDBConnector
 from app.utils.responses import Created
 from app.utils.validators import (
@@ -13,7 +14,6 @@ from app.utils.validators import (
     validate_object_id_fields,
     validate_organization_name,
     validate_string_fields,
-    validate_user_id,
 )
 
 
@@ -40,13 +40,16 @@ class Organizations:
         return await cls._client.start_session()
 
     @classmethod
-    async def create_organization(cls, current_user: str, organization_details: dict):
+    async def create_organization(cls, current_user: str, organization: dict):
         await cls.__initiate_db()
 
-        validate_string_fields(organization_details.name)
-        validate_organization_name(organization_details.name)
-        validate_object_id_fields(organization_details.created_by, current_user)
-        validate_user_id(organization_details.created_by, current_user)
+        validate_string_fields(organization.name)
+        validate_organization_name(organization.name)
+        validate_object_id_fields(current_user)
+
+        organization_details = OrganizationSchema(
+            **organization.dict(), created_by=current_user
+        )
 
         try:
             session = await cls.db.client.start_session()
@@ -57,8 +60,8 @@ class Organizations:
                     )
                 )
 
-                organization["admins"] = [str(organization_details.created_by)]
-                organization["members"] = [str(organization_details.created_by)]
+                organization["admins"] = [str(current_user)]
+                organization["members"] = [str(current_user)]
 
                 result = await cls.db[cls.name].insert_one(
                     organization, session=session

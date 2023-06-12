@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Body, Request
 
 from app.database.users import Users
-from app.schemas.users import UserBaseSchema, UserLoginRequestSchema
+from app.schemas.users import (
+    UserLoginRequestSchema,
+    UserRegisterRequestSchema,
+    UserVerifyRequestSchema,
+)
 
 router = APIRouter(
     tags=["Organizations"],
@@ -9,7 +13,25 @@ router = APIRouter(
 )
 
 """
-    Post method for signing up a new user.
+    Post method for registering a new user.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: OTP for email verification
+"""
+
+
+@router.post("/register", response_description="Register a new user")
+async def register(user: UserRegisterRequestSchema = Body(...)):
+    return await Users().register_user(user)
+
+
+"""
+    Post method for verifying and signing up a new user.
 
     Raises:
         HTTPException: Fields validation error
@@ -21,9 +43,9 @@ router = APIRouter(
 """
 
 
-@router.post("/signup", response_description="Sign up a new user")
-async def signup(user: UserBaseSchema = Body(...)):
-    return await Users().create_user(user)
+@router.post("/verify", response_description="Verify and sign up a new user")
+async def verify(payload: UserVerifyRequestSchema = Body(...)):
+    return await Users().create_user(payload)
 
 
 """

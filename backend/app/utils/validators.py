@@ -45,14 +45,6 @@ def validate_fields_not_empty(*fields: list[str], detail: str):
             )
 
 
-def validate_user_id(user_id: ObjectId, current_user: ObjectId):
-    if ObjectId(user_id) != ObjectId(current_user):
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Unauthorized user",
-        )
-
-
 def validate_empty_fields(*fields: list[str], detail: str):
     for field in fields:
         if field != "" or field is not None:

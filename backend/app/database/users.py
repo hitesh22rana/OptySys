@@ -6,6 +6,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.users import UserBaseModel
 from app.schemas.users import UserResponseSchema
+from app.services.mail import MailService
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
@@ -14,7 +15,6 @@ from app.utils.validators import (
     validate_db_connection,
     validate_object_id_fields,
     validate_string_fields,
-    validate_user_id,
 )
 
 
@@ -23,11 +23,13 @@ class Users:
     db: MongoDBConnector = None
     hasher: Hasher
     jwt: JwtTokenHandler
+    mail_service: MailService
 
     @classmethod
     def __init__(cls) -> None:
         cls.hasher = Hasher()
         cls.jwt = JwtTokenHandler()
+        cls.mail_service = MailService()
 
     @classmethod
     def _set_expires(cls):
@@ -42,14 +44,100 @@ class Users:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def create_user(cls, user_details: dict):
+    async def register_user(cls, user_details: dict):
         await cls.__initiate_db()
 
+        validate_string_fields(user_details.email)
+
+        try:
+            user = await cls.db[cls.name].find_one({"email": user_details.email})
+            if user:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="User already exists",
+                )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error",
+            )
+
+        otp = cls.hasher.get_otp()
+        expiry = (datetime.now(timezone.utc) + timedelta(minutes=2)).isoformat()
+
+        data = {
+            "email": user_details.email,
+            "otp": otp,
+            "expiry": expiry,
+        }
+
+        jwt_token = cls.jwt.encode(data)
+
+        try:
+            await cls.mail_service.send_email_to_user(
+                user_details.email, "OTP for email verification", otp
+            )
+
+            return OK(
+                {
+                    "email": user_details.email,
+                    "token": jwt_token,
+                }
+            )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: {e}",
+            )
+
+        finally:
+            await MongoDBConnector().close()
+
+    @classmethod
+    async def create_user(cls, payload: dict):
+        await cls.__initiate_db()
+
+        user_details = payload.user_details
+
         validate_string_fields(
-            user_details.name,
             user_details.email,
             user_details.password,
+            user_details.name,
+            payload.otp,
+            payload.token,
         )
+
+        token = payload.token
+        otp = payload.otp
+
+        try:
+            payload_data = cls.jwt.decode(token)
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: {e}",
+            )
+
+        if payload_data["otp"] != otp:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid OTP",
+            )
+
+        if payload_data["email"] != user_details.email:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email",
+            )
 
         hashed_password = cls.hasher.get_password_hash(user_details.password)
 
@@ -151,7 +239,6 @@ class Users:
     @classmethod
     async def logout_user(cls, user_id: str, current_user: str):
         validate_object_id_fields(user_id, current_user)
-        validate_user_id(user_id, current_user)
 
         response = OK("Logged out successfully")
 

@@ -6,7 +6,8 @@ from app.utils.jwt_handler import JwtTokenHandler
 PUBLIC_ENDPOINTS = [
     {"path": "/docs", "method": "GET"},
     {"path": "/openapi.json", "method": "GET"},
-    {"path": "/auth/signup", "method": "POST"},
+    {"path": "/auth/register", "method": "POST"},
+    {"path": "/auth/verify", "method": "POST"},
     {"path": "/auth/login", "method": "POST"},
 ]
 

@@ -45,6 +45,7 @@ class UserBaseModel(BaseModel):
     )
 
     # Default Fields
+    activated: bool = False
     created_at: datetime = datetime.utcnow().replace(microsecond=0)
 
     class Config:
