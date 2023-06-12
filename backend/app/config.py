@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     debug: bool
     jwt_secret: str
     jwt_algorithm: str
+    smtp_host: str
+    smtp_port: int
+    smtp_username: str
+    smtp_password: str
 
     class Config:
         env_file = ".env"
