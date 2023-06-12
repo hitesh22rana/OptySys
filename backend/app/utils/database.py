@@ -26,6 +26,9 @@ class MongoDBConnector:
             # Create unique index on email
             await self.db[self.users].create_index("email", unique=True)
 
+            # Create unique index on organization name
+            await self.db[self.organizations].create_index("name", unique=True)
+
             print("Connected to MongoDB server")
             return self.db
         except ConnectionFailure:
