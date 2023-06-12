@@ -1,7 +1,13 @@
 # Path: backend\app\lib\validators.py
 
+import re
+
 from bson import ObjectId
 from fastapi import HTTPException, status
+
+ORGANIZATION_NAME_PATTERN = r"^[a-zA-Z0-9_-]+$"
+
+pattern = re.compile(ORGANIZATION_NAME_PATTERN)
 
 
 def validate_db_connection(db):
@@ -43,7 +49,7 @@ def validate_user_id(user_id: ObjectId, current_user: ObjectId):
     if ObjectId(user_id) != ObjectId(current_user):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid user id",
+            detail="Unauthorized user",
         )
 
 
@@ -54,3 +60,11 @@ def validate_empty_fields(*fields: list[str], detail: str):
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=detail,
             )
+
+
+def validate_organization_name(organization_name: str):
+    if not pattern.match(organization_name) or len(organization_name) > 50:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid organization name.",
+        )

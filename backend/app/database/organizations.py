@@ -2,7 +2,7 @@ import json
 
 from fastapi import HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import ConnectionFailure
+from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
 from app.models.organizations import OrganizationBaseModel
@@ -11,6 +11,7 @@ from app.utils.responses import Created
 from app.utils.validators import (
     validate_db_connection,
     validate_object_id_fields,
+    validate_organization_name,
     validate_string_fields,
     validate_user_id,
 )
@@ -41,7 +42,9 @@ class Organizations:
     @classmethod
     async def create_organization(cls, current_user: str, organization_details: dict):
         await cls.__initiate_db()
+
         validate_string_fields(organization_details.name)
+        validate_organization_name(organization_details.name)
         validate_object_id_fields(organization_details.created_by, current_user)
         validate_user_id(organization_details.created_by, current_user)
 
@@ -64,7 +67,7 @@ class Organizations:
                 if result:
                     # update the organization id in the user collection
                     res = await cls.db["Users"].update_one(
-                        {"_id": result.inserted_id},
+                        {"_id": current_user},
                         {"$push": {"organizations": result.inserted_id}},
                         session=session,
                     )
@@ -72,7 +75,7 @@ class Organizations:
                     if res.modified_count == 0:
                         raise HTTPException(
                             status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Error: Failed to update the user collection",
+                            detail="Error: Unable to update user",
                         )
 
                 return Created({"id": result.inserted_id})
@@ -80,13 +83,19 @@ class Organizations:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Database connection error.",
+            )
+
+        except DuplicateKeyError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Error: Organization already exists with this name.",
             )
 
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to create organization. {e}",
+                detail=f"Error: Unable to create organization.",
             ) from e
 
         finally:
