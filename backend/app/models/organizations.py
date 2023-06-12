@@ -37,7 +37,7 @@ class OrganizationBaseModel(BaseModel):
     )
 
     # Default Fields
-    created_at: datetime = datetime.utcnow().isoformat()
+    created_at: datetime = datetime.utcnow().replace(microsecond=0)
 
     class Config:
         allow_population_by_field_name = True
