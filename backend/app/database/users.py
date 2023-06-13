@@ -155,7 +155,7 @@ class Users:
                 {"user_id": str(result.inserted_id), "expiry": expiry}
             )
             response.set_cookie(
-                key="authorization",
+                key="access_token",
                 value=f"Bearer {jwt_token}",
                 httponly=True,
                 expires=expiry,
@@ -212,7 +212,7 @@ class Users:
             jwt_token = cls.jwt.encode({"user_id": str(user["_id"]), "expiry": expiry})
 
             response.set_cookie(
-                key="authorization",
+                key="access_token",
                 value=f"Bearer {jwt_token}",
                 httponly=True,
                 expires=expiry,
@@ -242,6 +242,6 @@ class Users:
 
         response = OK("Logged out successfully")
 
-        response.delete_cookie(key="authorization")
+        response.delete_cookie(key="access_token")
 
         return response

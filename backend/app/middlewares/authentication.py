@@ -26,10 +26,10 @@ class AuthenticationMiddleware:
             return await self.app(scope, receive, send)
 
         headers = Headers(scope=scope)
-        authorization = headers.get("authorization")
+        access_token = headers.get("Authorization")
 
         try:
-            current_user = authentication_handler(authorization)
+            current_user = authentication_handler(access_token)
         except Exception as e:
             response = JSONResponse({"status_code": 401, "message": e.args}, 401)
             return await response(scope, receive, send)
@@ -42,9 +42,9 @@ def is_public_endpoint(request_path, request_method):
     return {"path": request_path, "method": request_method} in PUBLIC_ENDPOINTS
 
 
-def authentication_handler(authorization: str):
+def authentication_handler(access_token: str):
     try:
-        bearer_token = authorization.split(" ")[1]
+        bearer_token = access_token.split(" ")[1]
         data = JwtTokenHandler().decode(bearer_token)
         return data["user_id"]
     except Exception as e:

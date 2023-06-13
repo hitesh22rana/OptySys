@@ -46,10 +46,15 @@ class MailService:
 
             msg.attach(MIMEText(message, "html"))
 
-            cls.server.sendmail(cls.sender, recipient, msg.as_string())
+            cls.server.sendmail(
+                cls.sender, recipient, msg.as_string(), fail_silently=False
+            )
 
         except smtplib.SMTPException as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to send email",
             ) from e
+
+
+# fail_silently = False
