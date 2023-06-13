@@ -10,16 +10,14 @@ from app.config import settings
 
 
 class MailService:
-    @classmethod
-    def __init__(cls):
-        cls.smtp_server = settings.smtp_host
-        cls.smtp_port = settings.smtp_port
-        cls.server = None
-        cls.sender = settings.smtp_username
-        cls.password = settings.smtp_password
+    smtp_server = settings.smtp_host
+    smtp_port = settings.smtp_port
+    sender = settings.smtp_username
+    password = settings.smtp_password
+    server = None
 
     @classmethod
-    async def _login(cls):
+    def _login(cls):
         try:
             if not cls.server:
                 cls.server = smtplib.SMTP(cls.smtp_server, cls.smtp_port)
@@ -35,8 +33,9 @@ class MailService:
             ) from e
 
     @classmethod
-    async def send_email_to_user(cls, recipient, subject, message):
-        await cls._login()
+    def send_email_to_user(cls, recipient, subject, message):
+        if not cls.server:
+            cls._login()
 
         try:
             msg = MIMEMultipart("alternative")
@@ -46,9 +45,7 @@ class MailService:
 
             msg.attach(MIMEText(message, "html"))
 
-            cls.server.sendmail(
-                cls.sender, recipient, msg.as_string(), fail_silently=False
-            )
+            cls.server.sendmail(cls.sender, recipient, msg.as_string())
 
         except smtplib.SMTPException as e:
             raise HTTPException(
@@ -57,4 +54,4 @@ class MailService:
             ) from e
 
 
-# fail_silently = False
+mail_service = MailService()

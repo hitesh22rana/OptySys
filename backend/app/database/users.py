@@ -6,7 +6,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.users import UserBaseModel
 from app.schemas.users import UserResponseSchema
-from app.services.mail import MailService
+from app.services.mail import mail_service
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
@@ -23,13 +23,12 @@ class Users:
     db: MongoDBConnector = None
     hasher: Hasher
     jwt: JwtTokenHandler
-    mail_service: MailService
 
     @classmethod
     def __init__(cls) -> None:
         cls.hasher = Hasher()
         cls.jwt = JwtTokenHandler()
-        cls.mail_service = MailService()
+        cls.mail_service = mail_service
 
     @classmethod
     def _set_expires(cls):
