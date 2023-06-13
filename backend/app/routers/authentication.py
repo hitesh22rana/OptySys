@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Request
+from fastapi import APIRouter, BackgroundTasks, Body, Request
 
 from app.database.users import Users
 from app.schemas.users import (
@@ -26,8 +26,10 @@ router = APIRouter(
 
 
 @router.post("/register", response_description="Register a new user")
-async def register(user: UserRegisterRequestSchema = Body(...)):
-    return await Users().register_user(user)
+async def register(
+    background_tasks: BackgroundTasks, user: UserRegisterRequestSchema = Body(...)
+):
+    return await Users().register_user(background_tasks, user)
 
 
 """

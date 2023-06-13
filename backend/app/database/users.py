@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta, timezone
 
-from fastapi import HTTPException, status
+from fastapi import BackgroundTasks, HTTPException, status
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.users import UserBaseModel
@@ -43,7 +43,7 @@ class Users:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def register_user(cls, user_details: dict):
+    async def register_user(cls, background_tasks: BackgroundTasks, user_details: dict):
         await cls.__initiate_db()
 
         validate_string_fields(user_details.email)
@@ -74,8 +74,11 @@ class Users:
         jwt_token = cls.jwt.encode(data)
 
         try:
-            await cls.mail_service.send_email_to_user(
-                user_details.email, "OTP for email verification", otp
+            background_tasks.add_task(
+                cls.mail_service.send_email_to_user,
+                user_details.email,
+                "OTP for email verification",
+                otp,
             )
 
             return OK(
