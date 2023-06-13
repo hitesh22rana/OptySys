@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.database.users import Users
+from app.schemas.users import UserUpdateRequestSchema
 
 router = APIRouter(
     tags=["Users"],
@@ -16,11 +17,10 @@ router = APIRouter(
         HTTPException: Bad request error
 
     Returns:
-        _type_: OTP for email verification
+        _type_: User
 """
 
-# TODO: Implement Update User route
 
-# @router.put("/{user_id}", response_description="Update a user")
-# async def update(user_id: str):
-# return await Users().update_user(user_id)
+@router.put("", response_description="Update a user")
+async def update(user_details: UserUpdateRequestSchema):
+    return await Users().update_user(user_details)
