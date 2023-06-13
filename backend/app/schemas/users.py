@@ -22,21 +22,10 @@ class UserRegisterRequestSchema(BaseModel):
         }
 
 
-class UserVerifyRequestSchema(BaseModel):
+class UserDetailsSchema(BaseModel):
     email: EmailStr = Field(..., description="Email address of the user")
     password: str = Field(..., description="Password of the user")
     name: str = Field(..., description="Name of the user")
-
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-
-
-class UserVerifyRequestSchema(BaseModel):
-    user_details: UserVerifyRequestSchema = Field(..., description="User details")
-    otp: str = Field(..., description="OTP for email verification")
-    token: str = Field(..., description="JWT token for email verification")
 
     class Config:
         allow_population_by_field_name = True
@@ -47,6 +36,26 @@ class UserVerifyRequestSchema(BaseModel):
                 "email": "email@domain.com",
                 "password": "password",
                 "name": "John Doe",
+            }
+        }
+
+
+class UserVerifyRequestSchema(BaseModel):
+    user_details: UserDetailsSchema = Field(..., description="User details")
+    otp: str = Field(..., description="OTP for email verification")
+    token: str = Field(..., description="JWT token for email verification")
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "user_details": {
+                    "email": "email@domain.com",
+                    "password": "password",
+                    "name": "John Doe",
+                },
                 "otp": "123456",
                 "token": "token",
             }
