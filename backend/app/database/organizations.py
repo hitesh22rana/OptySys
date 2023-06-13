@@ -9,12 +9,7 @@ from app.models.organizations import OrganizationBaseModel
 from app.schemas.organizations import OrganizationSchema
 from app.utils.database import MongoDBConnector
 from app.utils.responses import Created
-from app.utils.validators import (
-    validate_db_connection,
-    validate_object_id_fields,
-    validate_organization_name,
-    validate_string_fields,
-)
+from app.utils.validators import validate_db_connection, validate_object_id_fields
 
 
 class Organizations:
@@ -43,8 +38,6 @@ class Organizations:
     async def create_organization(cls, current_user: str, organization: dict):
         await cls.__initiate_db()
 
-        validate_string_fields(organization.name)
-        validate_organization_name(organization.name)
         validate_object_id_fields(current_user)
 
         organization_details = OrganizationSchema(

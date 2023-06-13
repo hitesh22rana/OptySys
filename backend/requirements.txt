@@ -7,3 +7,4 @@ orjson==3.9.1
 passlib==1.7.4
 passlib[bcrypt]
 PyJWT==2.7.0
+validators==0.20.0

@@ -11,11 +11,7 @@ from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
 from app.utils.responses import OK, Created
-from app.utils.validators import (
-    validate_db_connection,
-    validate_object_id_fields,
-    validate_string_fields,
-)
+from app.utils.validators import validate_db_connection, validate_object_id_fields
 
 
 class Users:
@@ -45,8 +41,6 @@ class Users:
     @classmethod
     async def register_user(cls, background_tasks: BackgroundTasks, user_details: dict):
         await cls.__initiate_db()
-
-        validate_string_fields(user_details.email)
 
         try:
             user = await cls.db[cls.name].find_one({"email": user_details.email})
@@ -108,14 +102,6 @@ class Users:
         await cls.__initiate_db()
 
         user_details = payload.user_details
-
-        validate_string_fields(
-            user_details.email,
-            user_details.password,
-            user_details.name,
-            payload.otp,
-            payload.token,
-        )
 
         token = payload.token
         otp = payload.otp
@@ -190,8 +176,6 @@ class Users:
     async def get_user(cls, user_details: dict):
         await cls.__initiate_db()
 
-        validate_string_fields(user_details.email, user_details.password)
-
         try:
             user = await cls.db[cls.name].find_one({"email": user_details.email})
 
@@ -247,3 +231,9 @@ class Users:
         response.delete_cookie(key="access_token")
 
         return response
+
+    # TODO: Add update user functionality
+    @classmethod
+    async def update_user(cls, user_details: dict):
+        print(user_details)
+        return OK("User updated successfully")

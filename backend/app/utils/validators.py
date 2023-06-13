@@ -1,13 +1,8 @@
 # Path: backend\app\lib\validators.py
 
-import re
-
+import validators
 from bson import ObjectId
 from fastapi import HTTPException, status
-
-ORGANIZATION_NAME_PATTERN = r"^[a-zA-Z0-9_-]+$"
-
-pattern = re.compile(ORGANIZATION_NAME_PATTERN)
 
 
 def validate_db_connection(db):
@@ -36,27 +31,26 @@ def validate_object_id_fields(*fields: list[str]):
             )
 
 
-def validate_fields_not_empty(*fields: list[str], detail: str):
-    for field in fields:
-        if field == "" or field is None:
+def validate_social_links(social_links):
+    for link in social_links:
+        if not link.values():
+            raise ValueError("Social link cannot be empty")
+        for value in link.values():
+            if not validators.url(value, public=True):
+                raise ValueError("Invalid link: " + value)
+    return social_links
+
+
+def validate_experiences(experiences):
+    for experience in experiences:
+        try:
+            validate_string_fields(
+                experience.title, experience.company, experience.description
+            )
+        except:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=detail,
+                detail="Invalid experience fields.",
             )
 
-
-def validate_empty_fields(*fields: list[str], detail: str):
-    for field in fields:
-        if field != "" or field is not None:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=detail,
-            )
-
-
-def validate_organization_name(organization_name: str):
-    if not pattern.match(organization_name) or len(organization_name) > 50:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid organization name.",
-        )
+    return experiences
