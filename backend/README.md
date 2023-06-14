@@ -37,13 +37,17 @@ pip install -r requirements.txt
 After activating the virtual environment, you need to add environment variables. To do so, create a file named `.env` in the root directory of the project and add the following environment variables:
 
 ```env
-MONGODB_URI=<MONGODB_URI>
+MONGODB_URI="<MONGODB_URI>"
 PROJECT_NAME="OptySys"
 PROJECT_DESCRIPTION="Opportunity management system."
 PROJECT_VERSION="1.0.0"
 DEBUG=true
 JWT_SECRET="secret"
 JWT_ALGORITHM="HS256"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USERNAME="<your_email>"
+SMTP_PASSWORD="<your_password>"
 ```
 
 After adding the environment variables, you can run the backend using the following command:

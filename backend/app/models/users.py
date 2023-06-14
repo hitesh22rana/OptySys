@@ -22,6 +22,7 @@ Fields:
     experience: List of experiences of the user
     skills: List of skills of the user
     organization: List of organizations of the user
+    activated: Activation status of the user
     created_at: Created at timestamp of the user
 """
 
