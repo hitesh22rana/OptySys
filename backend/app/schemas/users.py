@@ -80,52 +80,6 @@ class UserVerifyRequestSchema(BaseModel):
         }
 
 
-class UserBaseSchema(BaseModel):
-    email: EmailStr = Field(..., description="Email address of the user")
-    password: str = Field(..., description="Password of the user", type="string")
-    name: str = Field(
-        ..., description="Name of the user", min_length=3, max_length=50, type="string"
-    )
-    summary: str = Field("", description="Summary of the user")
-    social_links: List[Dict[SocialLinks, str]] = Field(
-        [], description="List of social links of the user"
-    )
-    experiences: List[Experience] = Field(
-        [], description="List of experiences of the user"
-    )
-    skills: List[str] = Field([], description="List of skills of the user")
-
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-        schema_extra = {
-            "example": {
-                "email": "email@domain.com",
-                "password": "password",
-                "name": "John Doe",
-                "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "social_links": [
-                    {"resume": "https://example.com/resume"},
-                    {"linkedin": "https://linkedin.com/in/johndoe"},
-                    {"github": "https://github.com/johndoe"},
-                    {"twitter": "https://twitter.com/johndoe"},
-                    {"behance": "https://behance.com/johndoe"},
-                    {"dribble": "https://dribble.com/johndoe"},
-                ],
-                "experiences": [
-                    {
-                        "title": "Software Engineer",
-                        "company": "Google",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    }
-                ],
-                "skills": ["Python", "JavaScript", "HTML", "CSS"],
-                "organizations": ["60f7b1f9e13b4a4a9c5e9b3a"],
-            }
-        }
-
-
 class UserLoginRequestSchema(BaseModel):
     email: EmailStr = Field(..., description="Email address of the user")
     password: str = Field(
@@ -149,17 +103,18 @@ class UserLoginRequestSchema(BaseModel):
 
 
 class UserUpdateRequestSchema(BaseModel):
-    summary: str = Field(
-        ..., description="Summary of the user", min_length=30, max_length=200
-    )
+    summary: str = Field(..., description="Summary of the user", max_length=200)
     social_links: List[Dict[SocialLinks, str]] = Field(
         ..., description="List of social links of the user", min_items=1
     )
     experiences: List[Experience] = Field(
-        ..., description="List of experiences of the user", min_items=1
+        ..., description="List of experiences of the user", min_items=0
     )
     skills: List[str] = Field(
         ..., description="List of skills of the user", min_items=1, min_length=3
+    )
+    achievements: List[str] = Field(
+        ..., description="List of achievements of the user", min_items=0, min_length=3
     )
 
     @validator("social_links")
@@ -193,6 +148,9 @@ class UserUpdateRequestSchema(BaseModel):
                     }
                 ],
                 "skills": ["Python", "JavaScript", "HTML", "CSS"],
+                "achievements": [
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                ],
             }
         }
 
@@ -207,6 +165,7 @@ class UserResponseSchema:
         self.experiences = user["experiences"]
         self.skills = user["skills"]
         self.organizations = user["organizations"]
+        self.achievements = user["achievements"]
         self.activated = user["activated"]
         self.created_at = user["created_at"]
 
@@ -221,5 +180,6 @@ class UserResponseSchema:
             "skills": self.skills,
             "organizations": self.organizations,
             "activated": self.activated,
+            "achievements": self.achievements,
             "created_at": self.created_at,
         }

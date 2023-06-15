@@ -16,6 +16,7 @@
 | social_links | Array[SocialLinks] | Social links of the user |
 | experiences | Array[Experience] | Experience of the user |
 | skills | Array[String] | Skills of the user |
+| achievements | Array[String] | Achievements of the user |
 | organizations | ObjectId | Organization of the user |
 | activated | Boolean | Whether the user is activated or not |
 | created_at | DateTime | Date and time of user creation |
