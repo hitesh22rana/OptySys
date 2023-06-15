@@ -6,13 +6,19 @@ from pymongo import ReturnDocument
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.users import UserBaseModel
-from app.schemas.users import UserResponseSchema, UserUpdateRequestSchema
+from app.schemas.users import (
+    UserLoginRequestSchema,
+    UserRegisterRequestSchema,
+    UserResponseSchema,
+    UserUpdateRequestSchema,
+    UserVerifyRequestSchema,
+)
 from app.services.mail import mail_service
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
 from app.utils.responses import OK, Created
-from app.utils.validators import validate_db_connection, validate_object_id_fields
+from app.utils.validators import validate_db_connection
 
 
 class Users:
@@ -40,7 +46,9 @@ class Users:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def register_user(cls, background_tasks: BackgroundTasks, user_details: dict):
+    async def register_user(
+        cls, background_tasks: BackgroundTasks, user_details: UserRegisterRequestSchema
+    ):
         await cls.__initiate_db()
 
         try:
@@ -92,14 +100,14 @@ class Users:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: {e}",
+                detail=f"Error: Bad request {e}",
             )
 
         finally:
             await MongoDBConnector().close()
 
     @classmethod
-    async def create_user(cls, payload: dict):
+    async def create_user(cls, payload: UserVerifyRequestSchema):
         await cls.__initiate_db()
 
         user_details = payload.user_details
@@ -174,7 +182,7 @@ class Users:
             await MongoDBConnector().close()
 
     @classmethod
-    async def get_user(cls, user_details: dict):
+    async def get_user(cls, user_details: UserLoginRequestSchema):
         await cls.__initiate_db()
 
         try:

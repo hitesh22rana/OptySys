@@ -6,7 +6,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
 from app.models.organizations import OrganizationBaseModel
-from app.schemas.organizations import OrganizationSchema
+from app.schemas.organizations import OrganizationBaseSchema, OrganizationSchema
 from app.utils.database import MongoDBConnector
 from app.utils.responses import Created
 from app.utils.validators import validate_db_connection, validate_object_id_fields
@@ -31,7 +31,9 @@ class Organizations:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def create_organization(cls, current_user: str, organization: dict):
+    async def create_organization(
+        cls, current_user: str, organization: OrganizationBaseSchema
+    ):
         await cls.__initiate_db()
 
         validate_object_id_fields(current_user)
