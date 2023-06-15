@@ -31,10 +31,6 @@ class Organizations:
         validate_db_connection(cls.db)
 
     @classmethod
-    async def get_client_session(cls):
-        return await cls._client.start_session()
-
-    @classmethod
     async def create_organization(cls, current_user: str, organization: dict):
         await cls.__initiate_db()
 

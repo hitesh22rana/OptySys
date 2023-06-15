@@ -207,6 +207,7 @@ class UserResponseSchema:
         self.experiences = user["experiences"]
         self.skills = user["skills"]
         self.organizations = user["organizations"]
+        self.activated = user["activated"]
         self.created_at = user["created_at"]
 
     def response(self) -> dict:
@@ -219,5 +220,6 @@ class UserResponseSchema:
             "experiences": self.experiences,
             "skills": self.skills,
             "organizations": self.organizations,
+            "activated": self.activated,
             "created_at": self.created_at,
         }

@@ -2,10 +2,11 @@ import json
 from datetime import datetime, timedelta, timezone
 
 from fastapi import BackgroundTasks, HTTPException, status
+from pymongo import ReturnDocument
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.models.users import UserBaseModel
-from app.schemas.users import UserResponseSchema
+from app.schemas.users import UserResponseSchema, UserUpdateRequestSchema
 from app.services.mail import mail_service
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
@@ -57,7 +58,7 @@ class Users:
             )
 
         otp = cls.hasher.get_otp()
-        expiry = (datetime.now(timezone.utc) + timedelta(minutes=2)).isoformat()
+        expiry = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
 
         data = {
             "email": user_details.email,
@@ -166,7 +167,7 @@ class Users:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: {e}",
+                detail=f"Error: Bad request{e}",
             )
 
         finally:
@@ -232,8 +233,38 @@ class Users:
 
         return response
 
-    # TODO: Add update user functionality
     @classmethod
-    async def update_user(cls, user_details: dict):
-        print(user_details)
-        return OK("User updated successfully")
+    async def update_user(cls, current_user, user_details: UserUpdateRequestSchema):
+        await cls.__initiate_db()
+
+        try:
+            user = await cls.db[cls.name].find_one_and_update(
+                {"_id": current_user},
+                {"$set": {**user_details.dict(exclude_unset=True), "activated": True}},
+                return_document=ReturnDocument.AFTER,
+            )
+
+            if user is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Unable to update user",
+                )
+
+            response = UserResponseSchema(user).response()
+
+            return OK(response)
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error",
+            )
+
+        except Exception as e:
+            print(e)
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: User not found",
+            ) from e
+
+        finally:
+            await MongoDBConnector().close()
