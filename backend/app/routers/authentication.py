@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, Body, Request
+from fastapi import APIRouter, BackgroundTasks, Body
 
 from app.database.users import Users
 from app.schemas.users import (
@@ -81,7 +81,6 @@ async def login(user: UserLoginRequestSchema = Body(...)):
 """
 
 
-@router.get("/logout/{user_id}", response_description="Logout a user")
-async def logout(request: Request, user_id: str):
-    current_user = request.scope["current_user"]
-    return await Users().logout_user(user_id, current_user)
+@router.post("/logout", response_description="Logout a user")
+async def logout():
+    return await Users().logout_user()

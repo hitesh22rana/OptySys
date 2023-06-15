@@ -224,10 +224,8 @@ class Users:
             await MongoDBConnector().close()
 
     @classmethod
-    async def logout_user(cls, user_id: str, current_user: str):
-        validate_object_id_fields(user_id, current_user)
-
-        response = OK("Logged out successfully")
+    async def logout_user(cls):
+        response = OK({"message": "Logged out successfully"})
 
         response.delete_cookie(key="access_token")
 
