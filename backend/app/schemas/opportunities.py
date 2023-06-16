@@ -1,0 +1,94 @@
+# Path: backend\app\schemas\opportunities.py
+
+from typing import List
+
+from bson import ObjectId
+from pydantic import BaseModel, Field, validator
+
+from app.utils.validators import validate_link
+
+
+class OpportunityBaseSchema(BaseModel):
+    title: str = Field(
+        ...,
+        description="Title of the opportunity",
+        max_length=50,
+        min_length=3,
+        type="string",
+    )
+    company: str = Field(
+        ...,
+        description="Company name",
+        max_length=50,
+        min_length=3,
+        type="string",
+    )
+    description: str = Field(
+        ...,
+        description="Description of the opportunity",
+        max_length=500,
+        type="string",
+    )
+    location: str = Field(
+        ...,
+        description="Location of the opportunity",
+        min_length=3,
+        max_length=50,
+        type="string",
+    )
+    link: str = Field(
+        ...,
+        description="Link to the opportunity",
+    )
+    requirements: List[str] = Field(
+        [],
+        description="List of requirements for the opportunity",
+        type="array",
+        min_items=1,
+        min_length=3,
+    )
+
+    @validator("link")
+    def validate_link(cls, link):
+        return validate_link(link)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "title": "Opportunity Name",
+                "company": "Company Name",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "location": "Location",
+                "link": "https://www.google.com",
+                "requirements": ["Requirement 1", "Requirement 2"],
+            }
+        }
+
+
+class OpportunityResponseSchema:
+    def __init__(self, user: dict):
+        self.id = user["_id"]
+        self.title = user["title"]
+        self.company = user["company"]
+        self.description = user["description"]
+        self.location = user["location"]
+        self.link = user["link"]
+        self.requirements = user["requirements"]
+        self.created_by = user["created_by"]
+        self.created_at = user["created_at"]
+
+    def response(self) -> dict:
+        return {
+            "id": str(self.id),
+            "title": self.title,
+            "company": self.company,
+            "description": self.description,
+            "location": self.location,
+            "link": self.link,
+            "requirements": self.requirements,
+            "created_by": str(self.created_by),
+            "created_at": self.created_at,
+        }

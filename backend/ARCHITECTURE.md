@@ -4,6 +4,7 @@
 
 - [User](#user)
 - [Organization](#organization)
+- [Opportunity](#opportunity)
 
 ## User
 
@@ -32,4 +33,20 @@
 | created_by | Integer | User who created the organization |
 | admins | Array[ObjectId] | Admins of the organization |
 | members | Array[ObjectId] | Members of the organization |
+| opportunities | Array[ObjectId] | Opportunities for the members of the organization |
 | created_at | DateTime | Date and time of organization creation |
+
+## Opportunity
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| id | ObjectId | Unique identifier for the opportunity |
+| title | String | Title of the opportunity |
+| company | String | Company name |
+| description | String | Description of the opportunity |
+| location | String | Location of the opportunity |
+| link | String | Link to the opportunity |
+| requirements | Array[String] | List of requirements for the opportunity |
+| organization_id | ObjectId | Id of the organization |
+| created_by | ObjectId | Creator of the organization |
+| created_at | DateTime | Created at timestamp of the organization |

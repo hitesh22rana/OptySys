@@ -31,14 +31,20 @@ def validate_object_id_fields(*fields: list[str]):
             )
 
 
-def validate_social_links(social_links):
-    for link in social_links:
+def validate_link(link):
+    if not validators.url(link, public=True):
+        raise ValueError("Invalid link: " + link)
+    return link
+
+
+def validate_links(links):
+    for link in links:
         if not link.values():
             raise ValueError("Social link cannot be empty")
         for value in link.values():
             if not validators.url(value, public=True):
                 raise ValueError("Invalid link: " + value)
-    return social_links
+    return links
 
 
 def validate_experiences(experiences):

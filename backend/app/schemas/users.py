@@ -6,7 +6,7 @@ from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field, validator
 
 from app.utils.shared import Experience, SocialLinks
-from app.utils.validators import validate_experiences, validate_social_links
+from app.utils.validators import validate_experiences, validate_links
 
 
 class UserRegisterRequestSchema(BaseModel):
@@ -119,7 +119,7 @@ class UserUpdateRequestSchema(BaseModel):
 
     @validator("social_links")
     def validate_social_links(cls, social_links):
-        return validate_social_links(social_links)
+        return validate_links(social_links)
 
     @validator("experiences")
     def validate_experiences(cls, experiences):

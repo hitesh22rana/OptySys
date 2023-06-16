@@ -57,3 +57,25 @@ class OrganizationSchema(OrganizationBaseSchema):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+
+
+class OrganizationResponseSchema:
+    def __init__(self, organization: dict):
+        self.id = organization["_id"]
+        self.name = organization["name"]
+        self.description = organization["description"]
+        self.admins = organization["admins"]
+        self.members = organization["members"]
+        self.opportunities = organization["opportunities"]
+        self.created_at = organization["created_at"]
+
+    def response(self) -> dict:
+        return {
+            "id": str(self.id),
+            "name": self.name,
+            "description": self.description,
+            "admins": self.admins,
+            "members": self.members,
+            "opportunities": self.opportunities,
+            "created_at": self.created_at,
+        }

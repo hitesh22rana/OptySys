@@ -13,12 +13,13 @@ ModelName:
     Base model for Organization
 
 Fields:
-    id: Id of the user
+    id: Id of the organization
     name: Name of the organization
     description: Description of the organization
     created_by: Creator of the organization
     admins: List of admins of the organization
     members: List of members of the organization
+    opportunities: Opportunities for the members of the organization
     created_at: Created at timestamp of the organization
 """
 
@@ -34,6 +35,9 @@ class OrganizationBaseModel(BaseModel):
     )
     members: List[PyObjectId] = Field(
         [], description="List of members of the organization"
+    )
+    opportunities: List[PyObjectId] = Field(
+        [], description="Opportunities for the members of the organization"
     )
 
     # Default Fields

@@ -22,7 +22,7 @@ from app.utils.validators import validate_db_connection
 
 
 class Users:
-    name = "Users"
+    name: str = "Users"
     db: MongoDBConnector = None
     hasher: Hasher
     jwt: JwtTokenHandler
