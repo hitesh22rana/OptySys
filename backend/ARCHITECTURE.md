@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [User](#user)
+- [Organization](#organization)
 
 ## User
 
