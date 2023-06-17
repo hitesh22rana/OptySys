@@ -1,3 +1,4 @@
+# Purpose: Organization model
 # Path: backend\app\models\organizations.py
 
 from datetime import datetime

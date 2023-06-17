@@ -1,3 +1,6 @@
+# Purpose: JWT token handler to encode and decode JWT tokens.
+# Path: backend\app\utils\jwt_handler.py
+
 from datetime import datetime, timezone
 
 import jwt

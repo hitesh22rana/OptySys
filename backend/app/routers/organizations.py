@@ -1,3 +1,6 @@
+# Purpose: Organization router for handling organization related operations.
+# Path: backend\app\routers\organizations.py
+
 from fastapi import APIRouter, Body, Request
 
 from app.database.organizations import Organizations

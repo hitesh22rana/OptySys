@@ -1,3 +1,4 @@
+# Purpose: User schema
 # Path: backend\app\schemas\users.py
 
 from typing import Dict, List

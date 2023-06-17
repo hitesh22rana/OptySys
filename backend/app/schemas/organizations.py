@@ -1,3 +1,4 @@
+# Purpose: Organization schema
 # Path: backend\app\schemas\organizations.py
 
 from bson import ObjectId

@@ -1,3 +1,6 @@
+# Purpose: Authentication middleware to check if the user is authenticated or not.
+# Path: backend\app\middlewares\authentication.py
+
 from fastapi.responses import JSONResponse
 from starlette.datastructures import Headers
 

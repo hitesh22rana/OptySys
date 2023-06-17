@@ -1,3 +1,6 @@
+# Purpose: Shared models and enums for the application.
+# Path: backend\app\utils\shared.py
+
 from enum import Enum
 
 from bson import ObjectId

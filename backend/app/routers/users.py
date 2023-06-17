@@ -1,3 +1,6 @@
+# Purpose: User router for handling user related operations.
+# Path: backend\app\routers\users.py
+
 from fastapi import APIRouter, Request
 
 from app.database.users import Users

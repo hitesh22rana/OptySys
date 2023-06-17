@@ -1,3 +1,4 @@
+# Purpose: Opportunity schema
 # Path: backend\app\schemas\opportunities.py
 
 from typing import List

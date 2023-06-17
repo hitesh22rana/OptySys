@@ -1,3 +1,4 @@
+# Purpose: User model
 # Path: backend\app\models\users.py
 
 from datetime import datetime

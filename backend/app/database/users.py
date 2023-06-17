@@ -1,3 +1,6 @@
+# Purpose: Database operations for users.
+# Path: backend\app\database\users.py
+
 import json
 from datetime import datetime, timedelta, timezone
 

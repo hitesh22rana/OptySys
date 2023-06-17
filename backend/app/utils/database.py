@@ -1,3 +1,6 @@
+# Purpose: Database connection and helper functions
+# Path: backend\app\utils\database.py
+
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
 

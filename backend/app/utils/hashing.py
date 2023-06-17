@@ -1,3 +1,6 @@
+# Purpose: Hashing utility functions for password hashing and OTP generation
+# Path: backend\app\utils\hashing.py
+
 from random import randint
 
 from passlib.context import CryptContext
