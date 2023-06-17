@@ -1,3 +1,6 @@
+# Purpose: Main file for FastAPI application
+# Path: backend\app\main.py
+
 from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware

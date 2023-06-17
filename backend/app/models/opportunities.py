@@ -1,3 +1,4 @@
+# Purpose: Opportunity model
 # Path: backend\app\models\opportunities.py
 
 from datetime import datetime

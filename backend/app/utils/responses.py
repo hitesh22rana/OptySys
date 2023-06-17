@@ -1,3 +1,6 @@
+# Purpose: Custom responses for FastAPI
+# Path: backend\app\utils\responses.py
+
 import typing
 from enum import Enum
 

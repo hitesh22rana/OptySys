@@ -1,3 +1,6 @@
+# Purpose: Database operations for organizations.
+# Path: backend\app\database\organizations.py
+
 import json
 
 from fastapi import HTTPException, status

@@ -1,4 +1,5 @@
-# path: backend/app/services/mail.py
+# Purpose: Mail service to send emails to users
+# Path: backend/app/services/mail.py
 
 import smtplib
 from email.mime.multipart import MIMEMultipart

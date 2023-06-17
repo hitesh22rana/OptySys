@@ -1,3 +1,4 @@
+# Purpose: Validate data types and values.
 # Path: backend\app\lib\validators.py
 
 import validators

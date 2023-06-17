@@ -1,3 +1,6 @@
+# Purpose: Authentication router for handling user authentication related operations.
+# Path: backend\app\routers\authentication.py
+
 from fastapi import APIRouter, BackgroundTasks, Body
 
 from app.database.users import Users
