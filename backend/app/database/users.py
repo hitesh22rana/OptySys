@@ -81,9 +81,9 @@ class Users:
 
         try:
             background_tasks.add_task(
-                cls.mail_service.send_email_to_user,
+                cls.mail_service.send_otp,
                 user_details.email,
-                "OTP for email verification",
+                "OptySys User Verfication",
                 otp,
             )
 
