@@ -135,6 +135,7 @@ class UserUpdateRequestSchema(BaseModel):
                 "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 "social_links": [
                     {"resume": "https://example.com/resume"},
+                    {"portfolio": "https://example.com/portfolio"},
                     {"linkedin": "https://linkedin.com/in/johndoe"},
                     {"github": "https://github.com/johndoe"},
                     {"twitter": "https://twitter.com/johndoe"},

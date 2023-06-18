@@ -32,6 +32,7 @@ class Experience(BaseModel):
 
 class SocialLinks(str, Enum):
     resume = "resume"
+    portfolio = "portfolio"
     linkedin = "linkedin"
     github = "github"
     twitter = "twitter"
