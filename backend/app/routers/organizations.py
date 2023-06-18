@@ -1,7 +1,7 @@
 # Purpose: Organization router for handling organization related operations.
 # Path: backend\app\routers\organizations.py
 
-from fastapi import APIRouter, Body, Request
+from fastapi import APIRouter, BackgroundTasks, Body, Request
 
 from app.database.organizations import Organizations
 from app.schemas.opportunities import OpportunityBaseSchema
@@ -48,7 +48,12 @@ async def create_organization(
 
 @router.post("/{org_id}/opportunities", response_description="Add a new opportunity")
 async def create_opportunity(
-    request: Request, org_id: str, opportunity: OpportunityBaseSchema = Body(...)
+    background_tasks: BackgroundTasks,
+    request: Request,
+    org_id: str,
+    opportunity: OpportunityBaseSchema = Body(...),
 ):
     current_user = request.scope["current_user"]
-    return await Organizations().create_opportunity(current_user, org_id, opportunity)
+    return await Organizations().create_opportunity(
+        background_tasks, current_user, org_id, opportunity
+    )

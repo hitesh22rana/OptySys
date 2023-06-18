@@ -3,19 +3,24 @@
 
 import json
 
-from fastapi import HTTPException, status
+from fastapi import BackgroundTasks, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
 from app.models.opportunities import OpportunityBaseModel
 from app.models.organizations import OrganizationBaseModel
-from app.schemas.opportunities import OpportunityBaseSchema, OpportunityResponseSchema
+from app.schemas.opportunities import (
+    OportunityRecommenderSchema,
+    OpportunityBaseSchema,
+    OpportunityResponseSchema,
+)
 from app.schemas.organizations import (
     OrganizationBaseSchema,
     OrganizationResponseSchema,
     OrganizationSchema,
 )
+from app.services.recommender import opportunity_recommender
 from app.utils.database import MongoDBConnector
 from app.utils.responses import Created
 from app.utils.validators import validate_db_connection, validate_object_id_fields
@@ -24,9 +29,9 @@ from app.utils.validators import validate_db_connection, validate_object_id_fiel
 class Organizations:
     _client: AsyncIOMotorClient = AsyncIOMotorClient(settings.mongodb_uri)
     name: str = "Organizations"
+    db: MongoDBConnector = None
     users: str = "Users"
     opportunities: str = "Opportunities"
-    db = None
 
     @classmethod
     def __init__(cls) -> None:
@@ -109,8 +114,37 @@ class Organizations:
             await MongoDBConnector().close()
 
     @classmethod
+    def list_users_sync(cls, org_id: str):
+        try:
+            cls.db = cls._client[settings.MONGODB_URI]
+            validate_db_connection(cls.db)
+
+            users = list(cls.db[cls.users].find({"organizations": org_id}))
+
+            return users
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error.",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: Unable to get users.",
+            ) from e
+
+        finally:
+            cls._client.close()
+
+    @classmethod
     async def create_opportunity(
-        cls, current_user: str, org_id: str, opportunity: OpportunityBaseSchema
+        cls,
+        background_tasks: BackgroundTasks,
+        current_user: str,
+        org_id: str,
+        opportunity: OpportunityBaseSchema,
     ):
         await cls.__initiate_db()
 
@@ -144,6 +178,13 @@ class Organizations:
                             status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Error: Unable to update organization",
                         )
+
+                opportunity_data = OportunityRecommenderSchema(opportunity).response()
+                background_tasks.add_task(
+                    opportunity_recommender.recommend_opportunities,
+                    org_id,
+                    opportunity_data,
+                )
 
                 response = OpportunityResponseSchema(opportunity).response()
 

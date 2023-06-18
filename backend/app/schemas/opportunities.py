@@ -70,16 +70,16 @@ class OpportunityBaseSchema(BaseModel):
 
 
 class OpportunityResponseSchema:
-    def __init__(self, user: dict):
-        self.id = user["_id"]
-        self.title = user["title"]
-        self.company = user["company"]
-        self.description = user["description"]
-        self.location = user["location"]
-        self.link = user["link"]
-        self.requirements = user["requirements"]
-        self.created_by = user["created_by"]
-        self.created_at = user["created_at"]
+    def __init__(self, opportunity: dict):
+        self.id = opportunity["_id"]
+        self.title = opportunity["title"]
+        self.company = opportunity["company"]
+        self.description = opportunity["description"]
+        self.location = opportunity["location"]
+        self.link = opportunity["link"]
+        self.requirements = opportunity["requirements"]
+        self.created_by = opportunity["created_by"]
+        self.created_at = opportunity["created_at"]
 
     def response(self) -> dict:
         return {
@@ -92,4 +92,16 @@ class OpportunityResponseSchema:
             "requirements": self.requirements,
             "created_by": str(self.created_by),
             "created_at": self.created_at,
+        }
+
+
+class OportunityRecommenderSchema:
+    def __init__(self, opportunity: dict):
+        self.id = opportunity["_id"]
+        self.requirements = opportunity["requirements"]
+
+    def response(self) -> dict:
+        return {
+            "id": str(self.id),
+            "requirements": self.requirements,
         }
