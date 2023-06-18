@@ -52,8 +52,9 @@ def validate_experiences(experiences):
     for experience in experiences:
         try:
             validate_string_fields(
-                experience.title, experience.company, experience.description
+                experience.title, experience.company, *experience.description
             )
+
         except:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

@@ -2,6 +2,7 @@
 # Path: backend\app\utils\shared.py
 
 from enum import Enum
+from typing import List
 
 from bson import ObjectId
 from pydantic import BaseModel
@@ -26,7 +27,7 @@ class PyObjectId(ObjectId):
 class Experience(BaseModel):
     title: str
     company: str
-    description: str
+    description: List[str]
 
 
 class SocialLinks(str, Enum):

@@ -104,7 +104,7 @@ class UserLoginRequestSchema(BaseModel):
 
 
 class UserUpdateRequestSchema(BaseModel):
-    summary: str = Field(..., description="Summary of the user", max_length=200)
+    summary: str = Field(..., description="Summary of the user", max_length=500)
     social_links: List[Dict[SocialLinks, str]] = Field(
         ..., description="List of social links of the user", min_items=1
     )
@@ -112,7 +112,7 @@ class UserUpdateRequestSchema(BaseModel):
         ..., description="List of experiences of the user", min_items=0
     )
     skills: List[str] = Field(
-        ..., description="List of skills of the user", min_items=1, min_length=3
+        ..., description="List of skills of the user", min_items=1, min_length=1
     )
     achievements: List[str] = Field(
         ..., description="List of achievements of the user", min_items=0, min_length=3
@@ -145,7 +145,9 @@ class UserUpdateRequestSchema(BaseModel):
                     {
                         "title": "Software Engineer",
                         "company": "Google",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        "description": [
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        ],
                     }
                 ],
                 "skills": ["Python", "JavaScript", "HTML", "CSS"],
@@ -165,9 +167,9 @@ class UserResponseSchema:
         self.social_links = user["social_links"]
         self.experiences = user["experiences"]
         self.skills = user["skills"]
-        self.organizations = user["organizations"]
         self.achievements = user["achievements"]
-        self.oppurtunities = user["oppurtunities"]
+        self.organizations = user["organizations"]
+        self.opportunities = user["opportunities"]
         self.activated = user["activated"]
         self.created_at = user["created_at"]
 
@@ -180,9 +182,9 @@ class UserResponseSchema:
             "social_links": self.social_links,
             "experiences": self.experiences,
             "skills": self.skills,
-            "organizations": self.organizations,
-            "activated": self.activated,
-            "oppurtunities": self.oppurtunities,
             "achievements": self.achievements,
+            "organizations": self.organizations,
+            "opportunities": self.opportunities,
+            "activated": self.activated,
             "created_at": self.created_at,
         }
