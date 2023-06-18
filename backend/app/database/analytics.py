@@ -3,8 +3,6 @@
 
 from datetime import datetime, timezone
 
-from fastapi import HTTPException, status
-
 from app.config import settings
 from app.utils.responses import OK
 
@@ -18,30 +16,19 @@ class Analytics:
 
     @classmethod
     async def get_timestamp(cls):
-        try:
-            current_time = datetime.now(timezone.utc)
-            timestamp = current_time.astimezone().strftime("%Y-%m-%d %I:%M:%S %p")
-
-            return timestamp
-        except Exception as e:
-            raise RuntimeError("Error while getting timestamp.") from e
+        current_time = datetime.now(timezone.utc)
+        timestamp = current_time.astimezone().strftime("%Y-%m-%d %I:%M:%S %p")
+        return timestamp
 
     @classmethod
     async def get_system_status(cls):
-        try:
-            timestamp = await cls.get_timestamp()
+        timestamp = await cls.get_timestamp()
 
-            return OK(
-                {
-                    "status": "healthy",
-                    "message": "All services are up and running.",
-                    "version": cls.version,
-                    "timestamp": timestamp,
-                }
-            )
-
-        except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=str(e),
-            )
+        return OK(
+            {
+                "status": "healthy",
+                "message": "All services are up and running.",
+                "version": cls.version,
+                "timestamp": timestamp,
+            }
+        )
