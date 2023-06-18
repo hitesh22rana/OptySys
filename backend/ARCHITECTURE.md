@@ -19,7 +19,8 @@
 | experiences | Array[Experience] | Experience of the user |
 | skills | Array[String] | Skills of the user |
 | achievements | Array[String] | Achievements of the user |
-| organizations | ObjectId | Organization of the user |
+| organizations | Array[ObjectId] | Organization of the user |
+| opportunities | Array[ObjectId] | Opportunities of the user |
 | activated | Boolean | Whether the user is activated or not |
 | created_at | DateTime | Date and time of user creation |
 

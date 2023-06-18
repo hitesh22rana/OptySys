@@ -24,6 +24,7 @@ Fields:
     skills: List of skills of the user
     achievements: List of achievements of the user
     organization: List of organizations of the user
+    opprtunities: List of opportunities of the user
     activated: Activation status of the user
     created_at: Created at timestamp of the user
 """
@@ -46,6 +47,9 @@ class UserBaseModel(BaseModel):
     achievements: List[str] = Field([], description="List of achievements of the user")
     organizations: List[PyObjectId] = Field(
         [], description="List of organizations of the user"
+    )
+    opportunities: List[PyObjectId] = Field(
+        [], description="List of opportunities of the user"
     )
 
     # Default Fields

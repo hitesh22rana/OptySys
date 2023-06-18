@@ -167,6 +167,7 @@ class UserResponseSchema:
         self.skills = user["skills"]
         self.organizations = user["organizations"]
         self.achievements = user["achievements"]
+        self.oppurtunities = user["oppurtunities"]
         self.activated = user["activated"]
         self.created_at = user["created_at"]
 
@@ -181,6 +182,7 @@ class UserResponseSchema:
             "skills": self.skills,
             "organizations": self.organizations,
             "activated": self.activated,
+            "oppurtunities": self.oppurtunities,
             "achievements": self.achievements,
             "created_at": self.created_at,
         }
