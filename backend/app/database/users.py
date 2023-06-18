@@ -16,7 +16,7 @@ from app.schemas.users import (
     UserUpdateRequestSchema,
     UserVerifyRequestSchema,
 )
-from app.services.mail import mail_service
+from app.services.email import email_service
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
@@ -34,7 +34,7 @@ class Users:
     def __init__(cls) -> None:
         cls.hasher = Hasher()
         cls.jwt = JwtTokenHandler()
-        cls.mail_service = mail_service
+        cls.email_service = email_service
 
     @classmethod
     def _set_expires(cls):
@@ -81,7 +81,7 @@ class Users:
 
         try:
             background_tasks.add_task(
-                cls.mail_service.send_otp,
+                cls.email_service.send_otp,
                 user_details.email,
                 "OptySys User Verfication",
                 otp,

@@ -1,5 +1,5 @@
 # Purpose: Mail service to send emails to users
-# Path: backend/app/services/mail.py
+# Path: backend/app/services/email.py
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -11,7 +11,7 @@ from fastapi.templating import Jinja2Templates
 from app.config import settings
 
 
-class MailService:
+class EmailService:
     smtp_server = settings.smtp_host
     smtp_port = settings.smtp_port
     sender = settings.smtp_username
@@ -65,4 +65,4 @@ class MailService:
             ) from e
 
 
-mail_service = MailService()
+email_service = EmailService()
