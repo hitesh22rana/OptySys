@@ -8,7 +8,6 @@ from app.utils.database import MongoDBConnector
 from app.utils.validators import validate_db_connection
 
 
-# TODO: Implement opportunity recommender service
 class OpportunityRecommender:
     organizations: str = "Organizations"
     users: str = "Users"
@@ -34,7 +33,7 @@ class OpportunityRecommender:
             organization = cls.db[cls.organizations].find_one({"_id": org_id})
             users = list(
                 cls.db[cls.users].find(
-                    {"_id": {"$in": organization["members"]}},
+                    {"_id": {"$in": organization["members"]}, "activated": True},
                     projection={"_id": 1, "skills": 1},
                 )
             )
