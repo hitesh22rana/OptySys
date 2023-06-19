@@ -203,5 +203,34 @@ class Organizations:
             ) from e
 
         finally:
-            session.end_session()
+            # session.end_session()
+            await MongoDBConnector().close()
+
+    @classmethod
+    async def is_authorized_user(cls, org_id: str, user_id: str) -> bool:
+        await cls.__initiate_db()
+
+        validate_object_id_fields(org_id, user_id)
+
+        try:
+            organization = await cls.db[cls.name].find_one(
+                {"_id": org_id, "admins": user_id},
+                {"_id": 1},
+            )
+
+            return bool(organization)
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error.",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: Unable to get organization.",
+            ) from e
+
+        finally:
             await MongoDBConnector().close()

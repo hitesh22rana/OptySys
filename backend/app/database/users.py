@@ -277,3 +277,61 @@ class Users:
 
         finally:
             await MongoDBConnector().close()
+
+    @classmethod
+    async def _get_user_by_id(cls, user_id: str) -> UserResponseSchema:
+        await cls.__initiate_db()
+
+        try:
+            user = await cls.db[cls.name].find_one({"_id": user_id})
+
+            if user is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found",
+                )
+
+            response = UserResponseSchema(user).response()
+
+            return response
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: User not found",
+            ) from e
+
+        finally:
+            await MongoDBConnector().close()
+
+    @classmethod
+    async def is_authorized_user(cls, user_id: str) -> bool:
+        try:
+            user = await cls._get_user_by_id(user_id)
+
+            if user is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found",
+                )
+
+            return bool(user["activated"])
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Database connection error",
+            )
+
+        except Exception as e:
+            print(e)
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: User not found",
+            ) from e
