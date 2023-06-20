@@ -1,7 +1,7 @@
 # Purpose: Websocket router for handling websocket related operations.
 # Path: backend\app\routers\ws.py
 
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.services.ws import web_socket_service
 
@@ -11,13 +11,17 @@ router = APIRouter(
 )
 
 
-@router.websocket("/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    print("\nwebsocket_endpoint\n")
-    await web_socket_service.connect(websocket, client_id)
+@router.websocket("")
+async def websocket_endpoint(websocket: WebSocket):
+    current_user = websocket.scope["current_user"]
 
+    await web_socket_service.connect(websocket, current_user)
     try:
-        await websocket.send_json({"message": "Hello WebSocket"})
+        while True:
+            await websocket.receive_text()
+
+    except WebSocketDisconnect:
+        web_socket_service.disconnect(websocket)
 
     except Exception as _:
         web_socket_service.disconnect(websocket)

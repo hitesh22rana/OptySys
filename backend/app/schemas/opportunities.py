@@ -98,10 +98,20 @@ class OpportunityResponseSchema:
 class OportunityRecommenderSchema:
     def __init__(self, opportunity: dict):
         self.id = opportunity["_id"]
+        self.title = opportunity["title"]
+        self.company = opportunity["company"]
+        self.description = opportunity["description"]
+        self.location = opportunity["location"]
+        self.link = opportunity["link"]
         self.requirements = opportunity["requirements"]
 
     def response(self) -> dict:
         return {
             "id": str(self.id),
+            "title": self.title,
+            "company": self.company,
+            "description": self.description,
+            "location": self.location,
+            "link": self.link,
             "requirements": self.requirements,
         }

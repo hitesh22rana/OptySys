@@ -4,6 +4,7 @@
 from fastapi import HTTPException, status
 from pymongo.errors import ConnectionFailure, OperationFailure
 
+from app.services.ws import web_socket_service
 from app.utils.database import MongoDBConnector
 from app.utils.validators import validate_db_connection
 
@@ -15,7 +16,7 @@ class OpportunityRecommender:
 
     @classmethod
     def __init__(cls):
-        pass
+        cls.web_socket_service = web_socket_service
 
     @classmethod
     def __initiate_db(cls):
@@ -62,7 +63,11 @@ class OpportunityRecommender:
             filter_query = {"_id": {"$in": matched_users}}
             update_query = {"$push": {"opportunities": opportunity["id"]}}
 
+            # Update matched users
             cls.db[cls.users].update_many(filter_query, update_query)
+
+            # Send notification to matched users
+            cls.web_socket_service.broadcast(matched_users, opportunity)
 
         except (OperationFailure, ConnectionFailure) as e:
             raise HTTPException(
