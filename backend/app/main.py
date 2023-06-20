@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.middlewares.authentication import AuthenticationMiddleware
-from app.routers import analytics, authentication, organizations, users
+from app.routers import analytics, authentication, organizations, users, ws
 from app.utils.database import MongoDBConnector
 
 """FastAPI Instance"""
@@ -42,13 +42,19 @@ v1.include_router(authentication.router)
 v1.include_router(users.router)
 v1.include_router(organizations.router)
 
+"""Websocket Router"""
+v1.include_router(ws.router)
 
-"""Startup and Shutdown Event for Database"""
+
+"""Startup Event for Database"""
 
 
 @app.on_event("startup")
 async def startup_db_client():
     await MongoDBConnector().connect()
+
+
+"""Shutdown Event for Database"""
 
 
 @app.on_event("shutdown")
