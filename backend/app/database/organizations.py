@@ -203,11 +203,11 @@ class Organizations:
             ) from e
 
         finally:
-            # session.end_session()
+            session.end_session()
             await MongoDBConnector().close()
 
     @classmethod
-    async def is_authorized_user(cls, org_id: str, user_id: str) -> bool:
+    async def is_authorized_user(cls, org_id: str, user_id: str):
         await cls.__initiate_db()
 
         validate_object_id_fields(org_id, user_id)
@@ -218,7 +218,11 @@ class Organizations:
                 {"_id": 1},
             )
 
-            return bool(organization)
+            if organization is None:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Unauthorized user.",
+                )
 
         except ConnectionFailure:
             raise HTTPException(
@@ -229,7 +233,7 @@ class Organizations:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to get organization.",
+                detail=f"Unable to get organization.",
             ) from e
 
         finally:

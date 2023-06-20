@@ -50,14 +50,13 @@ class AuthenticationMiddleware:
             response = JSONResponse({"status_code": 401, "message": e.args}, 401)
             return await response(scope, receive, send)
 
-        is_authorized = await check_authorization(
-            current_user, scope["path"], scope["method"]
-        )
-        if not is_authorized:
+        try:
+            await check_authorization(current_user, scope["path"], scope["method"])
+        except Exception as e:
             response = JSONResponse(
                 {
                     "status_code": 403,
-                    "message": "User is not authorized to access this resource.",
+                    "message": e.args[0],
                 },
                 403,
             )
@@ -77,18 +76,18 @@ def is_unauthorized_endpoint(request_path, request_method):
 
 async def check_authorization(current_user, request_path: str, request_method: str):
     if is_unauthorized_endpoint(request_path, request_method):
-        return True
+        return
 
     if current_user is None:
-        return False
+        raise Exception("Please login to access this resource.")
 
-    if request_method == "POST" and (
-        request_path == "/organizations" or request_path == "/organizations/"
-    ):
+    if request_method == "POST" and (request_path == "/organizations"):
         try:
-            return await Users().is_authorized_user(current_user)
+            await Users().is_authorized_user(current_user)
         except Exception as _:
-            return False
+            raise Exception(
+                "User is not authorized to access this resource, please activate your account."
+            )
 
     if request_method == "POST" and (
         request_path.startswith("/organizations")
@@ -96,13 +95,10 @@ async def check_authorization(current_user, request_path: str, request_method: s
     ):
         try:
             organization_id = request_path.split("/")[2]
-            return await Organizations().is_authorized_user(
-                organization_id, current_user
-            )
+            await Organizations().is_authorized_user(organization_id, current_user)
         except Exception as _:
-            return False
-
-    return True
+            raise Exception("User is not authorized to access this resource.")
+    return
 
 
 def authentication_handler(access_token: str):

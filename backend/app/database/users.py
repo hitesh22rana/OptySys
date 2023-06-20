@@ -311,7 +311,7 @@ class Users:
             await MongoDBConnector().close()
 
     @classmethod
-    async def is_authorized_user(cls, user_id: str) -> bool:
+    async def is_authorized_user(cls, user_id: str):
         try:
             user = await cls._get_user_by_id(user_id)
 
@@ -321,7 +321,11 @@ class Users:
                     detail="User not found",
                 )
 
-            return bool(user["activated"])
+            if not bool(user["activated"]):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="User not activated",
+                )
 
         except ConnectionFailure:
             raise HTTPException(
@@ -330,7 +334,6 @@ class Users:
             )
 
         except Exception as e:
-            print(e)
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Error: User not found",
