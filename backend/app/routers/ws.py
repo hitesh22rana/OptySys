@@ -15,13 +15,13 @@ router = APIRouter(
 async def websocket_endpoint(websocket: WebSocket):
     current_user = websocket.scope["current_user"]
 
-    await web_socket_service.connect(websocket, current_user)
+    await web_socket_service.connect(current_user, websocket)
     try:
         while True:
             await websocket.receive_text()
 
     except WebSocketDisconnect:
-        web_socket_service.disconnect(websocket)
+        await web_socket_service.disconnect(current_user, websocket)
 
     except Exception as _:
-        web_socket_service.disconnect(websocket)
+        await web_socket_service.disconnect(current_user, websocket)
