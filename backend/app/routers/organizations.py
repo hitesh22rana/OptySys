@@ -33,6 +33,31 @@ async def create_organization(
     return await Organizations().create_organization(current_user, organization)
 
 
+# TODO: Add a method to get all the opportunities of an organization
+
+"""
+    Post method for adding a new member to an organization.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: Organization
+"""
+
+
+@router.post("/{org_id}/members", response_description="Add a new member")
+async def add_member(
+    request: Request,
+    org_id: str,
+    member: dict = Body(...),
+):
+    current_user = request.scope["current_user"]
+    return await Organizations().add_member(current_user, org_id, member)
+
+
 """
     Post method for creating a new opportunity.
     
@@ -56,29 +81,4 @@ async def create_opportunity(
     current_user = request.scope["current_user"]
     return await Organizations().create_opportunity(
         background_tasks, current_user, org_id, opportunity
-    )
-
-# TODO: Add a method to get all the opportunities of an organization
-
-"""
-    Post method for adding a new member to an organization.
-    
-    Raises:
-        HTTPException: Fields validation error
-        HTTPException: Internal server error
-        HTTPException: Bad request error
-    
-    Returns:
-        _type_: Organization
-"""
-
-@router.post("/{org_id}/members", response_description="Add a new member")
-async def add_member(
-    request: Request,
-    org_id: str,
-    member: dict = Body(...),
-):
-    current_user = request.scope["current_user"]
-    return await Organizations().add_member(
-        current_user, org_id, member
     )
