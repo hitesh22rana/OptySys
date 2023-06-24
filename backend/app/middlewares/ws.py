@@ -1,7 +1,6 @@
 # Purpose: WebSocket middlware to authenticate WebSocket connections
 # Path: backend\app\middlewares\ws.py
 
-from fastapi.responses import JSONResponse
 from starlette.datastructures import Headers
 
 from app.utils.middlewares import (
@@ -27,20 +26,24 @@ class WebSocketMiddleMiddleware:
         try:
             current_user = authentication_handler(access_token)
         except Exception as e:
-            response = JSONResponse({"status_code": 401, "message": e.args[0]}, 401)
-            return await response(scope, receive, send)
+            return await send(
+                {
+                    "type": "websocket.close",
+                    "code": 403,
+                    "reason": e.args[0],
+                }
+            )
 
         try:
             await check_authorization(current_user, scope["path"], "GET")
         except Exception as e:
-            response = JSONResponse(
+            return await send(
                 {
-                    "status_code": 403,
-                    "message": e.args[0],
-                },
-                403,
+                    "type": "websocket.close",
+                    "code": 403,
+                    "reason": e.args[0],
+                }
             )
-            return await response(scope, receive, send)
 
         scope["current_user"] = current_user
         return await self.app(scope, receive, send)
