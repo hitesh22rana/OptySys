@@ -94,7 +94,7 @@ class Organizations:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error.",
+                detail="Error: Database connection error.",
             )
 
         except DuplicateKeyError:

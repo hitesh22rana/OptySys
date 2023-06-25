@@ -31,6 +31,7 @@
 | id | ObjectId | Unique identifier for the organization |
 | name | String | Name of the organization |
 | description | String | Description of the organization |
+| private | Boolean | Whether the organization is private or not |
 | created_by | Integer | User who created the organization |
 | admins | Array[ObjectId] | Admins of the organization |
 | members | Array[ObjectId] | Members of the organization |

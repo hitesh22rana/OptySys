@@ -36,20 +36,22 @@ class UserBaseModel(BaseModel):
     email: EmailStr = Field(..., description="Email address of the user")
     password: str = Field(..., description="Password of the user")
     name: str = Field(..., description="Name of the user")
-    summary: str = Field("", description="Summary of the user")
+    summary: str = Field(default="", description="Summary of the user")
     social_links: List[Dict[SocialLinks, str]] = Field(
-        [], description="List of social links of the user"
+        default=[], description="List of social links of the user"
     )
     experiences: List[Experience] = Field(
-        [], description="List of experiences of the user"
+        default=[], description="List of experiences of the user"
     )
-    skills: List[str] = Field([], description="List of skills of the user")
-    achievements: List[str] = Field([], description="List of achievements of the user")
+    skills: List[str] = Field(default=[], description="List of skills of the user")
+    achievements: List[str] = Field(
+        default=[], description="List of achievements of the user"
+    )
     organizations: List[PyObjectId] = Field(
-        [], description="List of organizations of the user"
+        default=[], description="List of organizations of the user"
     )
     opportunities: List[PyObjectId] = Field(
-        [], description="List of opportunities of the user"
+        default=[], description="List of opportunities of the user"
     )
 
     # Default Fields
