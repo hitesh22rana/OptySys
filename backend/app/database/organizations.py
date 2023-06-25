@@ -126,7 +126,7 @@ class Organizations:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error.",
+                detail="Error: Database connection error.",
             )
 
         except Exception as e:
@@ -166,7 +166,7 @@ class Organizations:
                 )
 
                 if result:
-                    # update the organization id in the user collection
+                    # update the opportunity id in the organization collection
                     res = await cls.db[cls.name].update_one(
                         {"_id": org_id},
                         {"$push": {"opportunities": result.inserted_id}},
@@ -193,7 +193,7 @@ class Organizations:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error.",
+                detail="Error: Database connection error.",
             )
 
         except Exception as e:
@@ -221,20 +221,101 @@ class Organizations:
             if organization is None:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Unauthorized user.",
+                    detail="Error: Unauthorized user.",
                 )
 
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error.",
+                detail="Error: Database connection error.",
             )
 
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unable to get organization.",
+                detail=f"Error: Unable to get organization.",
             ) from e
 
         finally:
+            await MongoDBConnector().close()
+
+    @classmethod
+    async def add_member(cls, current_user: str, org_id: str):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(org_id, current_user)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                organization = await cls.db[cls.name].find_one(
+                    {"_id": org_id},
+                    {"members": 1, "admins": 1, "private": 1},
+                )
+
+                # check if the user is already a member
+                if current_user in organization["members"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: User is already a member of the organization.",
+                        }
+                    )
+
+                # check if the organization is private
+                if organization["private"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_401_UNAUTHORIZED,
+                            "detail": "Error: Organization is private.",
+                        }
+                    )
+
+                # update the user id in the organization collection
+                res = await cls.db[cls.name].update_one(
+                    {"_id": org_id},
+                    {"$push": {"members": current_user}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail="Error: Unable to update user",
+                    )
+
+                # update the organization id in the user collection
+                res = await cls.db[cls.users].update_one(
+                    {"_id": current_user},
+                    {"$push": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user.",
+                        }
+                    )
+
+                return Created("User added successfully.")
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error.",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        finally:
+            session.end_session()
             await MongoDBConnector().close()

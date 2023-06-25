@@ -33,8 +33,6 @@ async def create_organization(
     return await Organizations().create_organization(current_user, organization)
 
 
-# TODO: Add a method to get all the opportunities of an organization
-
 """
     Post method for adding a new member to an organization.
     
@@ -49,13 +47,9 @@ async def create_organization(
 
 
 @router.post("/{org_id}/members", response_description="Add a new member")
-async def add_member(
-    request: Request,
-    org_id: str,
-    member: dict = Body(...),
-):
+async def add_member(request: Request, org_id: str):
     current_user = request.scope["current_user"]
-    return await Organizations().add_member(current_user, org_id, member)
+    return await Organizations().add_member(current_user, org_id)
 
 
 """
