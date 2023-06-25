@@ -14,13 +14,18 @@ Connect to MongoDB server and return database object
 
 class MongoDBConnector:
     def __init__(self):
+        # Async connections
         self.client = None
         self.db = None
-        self.users = "Users"
-        self.organizations = "Organizations"
 
+        # Sync connections
         self.client_sync = None
         self.db_sync = None
+
+        # Collections
+        self.users = "Users"
+        self.organizations = "Organizations"
+        self.opportunities = "Opportunities"
 
     async def connect(self):
         if self.db is not None:

@@ -30,7 +30,7 @@ class AuthenticationMiddleware:
         try:
             current_user = authentication_handler(access_token)
         except Exception as e:
-            response = JSONResponse({"status_code": 401, "message": e.args[0]}, 401)
+            response = JSONResponse({"status_code": 401, "detail": e.args[0]}, 401)
             return await response(scope, receive, send)
 
         try:
@@ -39,7 +39,7 @@ class AuthenticationMiddleware:
             response = JSONResponse(
                 {
                     "status_code": 403,
-                    "message": e.args[0],
+                    "detail": e.args[0],
                 },
                 403,
             )

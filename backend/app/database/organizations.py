@@ -82,9 +82,11 @@ class Organizations:
                     )
 
                     if res.modified_count == 0:
-                        raise HTTPException(
-                            status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Error: Unable to update user",
+                        raise Exception(
+                            {
+                                "status_code": status.HTTP_400_BAD_REQUEST,
+                                "detail": "Error: Unable to update user",
+                            }
                         )
 
                 response = OrganizationResponseSchema(organization).response()
@@ -104,9 +106,12 @@ class Organizations:
             )
 
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to create organization.",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -174,9 +179,11 @@ class Organizations:
                     )
 
                     if res.modified_count == 0:
-                        raise HTTPException(
-                            status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Error: Unable to update organization",
+                        raise Exception(
+                            {
+                                "status_code": status.HTTP_400_BAD_REQUEST,
+                                "detail": "Error: Unable to update organization",
+                            }
                         )
 
                 opportunity_data = OportunityRecommenderSchema(opportunity).response()
@@ -197,9 +204,12 @@ class Organizations:
             )
 
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to create opportunity.",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -219,9 +229,11 @@ class Organizations:
             )
 
             if organization is None:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Error: Unauthorized user.",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_401_UNAUTHORIZED,
+                        "detail": "Error: Unauthorized user.",
+                    }
                 )
 
         except ConnectionFailure:
@@ -231,9 +243,12 @@ class Organizations:
             )
 
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to get organization.",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -279,9 +294,11 @@ class Organizations:
                 )
 
                 if res.modified_count == 0:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="Error: Unable to update user",
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user",
+                        }
                     )
 
                 # update the organization id in the user collection
@@ -309,7 +326,7 @@ class Organizations:
 
         except Exception as e:
             status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
-                "detail", "Bad Request"
+                "detail", "Error: Bad Request"
             )
             raise HTTPException(
                 status_code=status_code,

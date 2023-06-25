@@ -57,16 +57,27 @@ class Users:
         try:
             user = await cls.db[cls.name].find_one({"email": user_details.email})
             if user:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="User already exists",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_400_BAD_REQUEST,
+                        "detail": "Error: User already exists",
+                    }
                 )
 
         except ConnectionFailure:
-            raise HTTPException(
+            raise Exception(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
 
         otp = cls.hasher.get_otp()
         expiry = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
@@ -97,14 +108,14 @@ class Users:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Bad request {e}",
-            )
+                detail=f"Error: Bad request",
+            ) from e
 
         finally:
             await MongoDBConnector().close()
@@ -124,19 +135,19 @@ class Users:
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: {e}",
+                detail=f"Error: {str(e.args[0])}",
             )
 
         if payload_data["otp"] != otp:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid OTP",
+                detail="Error: Invalid OTP",
             )
 
         if payload_data["email"] != user_details.email:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid email",
+                detail="Error: Invalid email",
             )
 
         hashed_password = cls.hasher.get_password_hash(user_details.password)
@@ -166,19 +177,19 @@ class Users:
         except DuplicateKeyError:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="User already exists",
+                detail="Error: User already exists",
             )
 
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Bad request{e}",
+                detail=f"Error: Bad request",
             )
 
         finally:
@@ -192,15 +203,19 @@ class Users:
             user = await cls.db[cls.name].find_one({"email": user_details.email})
 
             if user is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="User not found",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
                 )
 
             if not cls.hasher.verify_password(user_details.password, user["password"]):
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Incorrect password",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_401_UNAUTHORIZED,
+                        "detail": "Error: Incorrect password",
+                    }
                 )
 
             response = UserResponseSchema(user).response()
@@ -221,14 +236,16 @@ class Users:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
-            print(e)
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: User not found",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -254,25 +271,30 @@ class Users:
             )
 
             if user is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Unable to update user",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: Unable to update user",
+                    }
                 )
 
             response = UserResponseSchema(user).response()
 
             return OK(response)
+
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
-            print(e)
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: User not found",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -286,9 +308,11 @@ class Users:
             user = await cls.db[cls.name].find_one({"_id": user_id})
 
             if user is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="User not found",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
                 )
 
             response = UserResponseSchema(user).response()
@@ -298,13 +322,16 @@ class Users:
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: User not found",
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:
@@ -316,25 +343,32 @@ class Users:
             user = await cls._get_user_by_id(user_id)
 
             if user is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="User not found",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
                 )
 
             if not bool(user["activated"]):
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="User not activated",
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_401_UNAUTHORIZED,
+                        "detail": "Error: User not activated",
+                    }
                 )
 
         except ConnectionFailure:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Database connection error",
+                detail="Error: Database connection error",
             )
 
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: User not found",
+                status_code=status_code,
+                detail=detail,
             ) from e
