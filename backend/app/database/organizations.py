@@ -336,3 +336,7 @@ class Organizations:
         finally:
             session.end_session()
             await MongoDBConnector().close()
+
+    @classmethod
+    async def remove_member(cls, current_user: str, org_id: str, user_id: str):
+        pass

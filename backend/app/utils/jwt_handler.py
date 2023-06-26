@@ -29,8 +29,26 @@ class JwtTokenHandler:
             )
 
             if decode_token["expiry"] < datetime.now(timezone.utc).isoformat():
-                raise jwt.ExpiredSignatureError
+                raise Exception(
+                    {
+                        "status_code": 401,
+                        "detail": "Token has expired.",
+                    }
+                )
 
             return decode_token
         except jwt.ExpiredSignatureError:
-            raise Exception("Token has expired")
+            raise Exception(
+                {
+                    "status_code": 401,
+                    "detail": "Token has expired.",
+                }
+            )
+
+        except jwt.InvalidTokenError:
+            raise Exception(
+                {
+                    "status_code": 401,
+                    "detail": "Invalid token.",
+                }
+            )

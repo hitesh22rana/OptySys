@@ -47,17 +47,17 @@ async def check_authorization(current_user, request_path: str, request_method: s
         return
 
     if current_user is None:
-        raise Exception("Please login to access this resource.")
+        raise Exception(
+            {"status_code": 401, "detail": "Please login to access this resource."}
+        )
 
     if (request_method == "POST" and (request_path == "/organizations")) or (
         request_path == "/ws" and request_method == "GET"
     ):
         try:
             await Users().is_authorized_user(current_user)
-        except Exception as _:
-            raise Exception(
-                "User is not authorized to access this resource, please activate your account."
-            )
+        except Exception as e:
+            raise e
 
     if request_method == "POST" and (
         request_path.startswith("/organizations")
@@ -66,8 +66,8 @@ async def check_authorization(current_user, request_path: str, request_method: s
         try:
             organization_id = request_path.split("/")[2]
             await Organizations().is_authorized_user(organization_id, current_user)
-        except Exception as _:
-            raise Exception("User is not authorized to access this resource.")
+        except Exception as e:
+            raise e
     return
 
 
@@ -78,12 +78,19 @@ def authentication_handler(access_token: str):
 
         current_user = data["user_id"]
 
-        if current_user is None:
-            raise Exception("Please login to access this resource.")
-
         if validate_object_id_fields(current_user):
-            raise Exception("Please login to access this resource.")
+            raise Exception(
+                {"status_code": 401, "detail": "Please login to access this resource."}
+            )
 
         return current_user
     except Exception as e:
-        raise Exception("Please login to access this resource.") from e
+        status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+            "detail", "Error: Bad Request"
+        )
+        raise Exception(
+            {
+                "status_code": status_code,
+                "detail": detail,
+            }
+        )

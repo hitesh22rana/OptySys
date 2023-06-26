@@ -30,18 +30,30 @@ class AuthenticationMiddleware:
         try:
             current_user = authentication_handler(access_token)
         except Exception as e:
-            response = JSONResponse({"status_code": 401, "detail": e.args[0]}, 401)
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            response = JSONResponse(
+                {
+                    "status_code": status_code,
+                    "detail": detail,
+                },
+                status_code,
+            )
             return await response(scope, receive, send)
 
         try:
             await check_authorization(current_user, scope["path"], scope["method"])
         except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
             response = JSONResponse(
                 {
-                    "status_code": 403,
-                    "detail": e.args[0],
+                    "status_code": status_code,
+                    "detail": detail,
                 },
-                403,
+                status_code,
             )
             return await response(scope, receive, send)
 

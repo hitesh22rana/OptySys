@@ -53,6 +53,25 @@ async def add_member(request: Request, org_id: str):
 
 
 """
+    Delete method for deleting an organization.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: 
+"""
+
+
+@router.delete("/{org_id}", response_description="Delete an organization")
+async def delete_organization(request: Request, org_id: str):
+    current_user = request.scope["current_user"]
+    return await Organizations().delete_organization(current_user, org_id)
+
+
+"""
     Post method for creating a new opportunity.
     
     Raises:

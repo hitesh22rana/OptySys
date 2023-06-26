@@ -25,7 +25,7 @@ def validate_string_fields(*fields: list[str]):
 
 def validate_object_id_fields(*fields: list[str]):
     for field in fields:
-        if not ObjectId.is_valid(field):
+        if field is None or not ObjectId.is_valid(field):
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail=f"Invalid field type: {field}",
