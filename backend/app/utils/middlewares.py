@@ -42,37 +42,13 @@ def is_web_socket_endpoint(path: str) -> bool:
     return {"path": path} in WEB_SOCKET_ENDPOINTS
 
 
-async def check_authorization(current_user, request_path: str, request_method: str):
-    if is_unauthorized_endpoint(request_path, request_method):
-        return
-
-    if current_user is None:
-        raise Exception(
-            {"status_code": 401, "detail": "Please login to access this resource."}
-        )
-
-    if (request_method == "POST" and (request_path == "/organizations")) or (
-        request_path == "/ws" and request_method == "GET"
-    ):
-        try:
-            await Users().is_authorized_user(current_user)
-        except Exception as e:
-            raise e
-
-    if request_method == "POST" and (
-        request_path.startswith("/organizations")
-        and request_path.endswith("/opportunities")
-    ):
-        try:
-            organization_id = request_path.split("/")[2]
-            await Organizations().is_authorized_user(organization_id, current_user)
-        except Exception as e:
-            raise e
-    return
-
-
 def authentication_handler(access_token: str):
     try:
+        if access_token is None:
+            raise Exception(
+                {"status_code": 401, "detail": "Please login to access this resource."}
+            )
+
         bearer_token = access_token.split(" ")[1]
         data = JwtTokenHandler().decode(bearer_token)
 
@@ -94,3 +70,41 @@ def authentication_handler(access_token: str):
                 "detail": detail,
             }
         )
+
+
+async def check_authorization(current_user, request_path: str, request_method: str):
+    if is_unauthorized_endpoint(request_path, request_method):
+        return
+
+    if current_user is None:
+        raise Exception(
+            {"status_code": 401, "detail": "Please login to access this resource."}
+        )
+
+    if (
+        (request_method == "POST" and (request_path == "/organizations"))
+        or (request_path == "/ws" and request_method == "GET")
+        or (
+            request_method == "POST"
+            and (
+                request_path.startswith("/organizations")
+                and request_path.endswith("/members")
+            )
+        )
+    ):
+        try:
+            print("check_authorization")
+            await Users().is_authorized_user(current_user)
+        except Exception as e:
+            raise e
+
+    if request_method == "POST" and (
+        request_path.startswith("/organizations")
+        and request_path.endswith("/opportunities")
+    ):
+        try:
+            organization_id = request_path.split("/")[2]
+            await Organizations().is_authorized_user(organization_id, current_user)
+        except Exception as e:
+            raise e
+    return

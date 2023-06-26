@@ -61,7 +61,7 @@ async def add_member(request: Request, org_id: str):
         HTTPException: Bad request error
 
     Returns:
-        _type_: 
+        _type_: Message
 """
 
 

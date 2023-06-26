@@ -22,7 +22,7 @@ from app.schemas.organizations import (
 )
 from app.services.recommender import opportunity_recommender
 from app.utils.database import MongoDBConnector
-from app.utils.responses import Created
+from app.utils.responses import OK, Created
 from app.utils.validators import validate_db_connection, validate_object_id_fields
 
 
@@ -266,7 +266,16 @@ class Organizations:
                 organization = await cls.db[cls.name].find_one(
                     {"_id": org_id},
                     {"members": 1, "admins": 1, "private": 1},
+                    session=session,
                 )
+
+                if organization is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: Organization not found.",
+                        }
+                    )
 
                 # check if the user is already a member
                 if current_user in organization["members"]:
@@ -316,7 +325,11 @@ class Organizations:
                         }
                     )
 
-                return Created("User added successfully.")
+                return Created(
+                    {
+                        "detail": "Success: User added to the organization.",
+                    }
+                )
 
         except ConnectionFailure:
             raise HTTPException(
@@ -338,5 +351,85 @@ class Organizations:
             await MongoDBConnector().close()
 
     @classmethod
-    async def remove_member(cls, current_user: str, org_id: str, user_id: str):
-        pass
+    async def delete_organization(cls, current_user: str, org_id: str):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(org_id, current_user)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                # check if the user is an creater of the organization
+                organization = await cls.db[cls.name].find_one(
+                    {"_id": org_id},
+                    {"_id": 1, "created_by": 1, "members": 1},
+                    session=session,
+                )
+
+                if organization is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_401_UNAUTHORIZED,
+                            "detail": "Error: Organization not found.",
+                        }
+                    )
+
+                if str(current_user) != str(organization["created_by"]):
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_401_UNAUTHORIZED,
+                            "detail": "Error: Unauthorized user.",
+                        }
+                    )
+
+                members = organization["members"]
+
+                # delete the organization from the organization collection
+                res = await cls.db[cls.name].delete_one(
+                    {"_id": org_id},
+                    session=session,
+                )
+
+                if res.deleted_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to delete organization.",
+                        }
+                    )
+
+                # delete the organization id from the user collection
+                res = await cls.db[cls.users].update_many(
+                    {"_id": {"$in": members}},
+                    {"$pull": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user.",
+                        }
+                    )
+
+                return OK(
+                    {
+                        "detail": "Success: Organization deleted Successfully.",
+                    }
+                )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error.",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
