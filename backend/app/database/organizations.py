@@ -243,13 +243,7 @@ class Organizations:
             )
 
         except Exception as e:
-            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
-                "detail", "Error: Bad Request"
-            )
-            raise HTTPException(
-                status_code=status_code,
-                detail=detail,
-            ) from e
+            raise e
 
         finally:
             await MongoDBConnector().close()

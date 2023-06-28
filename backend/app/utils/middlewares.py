@@ -61,15 +61,7 @@ def authentication_handler(access_token: str):
 
         return current_user
     except Exception as e:
-        status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
-            "detail", "Error: Bad Request"
-        )
-        raise Exception(
-            {
-                "status_code": status_code,
-                "detail": detail,
-            }
-        )
+        raise e
 
 
 async def check_authorization(current_user, request_path: str, request_method: str):
