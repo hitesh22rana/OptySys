@@ -93,7 +93,6 @@ async def check_authorization(current_user, request_path: str, request_method: s
         )
     ):
         try:
-            print("check_authorization")
             await Users().is_authorized_user(current_user)
         except Exception as e:
             raise e

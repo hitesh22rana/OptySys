@@ -351,6 +351,111 @@ class Organizations:
             await MongoDBConnector().close()
 
     @classmethod
+    async def remove_member(cls, current_user: str, org_id: str, user_id: str):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(org_id, current_user, user_id)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                # get the organization details
+                organization = await cls.db[cls.name].find_one(
+                    {"_id": org_id},
+                    {"created_by": 1, "admins": 1, "members": 1},
+                    session=session,
+                )
+
+                if organization is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: Organization not found.",
+                        }
+                    )
+
+                # check if the user is a part of the organization or not
+                if str(user_id) not in organization["members"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: User is not a member of the organization.",
+                        }
+                    )
+
+                # check if the current user and requested user are same and requested user is the creator of the organization, if yes then delete the organization because the creator cannot be removed
+                if (str(current_user) == str(user_id)) and (
+                    str(current_user) == organization["created_by"]
+                ):
+                    return await cls.delete_organization(current_user, org_id)
+
+                # check if the user is an admin of the organization and is not removing himself
+                if str(current_user) not in organization["admins"] and (
+                    str(current_user) != str(user_id)
+                ):
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_401_UNAUTHORIZED,
+                            "detail": "Error: Unauthorized user.",
+                        }
+                    )
+
+                # remove the user from the organization
+                res = await cls.db[cls.name].update_one(
+                    {"_id": org_id},
+                    {"$pull": {"members": user_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to remove user.",
+                        }
+                    )
+
+                # remove the organization from the user
+                res = await cls.db[cls.users].update_one(
+                    {"_id": user_id},
+                    {"$pull": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to remove user.",
+                        }
+                    )
+
+                return OK(
+                    {
+                        "detail": "Success: User removed from the organization.",
+                    }
+                )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error.",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        finally:
+            session.end_session()
+            await MongoDBConnector().close()
+
+    @classmethod
     async def delete_organization(cls, current_user: str, org_id: str):
         await cls.__initiate_db()
 
@@ -433,3 +538,7 @@ class Organizations:
                 status_code=status_code,
                 detail=detail,
             ) from e
+
+        finally:
+            session.end_session()
+            await MongoDBConnector().close()
