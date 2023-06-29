@@ -8,6 +8,7 @@ from fastapi import BackgroundTasks, HTTPException, status
 from pymongo import ReturnDocument
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
+from app.database.organizations import Organizations
 from app.models.users import UserBaseModel
 from app.schemas.users import (
     UserLoginRequestSchema,
@@ -21,7 +22,7 @@ from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
 from app.utils.responses import OK, Created
-from app.utils.validators import validate_db_connection
+from app.utils.validators import validate_db_connection, validate_object_id_fields
 
 
 class Users:
@@ -29,6 +30,11 @@ class Users:
     db: MongoDBConnector = None
     hasher: Hasher
     jwt: JwtTokenHandler
+
+    organizations: str = "Organizations"
+
+    # Sync db
+    db_sync = MongoDBConnector = None
 
     @classmethod
     def __init__(cls) -> None:
@@ -46,6 +52,14 @@ class Users:
             return cls.db
 
         cls.db = await MongoDBConnector().connect()
+        validate_db_connection(cls.db)
+
+    @classmethod
+    def __initiate_db_sync(cls):
+        if cls.db_sync is not None:
+            return cls.db_sync
+
+        cls.db_sync = MongoDBConnector().connect_sync()
         validate_db_connection(cls.db)
 
     @classmethod
@@ -133,10 +147,13 @@ class Users:
             payload_data = cls.jwt.decode(token)
 
         except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: {str(e.args[0])}",
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
             )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
 
         if payload_data["otp"] != otp:
             raise HTTPException(
@@ -274,7 +291,7 @@ class Users:
                 raise Exception(
                     {
                         "status_code": status.HTTP_404_NOT_FOUND,
-                        "detail": "Error: Unable to update user",
+                        "detail": "Error: User not found",
                     }
                 )
 
@@ -326,13 +343,7 @@ class Users:
             )
 
         except Exception as e:
-            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
-                "detail", "Error: Bad Request"
-            )
-            raise HTTPException(
-                status_code=status_code,
-                detail=detail,
-            ) from e
+            raise e
 
         finally:
             await MongoDBConnector().close()
@@ -366,3 +377,81 @@ class Users:
 
         except Exception as e:
             raise e
+
+    @classmethod
+    async def delete_user(cls, user_id):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(user_id)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                user = await cls.db[cls.name].find_one(
+                    {"_id": user_id},
+                    projection={"organizations": 1},
+                    session=session,
+                )
+
+                if user is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: User not found",
+                        }
+                    )
+
+                # Delete all organizations created by the user, if any and remove user from all organizations as a member or admin
+                organizations = user["organizations"]
+
+                org = Organizations()
+
+                for organization in organizations:
+                    try:
+                        await org.remove_member(user_id, organization, user_id)
+
+                    except Exception as e:
+                        raise e
+
+                # Sync user deletion
+                cls.__initiate_db_sync()
+
+                res = cls.db_sync[cls.name].delete_one({"_id": user_id})
+
+                if res.deleted_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: User not found",
+                        }
+                    )
+
+                # Remove cookies and logout user
+                response = OK(
+                    {
+                        "detail": "Success: User deleted successfully.",
+                    }
+                )
+
+                response.delete_cookie(key="access_token")
+
+                return response
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        finally:
+            session.end_session()
+            await MongoDBConnector().close()

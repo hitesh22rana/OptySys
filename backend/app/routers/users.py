@@ -28,3 +28,22 @@ router = APIRouter(
 async def update(request: Request, user_details: UserUpdateRequestSchema):
     current_user = request.scope["current_user"]
     return await Users().update_user(current_user, user_details)
+
+
+"""
+    Delete method for deleting a user.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: Message
+"""
+
+
+@router.delete("", response_description="Delete a user")
+async def delete(request: Request):
+    current_user = request.scope["current_user"]
+    return await Users().delete_user(current_user)

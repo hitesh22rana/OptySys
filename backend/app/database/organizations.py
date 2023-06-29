@@ -120,31 +120,6 @@ class Organizations:
             await MongoDBConnector().close()
 
     @classmethod
-    def list_users_sync(cls, org_id: str):
-        try:
-            cls.db = cls._client[settings.MONGODB_URI]
-            validate_db_connection(cls.db)
-
-            users = list(cls.db[cls.users].find({"organizations": org_id}))
-
-            return users
-
-        except ConnectionFailure:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Error: Database connection error.",
-            )
-
-        except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Error: Unable to get users.",
-            ) from e
-
-        finally:
-            cls._client.close()
-
-    @classmethod
     async def create_opportunity(
         cls,
         background_tasks: BackgroundTasks,
@@ -349,7 +324,7 @@ class Organizations:
     async def remove_member(cls, current_user: str, org_id: str, user_id: str):
         await cls.__initiate_db()
 
-        validate_object_id_fields(org_id, current_user, user_id)
+        validate_object_id_fields(current_user, org_id, user_id)
 
         try:
             session = await cls.db.client.start_session()
@@ -441,14 +416,6 @@ class Organizations:
                     {"$pull": {"opportunities": {"$in": opportunities}}},
                     session=session,
                 )
-
-                if res.modified_count == 0:
-                    raise Exception(
-                        {
-                            "status_code": status.HTTP_400_BAD_REQUEST,
-                            "detail": "Error: Unable to remove user.",
-                        }
-                    )
 
                 return OK(
                     {
