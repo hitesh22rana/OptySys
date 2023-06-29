@@ -30,6 +30,7 @@ class Organizations:
     _client: AsyncIOMotorClient = AsyncIOMotorClient(settings.mongodb_uri)
     name: str = "Organizations"
     db: MongoDBConnector = None
+
     users: str = "Users"
     opportunities: str = "Opportunities"
 
@@ -461,7 +462,7 @@ class Organizations:
                 # check if the user is an creater of the organization
                 organization = await cls.db[cls.name].find_one(
                     {"_id": org_id},
-                    {"_id": 1, "created_by": 1, "members": 1},
+                    {"_id": 1, "created_by": 1, "members": 1, "opportunities": 1},
                     session=session,
                 )
 
@@ -482,6 +483,7 @@ class Organizations:
                     )
 
                 members = organization["members"]
+                opportunities = organization["opportunities"]
 
                 # delete the organization from the organization collection
                 res = await cls.db[cls.name].delete_one(
@@ -509,6 +511,35 @@ class Organizations:
                         {
                             "status_code": status.HTTP_400_BAD_REQUEST,
                             "detail": "Error: Unable to update user.",
+                        }
+                    )
+
+                # delete all the opportunities linked to the organization
+                res = await cls.db[cls.opportunities].delete_many(
+                    {"_id": {"$in": opportunities}},
+                    session=session,
+                )
+
+                if len(opportunities) > 0 and res.deleted_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to delete oppurtunities.",
+                        }
+                    )
+
+                # delete all the opportunities linked to users
+                res = await cls.db[cls.users].update_many(
+                    {"opportunities": {"$in": opportunities}},
+                    {"$pull": {"opportunities": {"$in": opportunities}}},
+                    session=session,
+                )
+
+                if len(opportunities) > 0 and res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to delete oppurtunities.",
                         }
                     )
 

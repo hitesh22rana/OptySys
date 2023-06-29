@@ -11,7 +11,7 @@ from app.schemas.users import (
 )
 
 router = APIRouter(
-    tags=["Organizations"],
+    tags=["Authentication"],
     prefix="/auth",
 )
 
