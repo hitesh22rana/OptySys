@@ -357,7 +357,7 @@ class Organizations:
                 # get the organization details
                 organization = await cls.db[cls.name].find_one(
                     {"_id": org_id},
-                    {"created_by": 1, "admins": 1, "members": 1},
+                    {"created_by": 1, "admins": 1, "members": 1, "opportunities": 1},
                     session=session,
                 )
 
@@ -369,8 +369,13 @@ class Organizations:
                         }
                     )
 
+                created_by = organization["created_by"]
+                admins = organization["admins"]
+                members = organization["members"]
+                opportunities = organization["opportunities"]
+
                 # check if the user is a part of the organization or not
-                if str(user_id) not in organization["members"]:
+                if str(user_id) not in members:
                     raise Exception(
                         {
                             "status_code": status.HTTP_404_NOT_FOUND,
@@ -380,12 +385,12 @@ class Organizations:
 
                 # check if the current user and requested user are same and requested user is the creator of the organization, if yes then delete the organization because the creator cannot be removed
                 if (str(current_user) == str(user_id)) and (
-                    str(current_user) == organization["created_by"]
+                    str(current_user) == str(created_by)
                 ):
                     return await cls.delete_organization(current_user, org_id)
 
                 # check if the user is an admin of the organization and is not removing himself
-                if str(current_user) not in organization["admins"] and (
+                if str(current_user) not in admins and (
                     str(current_user) != str(user_id)
                 ):
                     raise Exception(
@@ -395,10 +400,15 @@ class Organizations:
                         }
                     )
 
-                # remove the user from the organization
-                res = await cls.db[cls.name].update_one(
+                # remove the user from the organizations members list and admins list if he is an admin
+                res = await cls.db[cls.name].update_many(
                     {"_id": org_id},
-                    {"$pull": {"members": user_id}},
+                    {
+                        "$pull": {
+                            "members": user_id,
+                            "admins": user_id if str(user_id) in admins else None,
+                        }
+                    },
                     session=session,
                 )
 
@@ -414,6 +424,21 @@ class Organizations:
                 res = await cls.db[cls.users].update_one(
                     {"_id": user_id},
                     {"$pull": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to remove user.",
+                        }
+                    )
+
+                # remove the opportunities assigned to the user from the organization
+                res = await cls.db[cls.users].update_one(
+                    {"_id": user_id},
+                    {"$pull": {"opportunities": {"$in": opportunities}}},
                     session=session,
                 )
 
