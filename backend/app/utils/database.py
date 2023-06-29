@@ -41,16 +41,16 @@ class MongoDBConnector:
             # Create unique index on organization name
             await self.db[self.organizations].create_index("name", unique=True)
 
-            print("Connected to MongoDB server")
+            print("Connected to MongoDB server (async)")
             return self.db
         except ConnectionFailure:
-            print("Error connecting to MongoDB server")
+            print("Error connecting to MongoDB server (async)")
             return None
 
     async def close(self):
         if self.client is not None:
             self.client.close()
-            print("Disconnected from MongoDB server")
+            print("Disconnected from MongoDB server (async)")
 
     def connect_sync(self):
         if self.db_sync is not None:
@@ -66,13 +66,13 @@ class MongoDBConnector:
             # Create unique index on organization name
             self.db_sync[self.organizations].create_index("name", unique=True)
 
-            print("Connected to MongoDB server")
+            print("Connected to MongoDB server (sync)")
             return self.db_sync
         except ConnectionFailure:
-            print("Error connecting to MongoDB server")
+            print("Error connecting to MongoDB server (sync)")
             return None
 
     def close_sync(self):
         if self.client_sync is not None:
             self.client_sync.close()
-            print("Disconnected from MongoDB server")
+            print("Disconnected from MongoDB server (sync)")
