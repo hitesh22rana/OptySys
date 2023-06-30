@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     smtp_port: int
     smtp_username: str
     smtp_password: str
+    bard_token: str
 
     class Config:
         env_file = ".env"

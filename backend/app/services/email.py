@@ -21,6 +21,10 @@ class EmailService:
     server = None
 
     @classmethod
+    def __init__(cls):
+        cls._login()
+
+    @classmethod
     def _login(cls):
         try:
             if not cls.server:
