@@ -5,10 +5,10 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from fastapi import HTTPException, status
 from fastapi.templating import Jinja2Templates
 
 from app.config import settings
+from app.logger import logger
 
 
 class EmailService:
@@ -18,6 +18,7 @@ class EmailService:
     password = settings.smtp_password
     templates = Jinja2Templates(directory="app/templates")
     otp_template = "otp.html"
+    cover_letter_template = "cover_letter.html"
     server = None
 
     @classmethod
@@ -32,13 +33,11 @@ class EmailService:
                 cls.server.starttls()
                 cls.server.login(cls.sender, cls.password)
 
-            return cls.server
-
         except smtplib.SMTPException as e:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to login to SMTP server",
-            ) from e
+            logger.error(f"SMTP Error: {e}")
+
+        except Exception as e:
+            logger.error(f"Error: {e}")
 
     @classmethod
     def send_otp(cls, recipient, subject, otp):
@@ -48,9 +47,15 @@ class EmailService:
         cls.send_email_to_user(recipient, subject, rendered)
 
     @classmethod
+    def send_cover_letter(cls, recipient, subject, title, cover_letter):
+        template = cls.templates.get_template(cls.cover_letter_template)
+        rendered = template.render(title=title, cover_letter=cover_letter)
+
+        cls.send_email_to_user(recipient, subject, rendered)
+
+    @classmethod
     def send_email_to_user(cls, recipient, subject, message):
-        if not cls.server:
-            cls._login()
+        cls._login()
 
         try:
             msg = MIMEMultipart("alternative")
@@ -58,15 +63,17 @@ class EmailService:
             msg["From"] = cls.sender
             msg["To"] = recipient
 
-            msg.attach(MIMEText(message, "html"))
+            # Create an HTML MIMEText object and set the encoding to UTF-8
+            html_content = MIMEText(message, "html", "utf-8")
+            msg.attach(html_content)
 
             cls.server.sendmail(cls.sender, recipient, msg.as_string())
 
         except smtplib.SMTPException as e:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to send email",
-            ) from e
+            logger.error(f"SMTP Error: {e}")
+
+        except Exception as e:
+            logger.error(f"Error: {e}")
 
 
 email_service = EmailService()
