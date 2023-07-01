@@ -10,8 +10,19 @@ router = APIRouter(
     prefix="/ws",
 )
 
+"""
+    Websocket endpoint for handling notifications.
 
-@router.websocket("")
+    Raises:
+        WebSocketDisconnect: Websocket disconnect error
+        RuntimeException: Runtime error
+
+    Returns:
+        _type_: Notification 
+"""
+
+
+@router.websocket("/notifications")
 async def websocket_endpoint(websocket: WebSocket):
     current_user = websocket.scope["current_user"]
 
