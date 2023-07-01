@@ -114,3 +114,32 @@ async def create_opportunity(
     return await Organizations().create_opportunity(
         background_tasks, current_user, org_id, opportunity
     )
+
+
+"""
+    Post method for creating a personalized cover letter for an opportunity.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: Message
+"""
+
+
+@router.post(
+    "/{org_id}/opportunities/{opportunity_id}/cover-letter",
+    response_description="Create a cover letter",
+)
+async def create_cover_letter(
+    background_tasks: BackgroundTasks,
+    request: Request,
+    org_id: str,
+    opportunity_id: str,
+):
+    current_user = request.scope["current_user"]
+    return await Organizations().create_cover_letter(
+        background_tasks, current_user, org_id, opportunity_id
+    )

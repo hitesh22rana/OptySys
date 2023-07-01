@@ -20,6 +20,7 @@ from app.schemas.organizations import (
     OrganizationResponseSchema,
     OrganizationSchema,
 )
+from app.services.ai import ai_service
 from app.services.recommender import opportunity_recommender
 from app.utils.database import MongoDBConnector
 from app.utils.responses import OK, Created
@@ -559,3 +560,90 @@ class Organizations:
         finally:
             session.end_session()
             await MongoDBConnector().close()
+
+    @classmethod
+    async def create_cover_letter(
+        cls,
+        background_tasks: BackgroundTasks,
+        current_user: str,
+        org_id: str,
+        opportunity_id: str,
+    ):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(org_id, opportunity_id, current_user)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                # check if the organization exits, user is a member of the organization, and the opportunity is linked to the organization
+                res = await cls.db[cls.name].find_one(
+                    {
+                        "_id": org_id,
+                        "members": {"$elemMatch": {"$eq": current_user}},
+                        "opportunities": {"$elemMatch": {"$eq": opportunity_id}},
+                    },
+                    {"_id": 1},
+                    session=session,
+                )
+
+                # check if the opportunity is linked to the organization
+                if res is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: Opportunity not found.",
+                        }
+                    )
+
+                opportunity = await cls.db[cls.opportunities].find_one(
+                    {"_id": opportunity_id},
+                    projection={
+                        "title": 1,
+                        "company": 1,
+                        "description": 1,
+                        "requirements": 1,
+                    },
+                    session=session,
+                )
+
+                user = await cls.db[cls.users].find_one(
+                    {"_id": current_user},
+                    projection={
+                        "name": 1,
+                        "email": 1,
+                        "summary": 1,
+                        "social_links": 1,
+                        "experiences": 1,
+                        "skills": 1,
+                        "achievements": 1,
+                    },
+                    session=session,
+                )
+
+                background_tasks.add_task(
+                    ai_service.generate_cover_letter,
+                    user,
+                    opportunity,
+                )
+
+                return OK(
+                    {
+                        "detail": "Success: Cover letter created Successfully.",
+                    }
+                )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error.",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e

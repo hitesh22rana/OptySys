@@ -40,7 +40,6 @@ class Users:
     def __init__(cls) -> None:
         cls.hasher = Hasher()
         cls.jwt = JwtTokenHandler()
-        cls.email_service = email_service
 
     @classmethod
     def _set_expires(cls):
@@ -106,7 +105,7 @@ class Users:
 
         try:
             background_tasks.add_task(
-                cls.email_service.send_otp,
+                email_service.send_otp,
                 user_details.email,
                 "OptySys User Verfication",
                 otp,

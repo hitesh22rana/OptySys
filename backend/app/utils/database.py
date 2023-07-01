@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
 from app.config import settings
+from app.logger import logger
 
 """
 Connect to MongoDB server and return database object
@@ -28,7 +29,7 @@ class MongoDBConnector:
         self.opportunities = "Opportunities"
 
     async def connect(self):
-        if self.db is not None:
+        if self.db:
             return self.db
 
         try:
@@ -41,19 +42,19 @@ class MongoDBConnector:
             # Create unique index on organization name
             await self.db[self.organizations].create_index("name", unique=True)
 
-            print("Connected to MongoDB server (async)")
+            logger.info("Connected to MongoDB server (async)")
             return self.db
         except ConnectionFailure:
-            print("Error connecting to MongoDB server (async)")
+            logger.critical("Error connecting to MongoDB server (async)")
             return None
 
     async def close(self):
-        if self.client is not None:
+        if self.client:
             self.client.close()
-            print("Disconnected from MongoDB server (async)")
+            logger.info("Disconnected from MongoDB server (async)")
 
     def connect_sync(self):
-        if self.db_sync is not None:
+        if self.db_sync:
             return self.db_sync
 
         try:
@@ -66,13 +67,13 @@ class MongoDBConnector:
             # Create unique index on organization name
             self.db_sync[self.organizations].create_index("name", unique=True)
 
-            print("Connected to MongoDB server (sync)")
+            logger.info("Connected to MongoDB server (sync)")
             return self.db_sync
         except ConnectionFailure:
-            print("Error connecting to MongoDB server (sync)")
+            logger.critical("Error connecting to MongoDB server (sync)")
             return None
 
     def close_sync(self):
-        if self.client_sync is not None:
+        if self.client_sync:
             self.client_sync.close()
-            print("Disconnected from MongoDB server (sync)")
+            logger.info("Disconnected from MongoDB server (sync)")

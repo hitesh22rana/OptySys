@@ -24,7 +24,7 @@ router = APIRouter(
         HTTPException: Bad request error
 
     Returns:
-        _type_: OTP for email verification
+        _type_: Dict of email and token
 """
 
 
