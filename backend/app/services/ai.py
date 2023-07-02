@@ -1,6 +1,7 @@
 # Purpose: AI Service to handle AI related tasks
 # Path: backend/app/services/ai.py
 
+import json
 import re
 
 import requests
@@ -63,9 +64,10 @@ class AiService:
             cover_letter = cls.clean_cover_letter(output)
 
             email = about["email"]
-            subject = f"Cover Letter for {role['title']} at {role['company']}"
+            subject = "✨Personalized Cover letter✨"
+            title = f"Cover Letter for {role['title']} at {role['company']}"
 
-            email_service.send_cover_letter(email, subject, role["title"], cover_letter)
+            email_service.send_cover_letter(email, subject, title, cover_letter)
 
         except Exception as e:
             logger.error(f"Error: {e}")

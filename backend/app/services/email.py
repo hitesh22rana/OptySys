@@ -1,6 +1,7 @@
 # Purpose: Mail service to send emails to users
 # Path: backend/app/services/email.py
 
+import html
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -63,7 +64,8 @@ class EmailService:
             msg["From"] = cls.sender
             msg["To"] = recipient
 
-            # Create an HTML MIMEText object and set the encoding to UTF-8
+            # Escape the escape sequences and create an HTML MIMEText object and set the encoding to UTF-8
+            message = message.strip().replace("\n", "<br>")
             html_content = MIMEText(message, "html", "utf-8")
             msg.attach(html_content)
 
