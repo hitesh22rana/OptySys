@@ -48,6 +48,7 @@ SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
 SMTP_USERNAME="<your_email>"
 SMTP_PASSWORD="<your_password>"
+BARD_TOKEN="<your_bard_token>"
 ```
 
 After adding the environment variables, you can run the backend using the following command:
