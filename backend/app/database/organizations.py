@@ -71,25 +71,30 @@ class Organizations:
                 organization["admins"] = [str(current_user)]
                 organization["members"] = [str(current_user)]
 
-                result = await cls.db[cls.name].insert_one(
-                    organization, session=session
-                )
+                org = await cls.db[cls.name].insert_one(organization, session=session)
 
-                if result:
-                    # update the organization id in the user collection
-                    res = await cls.db[cls.users].update_one(
-                        {"_id": current_user},
-                        {"$push": {"organizations": result.inserted_id}},
-                        session=session,
+                if org.inserted_id is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to create organization",
+                        }
                     )
 
-                    if res.modified_count == 0:
-                        raise Exception(
-                            {
-                                "status_code": status.HTTP_400_BAD_REQUEST,
-                                "detail": "Error: Unable to update user",
-                            }
-                        )
+                # update the organization id in the user collection
+                res = await cls.db[cls.users].update_one(
+                    {"_id": current_user},
+                    {"$push": {"organizations": org.inserted_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user",
+                        }
+                    )
 
                 response = OrganizationResponseSchema(organization).response()
 
@@ -143,25 +148,32 @@ class Organizations:
         try:
             session = await cls.db.client.start_session()
             async with session.start_transaction():
-                result = await cls.db[cls.opportunities].insert_one(
+                opp = await cls.db[cls.opportunities].insert_one(
                     opportunity, session=session
                 )
 
-                if result:
-                    # update the opportunity id in the organization collection
-                    res = await cls.db[cls.name].update_one(
-                        {"_id": org_id},
-                        {"$push": {"opportunities": result.inserted_id}},
-                        session=session,
+                if opp.inserted_id is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to create opportunity",
+                        }
                     )
 
-                    if res.modified_count == 0:
-                        raise Exception(
-                            {
-                                "status_code": status.HTTP_400_BAD_REQUEST,
-                                "detail": "Error: Unable to update organization",
-                            }
-                        )
+                # update the opportunity id in the organization collection
+                res = await cls.db[cls.name].update_one(
+                    {"_id": org_id},
+                    {"$push": {"opportunities": opp.inserted_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update organization",
+                        }
+                    )
 
                 opportunity_data = OportunityRecommenderSchema(opportunity).response()
                 background_tasks.add_task(
