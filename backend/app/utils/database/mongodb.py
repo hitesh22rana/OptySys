@@ -14,66 +14,79 @@ Connect to MongoDB server and return database object
 
 
 class MongoDBConnector:
-    def __init__(self):
+    # Async connections
+    client: AsyncIOMotorClient = None
+    db = None
+
+    # Sync connections
+    client_sync: MongoClient = None
+    db_sync = None
+
+    # Collections
+    users: str = "Users"
+    organizations: str = "Organizations"
+    opportunities: str = "Opportunities"
+
+    @classmethod
+    def __init__(cls) -> None:
         # Async connections
-        self.client = None
-        self.db = None
+        cls.client = None
+        cls.db = None
 
         # Sync connections
-        self.client_sync = None
-        self.db_sync = None
+        cls.client_sync = None
+        cls.db_sync = None
 
-        # Collections
-        self.users = "Users"
-        self.organizations = "Organizations"
-        self.opportunities = "Opportunities"
-
-    async def connect(self):
-        if self.db:
-            return self.db
+    @classmethod
+    async def connect(cls):
+        if cls.db is not None:
+            return cls.db
 
         try:
-            self.client = AsyncIOMotorClient(settings.mongodb_uri)
-            self.db = self.client.optysys
+            cls.client = AsyncIOMotorClient(settings.mongodb_uri)
+            cls.db = cls.client.optysys
 
             # Create unique index on email
-            await self.db[self.users].create_index("email", unique=True)
+            await cls.db[cls.users].create_index("email", unique=True)
 
             # Create unique index on organization name
-            await self.db[self.organizations].create_index("name", unique=True)
+            await cls.db[cls.organizations].create_index("name", unique=True)
 
             logger.info("Connected to MongoDB server (async)")
-            return self.db
+            return cls.db
         except ConnectionFailure:
             logger.critical("Error connecting to MongoDB server (async)")
             return None
 
-    async def close(self):
-        if self.client:
-            self.client.close()
+    @classmethod
+    async def close(cls):
+        if cls.client is not None:
+            cls.client.close()
             logger.info("Disconnected from MongoDB server (async)")
 
-    def connect_sync(self):
-        if self.db_sync:
-            return self.db_sync
+    @classmethod
+    def connect_sync(cls):
+        if cls.db_sync is not None:
+            return cls.db_sync
 
         try:
-            self.client_sync = MongoClient(settings.mongodb_uri)
-            self.db_sync = self.client_sync.optysys
+            cls.client_sync = MongoClient(settings.mongodb_uri)
+            cls.db_sync = cls.client_sync.optysys
 
             # Create unique index on email
-            self.db_sync[self.users].create_index("email", unique=True)
+            cls.db_sync[cls.users].create_index("email", unique=True)
 
             # Create unique index on organization name
-            self.db_sync[self.organizations].create_index("name", unique=True)
+            cls.db_sync[cls.organizations].create_index("name", unique=True)
 
             logger.info("Connected to MongoDB server (sync)")
-            return self.db_sync
+            return cls.db_sync
         except ConnectionFailure:
             logger.critical("Error connecting to MongoDB server (sync)")
             return None
 
-    def close_sync(self):
-        if self.client_sync:
-            self.client_sync.close()
+    @classmethod
+    def close_sync(cls):
+        if cls.client_sync is not None:
+            cls.client_sync.close()
             logger.info("Disconnected from MongoDB server (sync)")
