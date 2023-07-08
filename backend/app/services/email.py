@@ -1,7 +1,6 @@
 # Purpose: Mail service to send emails to users
 # Path: backend/app/services/email.py
 
-import html
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText

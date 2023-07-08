@@ -1,6 +1,5 @@
 # Purpose: AI Service to handle AI related tasks
 # Path: backend/app/services/ai.py
-import json
 import re
 
 import requests
