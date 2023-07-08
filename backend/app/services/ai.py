@@ -1,5 +1,7 @@
 # Purpose: AI Service to handle AI related tasks
 # Path: backend/app/services/ai.py
+import json
+import re
 
 import requests
 from bardapi import Bard
@@ -12,6 +14,7 @@ from app.services.email import email_service
 class AiService:
     session: requests.Session = None
     bard: Bard = None
+    cover_letter_compiler: re.Pattern = None
     token: str = settings.bard_token
 
     @classmethod
@@ -34,18 +37,30 @@ class AiService:
                 cls.token = settings.bard_token
                 cls.session.cookies.set("__Secure-1PSID", cls.token)
                 cls.bard = Bard(token=cls.token, session=cls.session, timeout=30)
+                cls.cover_letter_compiler = re.compile("Dear Hiring Manager")
 
         except Exception as e:
             logger.error(f"Error: {e}")
+
+    @classmethod
+    def clean_cover_letter(cls, output):
+        match = cls.cover_letter_compiler.search(output)
+
+        if match:
+            output = output[match.start() :]
+
+        return output.strip()
 
     @classmethod
     def generate_cover_letter(cls, about, role):
         cls._make_session()
 
         try:
-            cover_letter: str = cls.bard.get_answer(
+            output: str = cls.bard.get_answer(
                 f"""Write a cover letter for the following:- {str(role)}. The cover letter should be 300 words long and should highlight my creativity, and should include the following information about me:- {str(about)}. Output should only contain the cover letter that is should start from Dear Hiring Manager, and should end by formal greetings."""
             )["content"]
+
+            cover_letter: str = cls.clean_cover_letter(output)
 
             email = about["email"]
             subject = "✨Personalized Cover letter✨"
