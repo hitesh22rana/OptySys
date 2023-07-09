@@ -27,6 +27,9 @@ class MongoDBConnector:
     organizations: str = "Organizations"
     opportunities: str = "Opportunities"
 
+    # Environment variables
+    uri: str = settings.mongodb_uri
+
     @classmethod
     def __init__(cls) -> None:
         # Async connections
@@ -43,7 +46,7 @@ class MongoDBConnector:
             return cls.db
 
         try:
-            cls.client = AsyncIOMotorClient(settings.mongodb_uri)
+            cls.client = AsyncIOMotorClient(cls.uri)
             cls.db = cls.client.optysys
 
             # Create unique index on email
@@ -59,7 +62,7 @@ class MongoDBConnector:
             return None
 
     @classmethod
-    async def close(cls):
+    async def disconnect(cls):
         if cls.client is not None:
             cls.client.close()
             logger.info("Disconnected from MongoDB server (async)")
@@ -86,7 +89,7 @@ class MongoDBConnector:
             return None
 
     @classmethod
-    def close_sync(cls):
+    def disconnect_sync(cls):
         if cls.client_sync is not None:
             cls.client_sync.close()
             logger.info("Disconnected from MongoDB server (sync)")

@@ -131,7 +131,7 @@ class Users:
             ) from e
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def create_user(cls, payload: UserVerifyRequestSchema):
@@ -209,7 +209,7 @@ class Users:
             )
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def get_user(cls, user_details: UserLoginRequestSchema):
@@ -265,7 +265,7 @@ class Users:
             ) from e
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def logout_user(cls):
@@ -314,7 +314,7 @@ class Users:
             ) from e
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def _get_user_by_id(cls, user_id: str) -> UserResponseSchema:
@@ -345,7 +345,7 @@ class Users:
             raise e
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def is_authorized_user(cls, user_id: str):
@@ -453,4 +453,4 @@ class Users:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect_sync()

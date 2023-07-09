@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.middlewares.authentication import AuthenticationMiddleware
-from app.middlewares.rate_limiting import RateLimitingMiddleware
 from app.middlewares.ws import WebSocketMiddleMiddleware
 from app.routers import analytics, authentication, organizations, users, ws
 from app.utils.database import MongoDBConnector, RedisConnector
@@ -22,9 +21,6 @@ middleware = [
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-    ),
-    Middleware(
-        RateLimitingMiddleware,
     ),
     Middleware(
         AuthenticationMiddleware,
@@ -69,5 +65,6 @@ async def startup_db_client():
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    await MongoDBConnector().close()
-    MongoDBConnector().close_sync()
+    await MongoDBConnector().disconnect()
+    MongoDBConnector().disconnect_sync()
+    await RedisConnector().disconnect()

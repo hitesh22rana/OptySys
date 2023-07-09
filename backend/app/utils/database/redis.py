@@ -1,7 +1,7 @@
 import redis.asyncio as redis
 from fastapi_limiter import FastAPILimiter
-from fastapi_limiter.depends import RateLimiter
 
+from app.config import settings
 from app.logger import logger
 
 """
@@ -13,16 +13,23 @@ class RedisConnector:
     # Conncetions
     db: redis.Redis = None
 
-    def __init__(cls):
-        cls.url = "redis://localhost:6379"
+    # Environment variables
+    host: str = settings.redis_host
+    port: int = settings.redis_port
+    password: str = settings.redis_password
 
+    @classmethod
+    def __init__(cls):
+        pass
+
+    @classmethod
     async def connect(cls):
         if cls.db is not None:
             return cls.db
 
         try:
-            connection = redis.from_url(
-                url=cls.url, encoding="utf-8", decode_responses=True
+            connection = redis.Redis(
+                host=cls.host, port=cls.port, password=cls.password
             )
             await FastAPILimiter.init(connection)
             logger.info("Connected to Redis server (async)")
@@ -31,3 +38,9 @@ class RedisConnector:
         except Exception as e:
             logger.critical("Error connecting to Redis server (async)" + str(e))
             return None
+
+    @classmethod
+    async def disconnect(cls):
+        if cls.db is not None:
+            await cls.db.close()
+            logger.info("Disconnected from Redis server (async)")

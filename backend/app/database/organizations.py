@@ -123,7 +123,7 @@ class Organizations:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def create_opportunity(
@@ -203,7 +203,7 @@ class Organizations:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def is_authorized_user(cls, org_id: str, user_id: str):
@@ -235,7 +235,7 @@ class Organizations:
             raise e
 
         finally:
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def add_member(cls, current_user: str, org_id: str):
@@ -331,7 +331,7 @@ class Organizations:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def remove_member(cls, current_user: str, org_id: str, user_id: str):
@@ -453,7 +453,7 @@ class Organizations:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def delete_organization(cls, current_user: str, org_id: str):
@@ -571,7 +571,7 @@ class Organizations:
 
         finally:
             session.end_session()
-            await MongoDBConnector().close()
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def create_cover_letter(
