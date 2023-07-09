@@ -10,7 +10,7 @@ from app.middlewares.authentication import AuthenticationMiddleware
 from app.middlewares.rate_limiting import RateLimitingMiddleware
 from app.middlewares.ws import WebSocketMiddleMiddleware
 from app.routers import analytics, authentication, organizations, users, ws
-from app.utils.database import MongoDBConnector
+from app.utils.database import MongoDBConnector, RedisConnector
 
 """FastAPI Instance"""
 app = FastAPI(docs_url=None, redoc_url=None)
@@ -61,6 +61,7 @@ v1.include_router(ws.router)
 async def startup_db_client():
     await MongoDBConnector().connect()
     MongoDBConnector().connect_sync()
+    await RedisConnector().connect()
 
 
 """Shutdown Event for Database"""
