@@ -1,7 +1,8 @@
 # Purpose: Authentication router for handling user authentication related operations.
 # Path: backend\app\routers\authentication.py
 
-from fastapi import APIRouter, BackgroundTasks, Body
+from fastapi import APIRouter, BackgroundTasks, Body, Depends
+from fastapi_limiter.depends import RateLimiter
 
 from app.database.users import Users
 from app.schemas.users import (
@@ -28,7 +29,11 @@ router = APIRouter(
 """
 
 
-@router.post("/register", response_description="Register a new user")
+@router.post(
+    "/register",
+    response_description="Register a new user",
+    dependencies=[Depends(RateLimiter(times=5, seconds=60))],
+)
 async def register(
     background_tasks: BackgroundTasks, user: UserRegisterRequestSchema = Body(...)
 ):

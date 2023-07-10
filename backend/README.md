@@ -46,9 +46,12 @@ JWT_SECRET="secret"
 JWT_ALGORITHM="HS256"
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
-SMTP_USERNAME="<your_email>"
-SMTP_PASSWORD="<your_password>"
-BARD_TOKEN="<your_bard_token>"
+SMTP_USERNAME="<email>"
+SMTP_PASSWORD="<password>"
+BARD_TOKEN="<bard_token>"
+REDIS_HOST="<redis_host_url>"
+REDIS_PORT="<redis_port>"
+REDIS_PASSWORD="<redis_password>"
 ```
 
 After adding the environment variables, you can run the backend using the following command:
