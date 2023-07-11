@@ -1,7 +1,8 @@
 # Purpose: Organization router for handling organization related operations.
 # Path: backend\app\routers\organizations.py
 
-from fastapi import APIRouter, BackgroundTasks, Body, Request
+from fastapi import APIRouter, BackgroundTasks, Body, Depends, Request
+from fastapi_limiter.depends import RateLimiter
 
 from app.database.organizations import Organizations
 from app.schemas.opportunities import OpportunityBaseSchema
@@ -132,6 +133,10 @@ async def create_opportunity(
 @router.post(
     "/{org_id}/opportunities/{opportunity_id}/cover-letter",
     response_description="Create a cover letter",
+    dependencies=[
+        Depends(RateLimiter(times=1, seconds=60)),
+        Depends(RateLimiter(times=5, hours=1)),
+    ],
 )
 async def create_cover_letter(
     background_tasks: BackgroundTasks,
