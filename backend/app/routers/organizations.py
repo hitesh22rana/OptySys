@@ -133,10 +133,7 @@ async def create_opportunity(
 @router.post(
     "/{org_id}/opportunities/{opportunity_id}/cover-letter",
     response_description="Create a cover letter",
-    dependencies=[
-        Depends(RateLimiter(times=1, seconds=60)),
-        Depends(RateLimiter(times=5, hours=1)),
-    ],
+    dependencies=[Depends(RateLimiter(times=5, hours=1))],
 )
 async def create_cover_letter(
     background_tasks: BackgroundTasks,
