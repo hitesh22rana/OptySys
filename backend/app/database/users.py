@@ -8,6 +8,7 @@ from fastapi import BackgroundTasks, HTTPException, status
 from pymongo import ReturnDocument
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
+from app.config import settings
 from app.database.organizations import Organizations
 from app.models.users import UserBaseModel
 from app.schemas.users import (
@@ -26,6 +27,9 @@ from app.utils.validators import validate_db_connection, validate_object_id_fiel
 
 
 class Users:
+    # Token expiry time in hours
+    token_expiry_time: int = settings.token_expiry_time
+
     name: str = "Users"
     db: MongoDBConnector = None
     hasher: Hasher
@@ -43,7 +47,9 @@ class Users:
 
     @classmethod
     def _set_expires(cls):
-        return (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+        return (
+            datetime.now(timezone.utc) + timedelta(hours=cls.token_expiry_time)
+        ).isoformat()
 
     @classmethod
     async def __initiate_db(cls):

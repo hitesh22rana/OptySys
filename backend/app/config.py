@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     debug: bool
     jwt_secret: str
     jwt_algorithm: str
+    token_expiry_time: int
     smtp_host: str
     smtp_port: int
     smtp_username: str
