@@ -4,6 +4,7 @@
 from fastapi import HTTPException, status
 from pymongo.errors import ConnectionFailure, OperationFailure
 
+from app.constants import technologies
 from app.services.ws import web_socket_service
 from app.utils.database import MongoDBConnector
 from app.utils.validators import validate_db_connection
