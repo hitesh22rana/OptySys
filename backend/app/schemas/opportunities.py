@@ -27,7 +27,7 @@ class OpportunityBaseSchema(BaseModel):
     description: str = Field(
         ...,
         description="Description of the opportunity",
-        max_length=500,
+        max_length=1000,
         type="string",
     )
     location: str = Field(
@@ -65,6 +65,22 @@ class OpportunityBaseSchema(BaseModel):
                 "location": "Location",
                 "link": "https://www.google.com",
                 "requirements": ["Requirement 1", "Requirement 2"],
+            }
+        }
+
+
+class OpportunitySkillsSchema(BaseModel):
+    description: str = Field(
+        ...,
+        description="Description of the opportunity",
+        max_length=1000,
+        type="string",
+    )
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             }
         }
 

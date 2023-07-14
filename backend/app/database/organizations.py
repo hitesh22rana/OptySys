@@ -14,6 +14,7 @@ from app.schemas.opportunities import (
     OportunityRecommenderSchema,
     OpportunityBaseSchema,
     OpportunityResponseSchema,
+    OpportunitySkillsSchema,
 )
 from app.schemas.organizations import (
     OrganizationBaseSchema,
@@ -22,6 +23,7 @@ from app.schemas.organizations import (
 )
 from app.services.ai import ai_service
 from app.services.recommender import opportunity_recommender
+from app.services.skills_extractor import skill_extractor
 from app.utils.database import MongoDBConnector
 from app.utils.responses import OK, Created
 from app.utils.validators import validate_db_connection, validate_object_id_fields
@@ -658,4 +660,24 @@ class Organizations:
             raise HTTPException(
                 status_code=status_code,
                 detail=detail,
+            ) from e
+
+    @classmethod
+    async def extract_skills(
+        cls, current_user: str, org_id: str, opportunity: OpportunitySkillsSchema
+    ):
+        validate_object_id_fields(org_id, current_user)
+
+        try:
+            skills: list = skill_extractor.extract_skills(opportunity.description)
+            return OK(
+                {
+                    "skills": skills,
+                }
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Error: Unable to extract skills",
             ) from e

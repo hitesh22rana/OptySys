@@ -91,7 +91,10 @@ async def check_authorization(current_user, request_path: str, request_method: s
 
     if request_method == "POST" and (
         request_path.startswith("/organizations")
-        and request_path.endswith("/opportunities")
+        and (
+            request_path.endswith("/opportunities")
+            or request_path.endswith("/opportunities/skills")
+        )
     ):
         try:
             organization_id = request_path.split("/")[2]

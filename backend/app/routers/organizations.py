@@ -5,7 +5,7 @@ from fastapi import APIRouter, BackgroundTasks, Body, Depends, Request
 from fastapi_limiter.depends import RateLimiter
 
 from app.database.organizations import Organizations
-from app.schemas.opportunities import OpportunityBaseSchema
+from app.schemas.opportunities import OpportunityBaseSchema, OpportunitySkillsSchema
 from app.schemas.organizations import OrganizationBaseSchema
 
 router = APIRouter(
@@ -115,6 +115,32 @@ async def create_opportunity(
     return await Organizations().create_opportunity(
         background_tasks, current_user, org_id, opportunity
     )
+
+
+"""
+    Post method for extracting skills from a new opportunity.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: List[Skills]
+"""
+
+
+@router.post(
+    "/{org_id}/opportunities/skills",
+    response_description="Extract skills from an opportunity",
+)
+async def extract_skills(
+    request: Request,
+    org_id: str,
+    opportunity: OpportunitySkillsSchema = Body(...),
+):
+    current_user = request.scope["current_user"]
+    return await Organizations().extract_skills(current_user, org_id, opportunity)
 
 
 """
