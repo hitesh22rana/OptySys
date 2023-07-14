@@ -3,8 +3,8 @@
 
 from fastapi import APIRouter, Request
 
-from app.database.users import Users
-from app.schemas.users import UserUpdateRequestSchema
+from app.database import Users
+from app.schemas import UserUpdateRequestSchema
 
 router = APIRouter(
     tags=["Users"],

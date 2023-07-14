@@ -8,22 +8,17 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
-from app.models.opportunities import OpportunityBaseModel
-from app.models.organizations import OrganizationBaseModel
-from app.schemas.opportunities import (
+from app.models import OpportunityBaseModel, OrganizationBaseModel
+from app.schemas import (
     OportunityRecommenderSchema,
     OpportunityBaseSchema,
     OpportunityResponseSchema,
     OpportunitySkillsSchema,
-)
-from app.schemas.organizations import (
     OrganizationBaseSchema,
     OrganizationResponseSchema,
     OrganizationSchema,
 )
-from app.services.ai import ai_service
-from app.services.recommender import opportunity_recommender
-from app.services.skills_extractor import skill_extractor
+from app.services import ai_service, opportunity_recommender, skill_extractor
 from app.utils.database import MongoDBConnector
 from app.utils.responses import OK, Created
 from app.utils.validators import validate_db_connection, validate_object_id_fields

@@ -6,8 +6,7 @@ from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.middlewares.authentication import AuthenticationMiddleware
-from app.middlewares.ws import WebSocketMiddleMiddleware
+from app.middlewares import AuthenticationMiddleware, WebSocketMiddleMiddleware
 from app.routers import analytics, authentication, organizations, users, ws
 from app.utils.database import MongoDBConnector, RedisConnector
 

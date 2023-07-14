@@ -9,16 +9,16 @@ from pymongo import ReturnDocument
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 from app.config import settings
-from app.database.organizations import Organizations
-from app.models.users import UserBaseModel
-from app.schemas.users import (
+from app.database import Organizations
+from app.models import UserBaseModel
+from app.schemas import (
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
     UserResponseSchema,
     UserUpdateRequestSchema,
     UserVerifyRequestSchema,
 )
-from app.services.email import email_service
+from app.services import email_service
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler

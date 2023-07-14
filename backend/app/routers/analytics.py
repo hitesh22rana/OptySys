@@ -3,7 +3,7 @@
 
 from fastapi import APIRouter
 
-from app.database.analytics import Analytics
+from app.database import Analytics
 
 router = APIRouter(
     tags=["Analytics"],

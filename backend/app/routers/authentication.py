@@ -4,8 +4,8 @@
 from fastapi import APIRouter, BackgroundTasks, Body, Depends
 from fastapi_limiter.depends import RateLimiter
 
-from app.database.users import Users
-from app.schemas.users import (
+from app.database import Users
+from app.schemas import (
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
     UserVerifyRequestSchema,

@@ -44,7 +44,7 @@ def is_web_socket_endpoint(path: str) -> bool:
 
 def authentication_handler(access_token: str):
     try:
-        if access_token is None:
+        if access_token is None or access_token == "":
             raise Exception(
                 {"status_code": 401, "detail": "Please login to access this resource."}
             )

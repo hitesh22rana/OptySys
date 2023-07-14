@@ -3,7 +3,7 @@
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
-from app.services.ws import web_socket_service
+from app.services import web_socket_service
 
 router = APIRouter(
     tags=["Websocket"],

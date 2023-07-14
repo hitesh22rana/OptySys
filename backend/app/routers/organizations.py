@@ -4,9 +4,9 @@
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, Request
 from fastapi_limiter.depends import RateLimiter
 
-from app.database.organizations import Organizations
+from app.database import Organizations
+from app.schemas import OrganizationBaseSchema
 from app.schemas.opportunities import OpportunityBaseSchema, OpportunitySkillsSchema
-from app.schemas.organizations import OrganizationBaseSchema
 
 router = APIRouter(
     tags=["Organizations"],
