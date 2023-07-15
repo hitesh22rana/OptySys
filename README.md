@@ -6,15 +6,14 @@
 
 ## Table of Contents
 
-- [OptySys](#optysys)
-  - [Streamlining opportunities with efficient matching and automation](#streamlining-opportunities-with-efficient-matching-and-automation)
-  - [Table of Contents](#table-of-contents)
-  - [About](#about)
-  - [Key Features](#key-features)
-  - [Getting Started](#getting-started)
-    - [To set up OptySys locally, follow these steps:-](#to-set-up-optysys-locally-follow-these-steps-)
-  - [Contributing](#contributing)
-  - [License](#license)
+- [Streamlining opportunities with efficient matching and automation](#streamlining-opportunities-with-efficient-matching-and-automation)
+- [Table of Contents](#table-of-contents)
+- [About](#about)
+- [Key Features](#key-features)
+- [Getting Started](#getting-started)
+  - [To set up OptySys locally, follow these steps:-](#to-set-up-optysys-locally-follow-these-steps-)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## About
 
