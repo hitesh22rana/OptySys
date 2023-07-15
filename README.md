@@ -6,9 +6,12 @@
 
 ## Table of Contents
 
+- [Streamlining opportunities with efficient matching and automation](#streamlining-opportunities-with-efficient-matching-and-automation)
+- [Table of Contents](#table-of-contents)
 - [About](#about)
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
+  - [To set up OptySys locally, follow these steps:-](#to-set-up-optysys-locally-follow-these-steps-)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -40,15 +43,8 @@ git clone https://github.com/hitesh22rana/OptySys.git
 
 ## Contributing
 
-We value contributions from the community as they help improve and enhance OptySys. If you would like to contribute, please adhere to the following guidelines:
-
-1. Fork the Repository: Fork the OptySys repository to your GitHub account.
-
-2. Create a New Branch: Create a new branch in your forked repository to work on your changes separately.
-
-3. Make Changes: Implement your desired changes, ensuring that the code adheres to the project's coding conventions and best practices.
-
-4. Submit a Pull Request: Once you are satisfied with your changes, submit a pull request to the main OptySys repository. Provide a detailed description of your changes and explain how they benefit the system.
+We value contributions from the community as they help improve and enhance OptySys. If you would like to contribute
+follow the [Contribution Guide](https://github.com/hitesh22rana/OptySys/blob/main/CONTRIBUTION.md)
 
 ## License
 
