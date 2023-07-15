@@ -41,7 +41,7 @@ async def get_organizations(limit: int = 10, offset: int = 0):
     
     Returns:
         _type_: JsonObject{
-            data: Organization,
+            "data": List[Organizations],
             "total_count": int,
             "previous": bool,
             "next": bool,
