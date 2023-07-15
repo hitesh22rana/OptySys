@@ -45,6 +45,60 @@ class Organizations:
         validate_db_connection(cls.db)
 
     @classmethod
+    async def get_organizations(cls, limit, offset):
+        # Check if limit is less than or equal to 0
+        if limit <= 0 or offset < 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Error: Unable to get organizations.",
+            )
+
+        await cls.__initiate_db()
+
+        try:
+            pipeline = [
+                {
+                    "$facet": {
+                        "data": [
+                            {
+                                "$project": {
+                                    "_id": 1,
+                                    "name": 1,
+                                    "description": 1,
+                                    "private": 1,
+                                    "total_members": {"$size": "$members"},
+                                }
+                            },
+                            {"$skip": offset},
+                            {"$limit": limit},
+                        ],
+                        "count": [{"$count": "total_count"}],
+                    }
+                },
+                {"$unwind": "$count"},
+                {"$project": {"data": 1, "total_count": "$count.total_count"}},
+            ]
+
+            res = (await cls.db[cls.name].aggregate(pipeline).to_list(length=None))[0]
+
+            res["previous"] = offset > 0
+            res["next"] = limit + offset < res["total_count"]
+
+            return OK(res)
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error.",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Error: Unable to get organizations.",
+            ) from e
+
+    @classmethod
     async def create_organization(
         cls, current_user: str, organization: OrganizationBaseSchema
     ):

@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 """
-    Post method for creating a new organization.
+    Get method to list all organizations.
     
     Raises:
         HTTPException: Fields validation error
@@ -23,6 +23,29 @@ router = APIRouter(
     
     Returns:
         _type_: Organization
+"""
+
+
+@router.get("", response_description="List all organizations")
+async def get_organizations(limit: int = 10, offset: int = 0):
+    return await Organizations().get_organizations(limit=limit, offset=offset)
+
+
+"""
+    Post method for creating a new organization.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: JsonObject{
+            data: Organization,
+            "total_count": int,
+            "previous": bool,
+            "next": bool,
+        }
 """
 
 
