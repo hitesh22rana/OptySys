@@ -70,10 +70,12 @@ async def create_organization(
 """
 
 
-@router.post("/{org_id}/members", response_description="Add a new member")
-async def add_member(request: Request, org_id: str):
+@router.post(
+    "/{org_id}/members/{user_id}", response_description="Add a requested member"
+)
+async def add_member(request: Request, org_id: str, user_id: str):
     current_user = request.scope["current_user"]
-    return await Organizations().add_member(current_user, org_id)
+    return await Organizations().add_member(current_user, org_id, user_id)
 
 
 """

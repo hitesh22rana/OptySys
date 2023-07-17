@@ -384,6 +384,134 @@ class Users:
             raise e
 
     @classmethod
+    async def join_organization(cls, current_user: str, org_id: str):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(current_user, org_id)
+
+        try:
+            session = await cls.db.client.start_session()
+            async with session.start_transaction():
+                organization = await cls.db[cls.organizations].find_one(
+                    {"_id": org_id},
+                    {"members": 1, "requests": 1, "private": 1},
+                    session=session,
+                )
+
+                if organization is None:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_404_NOT_FOUND,
+                            "detail": "Error: Organization not found.",
+                        }
+                    )
+
+                # check if the user is already a member
+                if current_user in organization["members"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: User is already a member of the organization.",
+                        }
+                    )
+
+                # check if the user has already requested to join the organization
+                if current_user in organization["requests"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: User has already requested to join the organization.",
+                        }
+                    )
+
+                # if organization is private then request to join the private organization
+                if organization["private"]:
+                    # update the requested user id in the organization collection
+                    res = await cls.db[cls.organizations].update_one(
+                        {"_id": org_id},
+                        {"$push": {"requests": current_user}},
+                        session=session,
+                    )
+
+                    if res.modified_count == 0:
+                        raise Exception(
+                            {
+                                "status_code": status.HTTP_400_BAD_REQUEST,
+                                "detail": "Error: Unable to update user",
+                            }
+                        )
+
+                    # update the requested organization id in the user collection
+                    res = await cls.db[cls.name].update_one(
+                        {"_id": current_user},
+                        {"$push": {"requests": org_id}},
+                        session=session,
+                    )
+
+                    if res.modified_count == 0:
+                        raise Exception(
+                            {
+                                "status_code": status.HTTP_400_BAD_REQUEST,
+                                "detail": "Error: Unable to update user",
+                            }
+                        )
+
+                    return OK(
+                        {"detail": "Success: User requested to join organization"}
+                    )
+
+                # update the user id in the organization collection
+                res = await cls.db[cls.organizations].update_one(
+                    {"_id": org_id},
+                    {"$push": {"members": current_user}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user",
+                        }
+                    )
+
+                # update the organization id in the user collection
+                res = await cls.db[cls.name].update_one(
+                    {"_id": current_user},
+                    {"$push": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user.",
+                        }
+                    )
+
+                return Created({"detail": "Success: User added to the organization."})
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        finally:
+            session.end_session()
+            await MongoDBConnector().disconnect()
+
+    @classmethod
     async def delete_user(cls, user_id):
         await cls.__initiate_db()
 
@@ -409,11 +537,11 @@ class Users:
                 # Delete all organizations created by the user, if any and remove user from all organizations as a member or admin
                 organizations = user["organizations"]
 
-                org = Organizations()
-
                 for organization in organizations:
                     try:
-                        await org.remove_member(user_id, organization, user_id)
+                        await Organizations().remove_member(
+                            user_id, organization, user_id
+                        )
 
                     except Exception as e:
                         raise e
@@ -459,4 +587,4 @@ class Users:
 
         finally:
             session.end_session()
-            await MongoDBConnector().disconnect_sync()
+            await MongoDBConnector().disconnect()

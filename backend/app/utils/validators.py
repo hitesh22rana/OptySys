@@ -5,6 +5,8 @@ import validators
 from bson import ObjectId
 from fastapi import HTTPException, status
 
+from app.constants import technologies
+
 
 def validate_db_connection(db):
     if db is None:
@@ -62,3 +64,11 @@ def validate_experiences(experiences):
             )
 
     return experiences
+
+
+def validate_skills(skills):
+    for skill in skills:
+        if not technologies.contains(skill):
+            raise ValueError("Invalid skill: " + skill)
+
+    return skills

@@ -19,12 +19,13 @@ Fields:
     password: Password of the user
     name: Name of the user
     summary: Summary of the user
-    social_links: List of social links of the user
+    socials: List of social links of the user
     experience: List of experiences of the user
     skills: List of skills of the user
     achievements: List of achievements of the user
     organization: List of organizations of the user
     opprtunities: List of opportunities of the user
+    requests: List of organizations requested by the user to join
     activated: Activation status of the user
     created_at: Created at timestamp of the user
 """
@@ -37,7 +38,7 @@ class UserBaseModel(BaseModel):
     password: str = Field(..., description="Password of the user")
     name: str = Field(..., description="Name of the user")
     summary: str = Field(default="", description="Summary of the user")
-    social_links: List[Dict[SocialLinks, str]] = Field(
+    socials: List[Dict[SocialLinks, str]] = Field(
         default=[], description="List of social links of the user"
     )
     experiences: List[Experience] = Field(
@@ -52,6 +53,9 @@ class UserBaseModel(BaseModel):
     )
     opportunities: List[PyObjectId] = Field(
         default=[], description="List of opportunities of the user"
+    )
+    requests: List[PyObjectId] = Field(
+        default=[], description="List of organizations requested by the user to join"
     )
 
     # Default Fields

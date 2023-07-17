@@ -7,7 +7,7 @@ from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field, validator
 
 from app.utils.shared import Experience, SocialLinks
-from app.utils.validators import validate_experiences, validate_links
+from app.utils.validators import validate_experiences, validate_links, validate_skills
 
 
 class UserRegisterRequestSchema(BaseModel):
@@ -105,7 +105,7 @@ class UserLoginRequestSchema(BaseModel):
 
 class UserUpdateRequestSchema(BaseModel):
     summary: str = Field(..., description="Summary of the user", max_length=500)
-    social_links: List[Dict[SocialLinks, str]] = Field(
+    socials: List[Dict[SocialLinks, str]] = Field(
         ..., description="List of social links of the user", min_items=1
     )
     experiences: List[Experience] = Field(
@@ -118,13 +118,17 @@ class UserUpdateRequestSchema(BaseModel):
         ..., description="List of achievements of the user", min_items=0, min_length=3
     )
 
-    @validator("social_links")
-    def validate_social_links(cls, social_links):
-        return validate_links(social_links)
+    @validator("socials")
+    def validate_socials(cls, socials):
+        return validate_links(socials)
 
     @validator("experiences")
     def validate_experiences(cls, experiences):
         return validate_experiences(experiences)
+
+    @validator("skills")
+    def validate_skills(cls, skills):
+        return validate_skills(skills)
 
     class Config:
         allow_population_by_field_name = True
@@ -133,7 +137,7 @@ class UserUpdateRequestSchema(BaseModel):
         schema_extra = {
             "example": {
                 "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "social_links": [
+                "socials": [
                     {"resume": "https://example.com/resume"},
                     {"portfolio": "https://example.com/portfolio"},
                     {"linkedin": "https://linkedin.com/in/johndoe"},
@@ -151,7 +155,7 @@ class UserUpdateRequestSchema(BaseModel):
                         ],
                     }
                 ],
-                "skills": ["Python", "JavaScript", "HTML", "CSS"],
+                "skills": ["python", "javascript", "html", "css"],
                 "achievements": [
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 ],
@@ -165,12 +169,13 @@ class UserResponseSchema:
         self.email = user["email"]
         self.name = user["name"]
         self.summary = user["summary"]
-        self.social_links = user["social_links"]
+        self.socials = user["socials"]
         self.experiences = user["experiences"]
         self.skills = user["skills"]
         self.achievements = user["achievements"]
         self.organizations = user["organizations"]
         self.opportunities = user["opportunities"]
+        self.requests = user["requests"]
         self.activated = user["activated"]
         self.created_at = user["created_at"]
 
@@ -180,12 +185,13 @@ class UserResponseSchema:
             "email": self.email,
             "name": self.name,
             "summary": self.summary,
-            "social_links": self.social_links,
+            "socials": self.socials,
             "experiences": self.experiences,
             "skills": self.skills,
             "achievements": self.achievements,
             "organizations": self.organizations,
             "opportunities": self.opportunities,
+            "requests": self.requests,
             "activated": self.activated,
             "created_at": self.created_at,
         }

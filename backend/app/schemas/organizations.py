@@ -80,6 +80,7 @@ class OrganizationResponseSchema:
         self.admins = organization["admins"]
         self.members = organization["members"]
         self.opportunities = organization["opportunities"]
+        self.requests = organization["requests"]
         self.created_at = organization["created_at"]
 
     def response(self) -> dict:
@@ -91,5 +92,6 @@ class OrganizationResponseSchema:
             "admins": self.admins,
             "members": self.members,
             "opportunities": self.opportunities,
+            "requests": self.requests,
             "created_at": self.created_at,
         }

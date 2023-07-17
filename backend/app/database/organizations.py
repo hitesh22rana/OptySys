@@ -289,17 +289,17 @@ class Organizations:
             await MongoDBConnector().disconnect()
 
     @classmethod
-    async def add_member(cls, current_user: str, org_id: str):
+    async def add_member(cls, current_user: str, org_id: str, user_id: str):
         await cls.__initiate_db()
 
-        validate_object_id_fields(org_id, current_user)
+        validate_object_id_fields(org_id, current_user, user_id)
 
         try:
             session = await cls.db.client.start_session()
             async with session.start_transaction():
                 organization = await cls.db[cls.name].find_one(
-                    {"_id": org_id},
-                    {"members": 1, "admins": 1, "private": 1},
+                    {"_id": org_id, "private": True},
+                    {"members": 1, "admins": 1, "requests": 1},
                     session=session,
                 )
 
@@ -311,28 +311,37 @@ class Organizations:
                         }
                     )
 
-                # check if the user is already a member
-                if current_user in organization["members"]:
-                    raise Exception(
-                        {
-                            "status_code": status.HTTP_400_BAD_REQUEST,
-                            "detail": "Error: User is already a member of the organization.",
-                        }
-                    )
-
-                # check if the organization is private
-                if organization["private"]:
+                # check is the current_user is admin of the organization or not
+                if current_user not in organization["admins"]:
                     raise Exception(
                         {
                             "status_code": status.HTTP_401_UNAUTHORIZED,
-                            "detail": "Error: Organization is private.",
+                            "detail": "Error: Unauthorized user.",
+                        }
+                    )
+
+                # check if the user is already a member
+                if user_id in organization["members"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Requested user is already a member of the organization.",
+                        }
+                    )
+
+                #  check if the user is in requests or not
+                if user_id not in organization["requests"]:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Requested user is not in the requests.",
                         }
                     )
 
                 # update the user id in the organization collection
                 res = await cls.db[cls.name].update_one(
                     {"_id": org_id},
-                    {"$push": {"members": current_user}},
+                    {"$push": {"members": user_id}},
                     session=session,
                 )
 
@@ -346,8 +355,38 @@ class Organizations:
 
                 # update the organization id in the user collection
                 res = await cls.db[cls.users].update_one(
-                    {"_id": current_user},
+                    {"_id": user_id},
                     {"$push": {"organizations": org_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update user.",
+                        }
+                    )
+
+                # pop the requested user from the organization requests
+                res = await cls.db[cls.name].update_one(
+                    {"_id": org_id},
+                    {"$pull": {"requests": user_id}},
+                    session=session,
+                )
+
+                if res.modified_count == 0:
+                    raise Exception(
+                        {
+                            "status_code": status.HTTP_400_BAD_REQUEST,
+                            "detail": "Error: Unable to update organization.",
+                        }
+                    )
+
+                # pop the requested organization from the user requests
+                res = await cls.db[cls.users].update_one(
+                    {"_id": user_id},
+                    {"$pull": {"requests": org_id}},
                     session=session,
                 )
 
@@ -676,7 +715,7 @@ class Organizations:
                         "name": 1,
                         "email": 1,
                         "summary": 1,
-                        "social_links": 1,
+                        "socials": 1,
                         "experiences": 1,
                         "skills": 1,
                         "achievements": 1,

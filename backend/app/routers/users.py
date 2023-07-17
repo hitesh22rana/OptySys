@@ -47,3 +47,22 @@ async def update(request: Request, user_details: UserUpdateRequestSchema):
 async def delete(request: Request):
     current_user = request.scope["current_user"]
     return await Users().delete_user(current_user)
+
+
+"""
+    Post method for requesting to join an organization.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: Message
+"""
+
+
+@router.post("/join/{org_id}", response_description="Join an organization")
+async def join_organization(request: Request, org_id: str):
+    current_user = request.scope["current_user"]
+    return await Users().join_organization(current_user, org_id)

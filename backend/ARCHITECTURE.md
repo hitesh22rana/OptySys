@@ -15,12 +15,13 @@
 | password | String | Password of the user |
 | name | String | First name of the user |
 | summary | String | Summary of the user |
-| social_links | Array[SocialLinks] | Social links of the user |
+| socials | Array[SocialLinks] | Social links of the user |
 | experiences | Array[Experience] | Experience of the user |
 | skills | Array[String] | Skills of the user |
 | achievements | Array[String] | Achievements of the user |
 | organizations | Array[ObjectId] | Organization of the user |
 | opportunities | Array[ObjectId] | Opportunities of the user |
+| requests | Array[ObjectId] | List of organizations requested by the user to join |
 | activated | Boolean | Whether the user is activated or not |
 | created_at | DateTime | Date and time of user creation |
 
@@ -36,6 +37,7 @@
 | admins | Array[ObjectId] | Admins of the organization |
 | members | Array[ObjectId] | Members of the organization |
 | opportunities | Array[ObjectId] | Opportunities for the members of the organization |
+| requests | Array[ObjectId] | List of users who have requested to join the organization |
 | created_at | DateTime | Date and time of organization creation |
 
 ## Opportunity

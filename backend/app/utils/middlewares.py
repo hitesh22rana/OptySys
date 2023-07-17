@@ -77,12 +77,10 @@ async def check_authorization(current_user, request_path: str, request_method: s
         (request_method == "POST" and (request_path == "/organizations"))
         or (request_path == "/ws" and request_method == "GET")
         or (
-            request_method == "POST"
-            and (
-                request_path.startswith("/organizations")
-                and request_path.endswith("/members")
-            )
+            (request_method == "POST" or request_method == "DELETE")
+            and (request_path.find("/members/") != -1)
         )
+        or (request_method == "POST" and (request_path.startswith("/users/join/")))
     ):
         try:
             await Users().is_authorized_user(current_user)

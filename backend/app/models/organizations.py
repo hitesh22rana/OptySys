@@ -22,6 +22,7 @@ Fields:
     admins: List of admins of the organization
     members: List of members of the organization
     opportunities: Opportunities for the members of the organization
+    requests: List of users who have requested to join the organization
     created_at: Created at timestamp of the organization
 """
 
@@ -43,6 +44,10 @@ class OrganizationBaseModel(BaseModel):
     )
     opportunities: List[PyObjectId] = Field(
         default=[], description="Opportunities for the members of the organization"
+    )
+    requests: List[PyObjectId] = Field(
+        default=[],
+        description="List of users who have requested to join the organization",
     )
 
     # Default Fields
