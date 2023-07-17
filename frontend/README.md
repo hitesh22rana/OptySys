@@ -18,26 +18,44 @@ npm run dev
 
 3. Open your web browser and visit `http://localhost:3000` to access the OptySys frontend.
 
-## Frontend Structure
+## Structure
 
-- This is a high level design for the frontend of the OptySys
-- The design is configured in a hirerchical approach
-- Design is divided into two sub parts private routes and public routes
+- This is a high level design for the frontend.
+- The design is configured in a hirerchical approach.
+- Design is divided into two sub parts:-
+    1. [Public Routes](#public-routes)
+    2. [Private Routes](#private-routes)
 
 ### Public routes
 
-- This includes public routes which are accessible directly
-- Public routes had 2 pages
-- First is the Home screen
-- Other is a page for user authentication which includes signup and login pages
+- These routes are publicly accessible by any user.
+- Public routes includes:-
+  - Home Screen
+  - Authentication
+    - Login
+    - Signup
 
 ### Private routes
 
-- These are private routes and not accessible directly
-- These a routes are available for only authenticated user
-- After authentication filling the user details form is necessary for accessing the dashboard
-- The user dashboard provides features to the user such as **search** ,**view** and **join organizations**
-- User can **view** and **create custom cover letter** for the available oppotunities only in the joined organizations
-  <br>
-  </br>
-  ![Alt text](optySystem.PNG)
+- These routes are not publicly accessible only authenticated and authorized users can access.
+- Authenticated users have to fill the user detail form, in order to further activate their account, which is strictly required for automating the process.
+- Only activated users can access the dashboard.
+- Private routes includes:-
+  - User details form
+    - DashBoard
+      - Sidebar
+        - Joined organizations
+          - Publish opportunities
+        - Available opportunities
+          - View opportunities
+            - Custom cover-letter
+      - Topbar
+        - Searchbar
+        - Notifications
+        - Settings
+        - Logout
+      - Organizations
+        - View organization page
+          - join organization
+
+![frontend-architecture](../.github/images/frontend-architecture.png)
