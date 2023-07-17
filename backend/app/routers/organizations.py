@@ -22,7 +22,12 @@ router = APIRouter(
         HTTPException: Bad request error
     
     Returns:
-        _type_: Organization
+        _type_: JsonObject{
+            "data": List[Organizations],
+            "total_count": int,
+            "previous": bool,
+            "next": bool,
+        }
 """
 
 
@@ -40,12 +45,7 @@ async def get_organizations(limit: int = 10, offset: int = 0):
         HTTPException: Bad request error
     
     Returns:
-        _type_: JsonObject{
-            "data": List[Organizations],
-            "total_count": int,
-            "previous": bool,
-            "next": bool,
-        }
+        _type_: Organization
 """
 
 
