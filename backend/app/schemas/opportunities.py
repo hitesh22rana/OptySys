@@ -39,7 +39,7 @@ class OpportunityBaseSchema(BaseModel):
     )
     link: str = Field(
         ...,
-        description="Link to the opportunity",
+        description="Link of the opportunity",
     )
     requirements: List[str] = Field(
         [],
@@ -69,11 +69,37 @@ class OpportunityBaseSchema(BaseModel):
         }
 
 
+class OpportunityDataSchema(BaseModel):
+    link: str = Field(
+        ...,
+        description="Link of the opportunity",
+    )
+    site: str = Field(
+        ...,
+        description="Website of the opportunity",
+        min_length=3,
+        max_length=50,
+        type="string",
+    )
+
+    @validator("link")
+    def validate_link(cls, link):
+        return validate_link(link)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "link": "https://www.google.com/",
+                "site": "google",
+            }
+        }
+
+
 class OpportunitySkillsSchema(BaseModel):
     description: str = Field(
         ...,
         description="Description of the opportunity",
-        max_length=1000,
+        max_length=5000,
         type="string",
     )
 

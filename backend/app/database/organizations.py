@@ -12,6 +12,7 @@ from app.models import OpportunityBaseModel, OrganizationBaseModel
 from app.schemas import (
     OportunityRecommenderSchema,
     OpportunityBaseSchema,
+    OpportunityDataSchema,
     OpportunityResponseSchema,
     OpportunitySkillsSchema,
     OrganizationBaseSchema,
@@ -768,4 +769,24 @@ class Organizations:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Error: Unable to extract skills",
+            ) from e
+
+    @classmethod
+    async def extract_data(
+        cls, current_user: str, org_id: str, opportunity: OpportunityDataSchema
+    ):
+        validate_object_id_fields(org_id, current_user)
+
+        try:
+            data: dict = skill_extractor.extract_data_from_link(
+                url=opportunity.link, site=opportunity.site
+            )
+
+            return OK(data)
+
+        except Exception as e:
+            detail: str = e.args[0] or "Error: Unable to extract data"
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=detail,
             ) from e

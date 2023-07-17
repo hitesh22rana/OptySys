@@ -6,7 +6,11 @@ from fastapi_limiter.depends import RateLimiter
 
 from app.database import Organizations
 from app.schemas import OrganizationBaseSchema
-from app.schemas.opportunities import OpportunityBaseSchema, OpportunitySkillsSchema
+from app.schemas.opportunities import (
+    OpportunityBaseSchema,
+    OpportunityDataSchema,
+    OpportunitySkillsSchema,
+)
 
 router = APIRouter(
     tags=["Organizations"],
@@ -143,7 +147,7 @@ async def create_opportunity(
 
 
 """
-    Post method for extracting skills from a new opportunity.
+    Post method for extracting skills from opportunity description.
     
     Raises:
         HTTPException: Fields validation error
@@ -156,8 +160,8 @@ async def create_opportunity(
 
 
 @router.post(
-    "/{org_id}/opportunities/skills",
-    response_description="Extract skills from an opportunity",
+    "/{org_id}/opportunities/extract-skills",
+    response_description="Extract skills from opportunity description",
 )
 async def extract_skills(
     request: Request,
@@ -166,6 +170,37 @@ async def extract_skills(
 ):
     current_user = request.scope["current_user"]
     return await Organizations().extract_skills(current_user, org_id, opportunity)
+
+
+"""
+    Post method for extracting data from opportunity link.
+    
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: JsonObject  {
+            "title": str,
+            "url": URL,
+            "description": str,
+            "skills": List[Skills],
+        }
+"""
+
+
+@router.post(
+    "/{org_id}/opportunities/extract-data",
+    response_description="Extract data from opportunity link",
+)
+async def extract_data(
+    request: Request,
+    org_id: str,
+    opportunity: OpportunityDataSchema = Body(...),
+):
+    current_user = request.scope["current_user"]
+    return await Organizations().extract_data(current_user, org_id, opportunity)
 
 
 """

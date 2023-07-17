@@ -49,7 +49,7 @@
 | company | String | Company name |
 | description | String | Description of the opportunity |
 | location | String | Location of the opportunity |
-| link | String | Link to the opportunity |
+| link | String | Link of the opportunity |
 | requirements | Array[String] | List of requirements for the opportunity |
 | organization_id | ObjectId | Id of the organization |
 | created_by | ObjectId | Creator of the organization |

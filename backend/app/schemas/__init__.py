@@ -1,6 +1,7 @@
 from app.schemas.opportunities import (
     OportunityRecommenderSchema,
     OpportunityBaseSchema,
+    OpportunityDataSchema,
     OpportunityResponseSchema,
     OpportunitySkillsSchema,
 )
