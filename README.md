@@ -27,8 +27,6 @@
 
 ## Table of Contents
 
-- [Streamlining opportunities with efficient matching and automation](#streamlining-opportunities-with-efficient-matching-and-automation)
-- [Table of Contents](#table-of-contents)
 - [About](#about)
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
