@@ -1,6 +1,8 @@
 # Purpose: Middleware utility functions
 # Path: backend\app\utils\middlewares.py
 
+from fastapi import status
+
 from app.database.organizations import Organizations
 from app.database.users import Users
 from app.utils.jwt_handler import JwtTokenHandler
@@ -46,7 +48,10 @@ def authentication_handler(access_token: str):
     try:
         if access_token is None or access_token == "":
             raise Exception(
-                {"status_code": 401, "detail": "Please login to access this resource."}
+                {
+                    "status_code": status.HTTP_401_UNAUTHORIZED,
+                    "detail": "Error: Please login to access this resource.",
+                }
             )
 
         bearer_token = access_token.split(" ")[1]
@@ -56,7 +61,10 @@ def authentication_handler(access_token: str):
 
         if validate_object_id_fields(current_user):
             raise Exception(
-                {"status_code": 401, "detail": "Please login to access this resource."}
+                {
+                    "status_code": status.HTTP_401_UNAUTHORIZED,
+                    "detail": "Error: Please login to access this resource.",
+                }
             )
 
         return current_user
@@ -70,7 +78,10 @@ async def check_authorization(current_user, request_path: str, request_method: s
 
     if current_user is None:
         raise Exception(
-            {"status_code": 401, "detail": "Please login to access this resource."}
+            {
+                "status_code": status.HTTP_401_UNAUTHORIZED,
+                "detail": "Error: Please login to access this resource.",
+            }
         )
 
     if (
