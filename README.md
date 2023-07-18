@@ -1,8 +1,29 @@
+<center>
+
 # OptySys
 
 ## Streamlining opportunities with efficient matching and automation
 
 <br />
+
+<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%; gap: 16px; margin: 0px auto; padding: 10px;">
+<a href="https://opensource.org/license/mit">
+    <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-yellow.svg?style=social"/>
+</a>
+
+<a href="https://github.com/hitesh22rana/OptySys">
+    <img alt="Github stars" src="https://img.shields.io/github/stars/hitesh22rana/Optysys.svg?style=social"/>
+</a>
+
+<a href="https://github.com/hitesh22rana/OptySys">
+    <img alt="Github forks" src="https://img.shields.io/github/forks/hitesh22rana/Optysys.svg?style=social"/>
+</a>
+
+<a href="https://github.com/hitesh22rana/OptySys/issues">
+    <img alt="Github issues" src="https://img.shields.io/github/issues/hitesh22rana/Optysys?style=social" />
+</a>
+</div>
+</center>
 
 ## Table of Contents
 

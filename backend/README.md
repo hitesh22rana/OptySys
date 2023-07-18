@@ -85,8 +85,6 @@ This will start all the necessary services, including the backend, MongoDB, and 
 
 You can access the OptySys backend server on `http://localhost:8000`.
 
-```
-
 Make sure to replace `<MONGODB_URI>`, `<email>`, `<password>`, `<bard_token>`, `<redis_host_url>`, `<redis_port>`, and `<redis_password>` with the actual values corresponding to your setup.
 
 Let me know if you need any further assistance!
