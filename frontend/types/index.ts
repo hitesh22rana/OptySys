@@ -1,2 +1,2 @@
-import { FormData } from "./common";
+import { FormData, WrapperProps } from "./common";
 import { LoginData, RegisterData, VerifyData } from "./auth";

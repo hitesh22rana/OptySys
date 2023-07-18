@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import FormWrapper from "@/components/FormWrapper";
+import FormWrapper from "@/components/auth/FormWrapper";
 
 import { toast } from "react-toastify";
 
