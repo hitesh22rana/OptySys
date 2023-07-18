@@ -11,7 +11,6 @@
 - [About](#about)
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
-  - [To set up OptySys locally, follow these steps:-](#to-set-up-optysys-locally-follow-these-steps-)
 - [Contributing](#contributing)
 - [License](#license)
 
