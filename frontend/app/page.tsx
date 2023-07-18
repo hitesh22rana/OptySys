@@ -1,7 +1,10 @@
+import Navbar from "@/components/Navbar";
+import Wrapper from "@/components/Wrapper";
+
 export default function Home() {
   return (
-    <div>
-      <h1>OptySys</h1>
-    </div>
+    <Wrapper>
+      <Navbar />
+    </Wrapper>
   );
 }

@@ -1,11 +1,12 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
+import "@/styles/globals.css";
+import { Open_Sans } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const openSans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata = {
   title: "OptySys",
-  description: "Opportunity management system",
+  description:
+    "Streamlining opportunities with efficient matching and automation",
 };
 
 export default function RootLayout({
@@ -15,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={openSans.className}>{children}</body>
     </html>
   );
 }
