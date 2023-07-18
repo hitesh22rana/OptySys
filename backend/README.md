@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ## Running the backend
 
-After activating the virtual environment, you need to add environment variables. To do so, create a file named `.env` in the root directory of the project and add the following environment variables:
+After activating the virtual environment, you need to add environment variables. To do so, create a file named `.env` under the backend directory of the project and add the following environment variables:
 
 **Note: Important Consideration**
 
