@@ -57,6 +57,7 @@ BARD_TOKEN="<bard_token>"
 REDIS_HOST="<redis_host_url>"
 REDIS_PORT="<redis_port>"
 REDIS_PASSWORD="<redis_password>"
+ALLOWED_ORIGINS='["http://localhost:3000"]'
 ```
 
 If you are using Redis locally, set the `REDIS_HOST` to `localhost`. If you want to run Redis using Docker, use the following command to start Redis on port `6379:6379`:
