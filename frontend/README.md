@@ -2,21 +2,31 @@
 
 The frontend of OptySys is built using Next.js.
 
+## Installation
+
 To set up the frontend locally, follow these steps:
 
-1. Install the necessary dependencies:
+Install the necessary dependencies:
 
 ```shell
 npm install
 ```
 
-2. Start the development server:
+## Running the frontend
+
+Create a file named `.env` under the frontend directory of the project and add the following environment variables:
+
+```env
+NEXT_PUBLIC_API_BASE_URL="http://localhost:8000/api/v1"
+```
+
+Start the development server:
 
 ```shell
 npm run dev
 ```
 
-3. Open your web browser and visit `http://localhost:3000` to access the OptySys frontend.
+Open your web browser and visit `http://localhost:3000` to access the OptySys frontend.
 
 ## Structure
 
