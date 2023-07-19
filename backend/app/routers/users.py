@@ -12,6 +12,25 @@ router = APIRouter(
 )
 
 """
+    Get method for retrieving a user.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: User
+"""
+
+
+@router.get("", response_description="Get a user")
+async def get_current_user(request: Request):
+    current_user = request.scope["current_user"]
+    return await Users().get_current_user(current_user)
+
+
+"""
     Update method for registering a new user.
 
     Raises:
@@ -25,7 +44,7 @@ router = APIRouter(
 
 
 @router.put("", response_description="Update a user")
-async def update(request: Request, user_details: UserUpdateRequestSchema):
+async def update_user(request: Request, user_details: UserUpdateRequestSchema):
     current_user = request.scope["current_user"]
     return await Users().update_user(current_user, user_details)
 
@@ -44,7 +63,7 @@ async def update(request: Request, user_details: UserUpdateRequestSchema):
 
 
 @router.delete("", response_description="Delete a user")
-async def delete(request: Request):
+async def delete_user(request: Request):
     current_user = request.scope["current_user"]
     return await Users().delete_user(current_user)
 

@@ -140,7 +140,7 @@ class Users:
             await MongoDBConnector().disconnect()
 
     @classmethod
-    async def create_user(cls, payload: UserVerifyRequestSchema):
+    async def verify_user(cls, payload: UserVerifyRequestSchema):
         await cls.__initiate_db()
 
         user_details = payload.user_details
@@ -218,7 +218,7 @@ class Users:
             await MongoDBConnector().disconnect()
 
     @classmethod
-    async def get_user(cls, user_details: UserLoginRequestSchema):
+    async def login_user(cls, user_details: UserLoginRequestSchema):
         await cls.__initiate_db()
 
         try:

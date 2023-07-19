@@ -34,7 +34,7 @@ router = APIRouter(
     response_description="Register a new user",
     dependencies=[Depends(RateLimiter(times=5, seconds=60))],
 )
-async def register(
+async def register_user(
     background_tasks: BackgroundTasks, user: UserRegisterRequestSchema = Body(...)
 ):
     return await Users().register_user(background_tasks, user)
@@ -54,8 +54,8 @@ async def register(
 
 
 @router.post("/verify", response_description="Verify and sign up a new user")
-async def verify(payload: UserVerifyRequestSchema = Body(...)):
-    return await Users().create_user(payload)
+async def verify_user(payload: UserVerifyRequestSchema = Body(...)):
+    return await Users().verify_user(payload)
 
 
 """
@@ -72,8 +72,8 @@ async def verify(payload: UserVerifyRequestSchema = Body(...)):
 
 
 @router.post("/login", response_description="Login a user")
-async def login(user: UserLoginRequestSchema = Body(...)):
-    return await Users().get_user(user)
+async def login_user(user: UserLoginRequestSchema = Body(...)):
+    return await Users().login_user(user)
 
 
 """
@@ -90,5 +90,5 @@ async def login(user: UserLoginRequestSchema = Body(...)):
 
 
 @router.post("/logout", response_description="Logout a user")
-async def logout():
+async def logout_user():
     return await Users().logout_user()
