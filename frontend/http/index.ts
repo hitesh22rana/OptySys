@@ -11,6 +11,10 @@ const api = axios.create({
   },
 });
 
+function setAuthorizationHeader(accessToken: string) {
+  api.defaults.headers["Authorization"] = accessToken;
+}
+
 // all auth routes
 export const register = (data: RegisterData): Promise<any> =>
   api.post("/auth/register", data);
@@ -18,4 +22,17 @@ export const verify = (data: VerifyData): Promise<any> =>
   api.post("/auth/verify", data);
 export const login = (data: LoginData): Promise<any> =>
   api.post("/auth/login", data);
-export const logout = (): Promise<any> => api.post("/auth/logout");
+export const logout = (accessToken: string): Promise<any> => {
+  setAuthorizationHeader(accessToken);
+  return (async () => {
+    api.post("/auth/logout");
+  })();
+};
+
+// all user routes
+export const getUser = (accessToken: string): Promise<any> => {
+  setAuthorizationHeader(accessToken);
+  return (async () => {
+    return api.get("/users");
+  })();
+};

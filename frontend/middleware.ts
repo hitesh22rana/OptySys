@@ -6,10 +6,17 @@ export const config = {
 };
 
 export function middleware(request: NextRequest) {
-  const isAccessTokenPresent = request.cookies.has("access_token");
+  const accessToken =
+    request.cookies.get("access_token")?.value.toString() ?? "";
 
-  if (!isAccessTokenPresent && !isPublicRoute(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  const isAccessTokenPresent = accessToken !== "";
+
+  if (!isAccessTokenPresent) {
+    if (!isPublicRoute(request.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    return NextResponse.next();
   }
 
   if (isAccessTokenPresent && isPublicRoute(request.nextUrl.pathname)) {

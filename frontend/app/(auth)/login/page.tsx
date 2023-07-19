@@ -1,18 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import FormWrapper from "@/components/auth/FormWrapper";
-
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import { FormData } from "@/types/common";
 import { login } from "@/http";
 
+import useUserStore from "@/stores/user";
+
+import FormWrapper from "@/components/auth/FormWrapper";
+
 export default function Home() {
+  const { setUser } = useUserStore();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
+
+  const router = useRouter();
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,8 +34,10 @@ export default function Home() {
     }
 
     try {
-      const { data } = await login(formData);
-      console.log(data);
+      const { data } = await Promise.resolve(await login(formData));
+      setUser(data);
+      toast.success("Successfully logged in");
+      router.push("/dashboard");
     } catch (err) {
       toast.error("Invalid credentials");
     }
