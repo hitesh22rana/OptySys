@@ -25,9 +25,9 @@ router = APIRouter(
 
 
 @router.get("", response_description="Get a user")
-async def get_current_user(request: Request):
+async def get_user(request: Request):
     current_user = request.scope["current_user"]
-    return await Users().get_current_user(current_user)
+    return await Users().get_user(current_user)
 
 
 """

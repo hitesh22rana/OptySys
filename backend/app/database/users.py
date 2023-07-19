@@ -282,8 +282,65 @@ class Users:
         return response
 
     @classmethod
+    async def _get_user_by_id(cls, user_id: str) -> UserResponseSchema:
+        await cls.__initiate_db()
+
+        try:
+            user = await cls.db[cls.name].find_one({"_id": user_id})
+
+            if user is None:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
+                )
+
+            return user
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            raise e
+
+        finally:
+            await MongoDBConnector().disconnect()
+
+    @classmethod
+    async def get_user(cls, current_user):
+        validate_object_id_fields(current_user)
+
+        try:
+            user = await cls._get_user_by_id(current_user)
+
+            response = UserResponseSchema(user).response()
+
+            return response
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+    @classmethod
     async def update_user(cls, current_user, user_details: UserUpdateRequestSchema):
         await cls.__initiate_db()
+
+        validate_object_id_fields(current_user)
 
         try:
             user = await cls.db[cls.name].find_one_and_update(
@@ -323,48 +380,10 @@ class Users:
             await MongoDBConnector().disconnect()
 
     @classmethod
-    async def _get_user_by_id(cls, user_id: str) -> UserResponseSchema:
-        await cls.__initiate_db()
-
-        try:
-            user = await cls.db[cls.name].find_one({"_id": user_id})
-
-            if user is None:
-                raise Exception(
-                    {
-                        "status_code": status.HTTP_404_NOT_FOUND,
-                        "detail": "Error: User not found",
-                    }
-                )
-
-            response = UserResponseSchema(user).response()
-
-            return response
-
-        except ConnectionFailure:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Error: Database connection error",
-            )
-
-        except Exception as e:
-            raise e
-
-        finally:
-            await MongoDBConnector().disconnect()
-
-    @classmethod
     async def is_authorized_user(cls, user_id: str):
+        validate_object_id_fields(user_id)
         try:
             user = await cls._get_user_by_id(user_id)
-
-            if user is None:
-                raise Exception(
-                    {
-                        "status_code": status.HTTP_404_NOT_FOUND,
-                        "detail": "Error: User not found",
-                    }
-                )
 
             if not bool(user["activated"]):
                 raise Exception(
