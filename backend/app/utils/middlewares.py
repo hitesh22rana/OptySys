@@ -54,8 +54,16 @@ def authentication_handler(access_token: str):
                 }
             )
 
-        bearer_token = access_token.split(" ")[1]
-        data = JwtTokenHandler().decode(bearer_token)
+        bearer_token = access_token.split(" ")
+        if len(bearer_token) != 2:
+            raise Exception(
+                {
+                    "status_code": status.HTTP_401_UNAUTHORIZED,
+                    "detail": "Error: Please login to access this resource.",
+                }
+            )
+
+        data = JwtTokenHandler().decode(bearer_token[1])
 
         current_user = data["user_id"]
 
