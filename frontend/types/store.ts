@@ -2,8 +2,9 @@ import { IUserActivated } from "./user";
 
 export interface IUserActivatedStore {
   user: IUserActivated;
-  token: string;
+  accessToken: string;
 
   setUser(user: IUserActivated): void;
-  setToken(token: string): void;
+  setAccessToken(accessToken: string): void;
+  logoutUser(): void;
 }

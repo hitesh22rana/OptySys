@@ -1,34 +1,40 @@
 "use client";
 
 import { useEffect } from "react";
-import { WrapperProps } from "@/types/common";
+import { useRouter } from "next/navigation";
+
+import { toast } from "react-toastify";
 
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 
-import { getUser } from "@/http";
-import { normalizeAccessToken } from "@/lib/helpers";
 import useUserStore from "@/stores/user";
 
-export default function DashboardWrapper({
-  accessToken,
-  children,
-}: WrapperProps) {
-  const { token, setUser, setToken } = useUserStore();
+import { WrapperProps } from "@/types/common";
+import { deleteCookie, getAccessToken } from "@/app/(actions)/common";
+import { getUser } from "@/http";
+
+export default function DashboardWrapper({ children }: WrapperProps) {
+  const router = useRouter();
+  const { setUser, setAccessToken, logoutUser } = useUserStore();
 
   useEffect(() => {
     const fetchData = async () => {
-      setToken(normalizeAccessToken(accessToken));
+      const accessToken = await getAccessToken();
+      setAccessToken(accessToken);
 
       try {
-        const { data } = await Promise.resolve(await getUser(token));
+        const { data } = await Promise.resolve(await getUser(accessToken));
         setUser(data);
       } catch (err) {
-        console.log(err);
+        toast.error("Session expired");
+        logoutUser();
+        await deleteCookie("access_token");
+        router.push("/login");
       }
     };
     fetchData();
-  }, []);
+  }, [setUser, setAccessToken, logoutUser, router]);
 
   return (
     <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">

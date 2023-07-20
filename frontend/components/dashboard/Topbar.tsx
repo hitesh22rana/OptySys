@@ -4,21 +4,22 @@ import { useRouter } from "next/navigation";
 
 import { logout } from "@/http";
 import useUserStore from "@/stores/user";
+
 import { toast } from "react-toastify";
 
 export default function Topbar() {
   const router = useRouter();
 
-  const { token } = useUserStore();
+  const { accessToken, logoutUser } = useUserStore();
 
   async function handleLogout() {
     try {
-      await Promise.resolve(await logout(token));
+      await Promise.resolve(await logout(accessToken));
+      logoutUser();
       toast.success("Logout successfully");
+      router.push("/");
     } catch (err) {
       toast.error("Logout failed");
-    } finally {
-      router.push("/");
     }
   }
 

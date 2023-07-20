@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import DashboardWrapper from "@/components/dashboard/DashboardWrapper";
 
 export default async function RootLayout({
@@ -6,10 +5,5 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get("access_token")?.value ?? "";
-
-  return (
-    <DashboardWrapper accessToken={accessToken}>{children}</DashboardWrapper>
-  );
+  return <DashboardWrapper>{children}</DashboardWrapper>;
 }

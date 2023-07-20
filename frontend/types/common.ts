@@ -6,6 +6,5 @@ export interface FormData {
 }
 
 export interface WrapperProps {
-  accessToken: string;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
