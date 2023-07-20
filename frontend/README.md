@@ -18,6 +18,7 @@ Create a file named `.env` under the frontend directory of the project and add t
 
 ```env
 NEXT_PUBLIC_API_BASE_URL="http://localhost:8000/api/v1"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 ```
 
 Start the development server:
