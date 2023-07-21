@@ -39,6 +39,5 @@ export interface RegisterFormData {
   verifyPassword: string;
   showPassword: boolean;
   showVerifyPassword: boolean;
-  otp: string;
   token: string;
 }

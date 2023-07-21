@@ -1,8 +1,10 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import OtpInput from "react-otp-input";
 
 import FormWrapper from "@/components/auth/FormWrapper";
 
@@ -10,8 +12,8 @@ import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
 import { RegisterFormData } from "@/types/auth";
-import { register } from "@/http";
-import { RegisterFormProps } from "@/types/common";
+import { register, verify } from "@/http";
+import { RegisterFormProps, VerifyFormProps } from "@/types/common";
 
 function Register({
   formData,
@@ -104,7 +106,7 @@ function Register({
           <span>Already have an account?</span>
           <Link
             href="/login"
-            className="text-blue-500 underline underline-offset-2"
+            className="text-blue-500 underline underline-offset-2 "
           >
             Login
           </Link>
@@ -114,14 +116,40 @@ function Register({
   );
 }
 
-function Verify({ formData, onChange, onSubmit }: any) {
+function Verify({ onSubmit }: VerifyFormProps) {
+  const [otp, setOtp] = useState<string>("");
+
   return (
     <FormWrapper
       title="Verify"
       subtitle="Enter the OTP sent to your email"
-      onSubmit={onSubmit}
+      onSubmit={(e) => onSubmit(e, otp)}
     >
-      <div></div>
+      <OtpInput
+        value={otp}
+        numInputs={6}
+        onChange={setOtp}
+        renderInput={(props) => <input {...props} />}
+        shouldAutoFocus={true}
+        inputType="number"
+        containerStyle={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          gap: "1rem",
+        }}
+        inputStyle={{
+          width: "100%",
+          border: "none",
+          outline: "none",
+          fontSize: "1.5rem",
+          color: "rgb(3, 7, 18)",
+          backgroundColor: "rgb(246, 247, 249)",
+          padding: "0.5rem",
+        }}
+      />
     </FormWrapper>
   );
 }
@@ -130,6 +158,8 @@ export default function Home() {
   const [formData, setFormData] = useState<RegisterFormData>(
     {} as RegisterFormData
   );
+
+  const router = useRouter();
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -170,8 +200,37 @@ export default function Home() {
     }
   }
 
-  async function verify(e: React.FormEvent<HTMLFormElement>) {
+  async function verifyUser(e: React.FormEvent<HTMLFormElement>, otp: string) {
     e.preventDefault();
+
+    // checks for formdata
+    if (!otp) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (otp.length !== 6) {
+      toast.error("OTP must be 6 digits");
+      return;
+    }
+
+    try {
+      const { data } = await Promise.resolve(
+        await verify({
+          user_details: {
+            email: formData.email,
+            password: formData.password,
+            name: formData.name,
+          },
+          otp: otp,
+          token: formData.token,
+        })
+      );
+      console.log(data);
+      router.push("/dashboard");
+    } catch (err) {
+      toast.error("Invalid OTP");
+    }
   }
 
   return (
@@ -184,7 +243,7 @@ export default function Home() {
           onSubmit={registerUser}
         />
       ) : (
-        <Verify formData={formData} onChange={onChange} onSubmit={verify} />
+        <Verify onSubmit={verifyUser} />
       )}
     </Fragment>
   );

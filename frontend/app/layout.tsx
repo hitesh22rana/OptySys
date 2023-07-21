@@ -27,9 +27,9 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} />
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={2000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss

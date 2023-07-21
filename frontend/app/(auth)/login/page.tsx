@@ -61,7 +61,7 @@ export default function Home() {
             name="email"
             type="email"
             placeholder="Enter email"
-            className="outline-none border-[1px] px-2 py-3 rounded focus:border-gray-400 w-full h-full pl-10 text-gray-500 pr-4"
+            className="outline-none border-[1px] px-10 py-3 rounded focus:border-gray-400 w-full h-full text-gray-500"
             onChange={onChange}
           />
         </div>

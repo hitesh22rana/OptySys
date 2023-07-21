@@ -10,3 +10,7 @@ export interface RegisterFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
+
+export interface VerifyFormProps {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>, otp: string) => Promise<void>;
+}
