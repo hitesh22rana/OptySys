@@ -2,25 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 import FormWrapper from "@/components/auth/FormWrapper";
 
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { BiKey, BiLock } from "react-icons/bi";
+import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
 import { RegisterFormData } from "@/types/auth";
 
 export default function Home() {
-  const [formData, setFormData] = useState<RegisterFormData>({
-    name: "",
-    email: "",
-    password: "",
-    verifyPassword: "",
-    showPassword: false,
-    showVerifyPassword: false,
-    otp: "",
-    token: "",
-  });
+  const [formData, setFormData] = useState<RegisterFormData>(
+    {} as RegisterFormData
+  );
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +22,22 @@ export default function Home() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    // checks for formdata
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.verifyPassword
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (formData.password !== formData.verifyPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
   }
 
   function setShowPassword() {
@@ -48,6 +58,17 @@ export default function Home() {
       onSubmit={onSubmit}
     >
       <div className="flex flex-col sm:gap-3 gap-2 w-full">
+        <div className="relative w-full h-full">
+          <BiUser className="absolute text-2xl top-3 left-2 text-gray-400" />
+          <input
+            name="name"
+            type="text"
+            placeholder="Enter name"
+            className="outline-none border-[1px] px-2 py-3 rounded focus:border-gray-400 w-full h-full pl-10 text-gray-500 pr-4"
+            onChange={onChange}
+          />
+        </div>
+
         <div className="relative w-full h-full">
           <MdOutlineEmail className="absolute text-2xl top-3 left-2 text-gray-400" />
           <input

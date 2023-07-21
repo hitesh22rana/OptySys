@@ -17,11 +17,7 @@ import useUserStore from "@/stores/user";
 
 export default function Home() {
   const { setUser } = useUserStore();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-    showPassword: false,
-  });
+  const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
 
   const router = useRouter();
 
@@ -33,7 +29,7 @@ export default function Home() {
     e.preventDefault();
 
     // checks for formdata
-    if (formData.email === "" || formData.password === "") {
+    if (!formData.email || !formData.password) {
       toast.error("Please fill in all fields");
       return;
     }
