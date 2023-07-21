@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
-import { LoginFormData } from "@/types/common";
-import { login } from "@/http";
-
-import useUserStore from "@/stores/user";
+import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { BiKey } from "react-icons/bi";
 
 import FormWrapper from "@/components/auth/FormWrapper";
 
-import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { BiKey } from "react-icons/bi";
+import { LoginFormData } from "@/types/auth";
+import { login } from "@/http";
+
+import useUserStore from "@/stores/user";
 
 export default function Home() {
   const { setUser } = useUserStore();
@@ -58,7 +58,7 @@ export default function Home() {
       subtitle="Login to manage your account"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col sm:gap-3 gap-2 w-full">
         <div className="relative w-full h-full">
           <MdOutlineEmail className="absolute text-2xl top-3 left-2 text-gray-400" />
           <input
