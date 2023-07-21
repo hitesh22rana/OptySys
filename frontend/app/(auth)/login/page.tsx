@@ -44,8 +44,8 @@ export default function Home() {
     }
   }
 
-  function setShowPassword() {
-    setFormData({ ...formData, showPassword: !formData.showPassword });
+  function setShowPassword(name: string) {
+    setFormData({ ...formData, [name]: !formData[name] });
   }
 
   return (
@@ -79,13 +79,13 @@ export default function Home() {
           {formData.showPassword ? (
             <MdVisibility
               name="showPassword"
-              onClick={setShowPassword}
+              onClick={() => setShowPassword("showPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showPassword"
-              onClick={setShowPassword}
+              onClick={() => setShowPassword("showPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           )}

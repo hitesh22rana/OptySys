@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
@@ -10,47 +10,15 @@ import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
 import { RegisterFormData } from "@/types/auth";
+import { register } from "@/http";
+import { RegisterFormProps } from "@/types/common";
 
-export default function Home() {
-  const [formData, setFormData] = useState<RegisterFormData>(
-    {} as RegisterFormData
-  );
-
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    // checks for formdata
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.verifyPassword
-    ) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    if (formData.password !== formData.verifyPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-  }
-
-  function setShowPassword() {
-    setFormData({ ...formData, showPassword: !formData.showPassword });
-  }
-
-  function setShowVerifyPassword() {
-    setFormData({
-      ...formData,
-      showVerifyPassword: !formData.showVerifyPassword,
-    });
-  }
-
+function Register({
+  formData,
+  setShowPassword,
+  onChange,
+  onSubmit,
+}: RegisterFormProps) {
   return (
     <FormWrapper
       title="Register"
@@ -93,13 +61,13 @@ export default function Home() {
           {formData.showPassword ? (
             <MdVisibility
               name="showPassword"
-              onClick={setShowPassword}
+              onClick={() => setShowPassword("showPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showPassword"
-              onClick={setShowPassword}
+              onClick={() => setShowPassword("showPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           )}
@@ -118,13 +86,13 @@ export default function Home() {
           {formData.showVerifyPassword ? (
             <MdVisibility
               name="showVerifyPassword"
-              onClick={setShowVerifyPassword}
+              onClick={() => setShowPassword("showVerifyPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showVerifyPassword"
-              onClick={setShowVerifyPassword}
+              onClick={() => setShowPassword("showVerifyPassword")}
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           )}
@@ -143,5 +111,81 @@ export default function Home() {
         </div>
       </div>
     </FormWrapper>
+  );
+}
+
+function Verify({ formData, onChange, onSubmit }: any) {
+  return (
+    <FormWrapper
+      title="Verify"
+      subtitle="Enter the OTP sent to your email"
+      onSubmit={onSubmit}
+    >
+      <div></div>
+    </FormWrapper>
+  );
+}
+
+export default function Home() {
+  const [formData, setFormData] = useState<RegisterFormData>(
+    {} as RegisterFormData
+  );
+
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function setShowPassword(name: string) {
+    setFormData({ ...formData, [name]: !formData[name] });
+  }
+
+  async function registerUser(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // checks for formdata
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.verifyPassword
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (formData.password !== formData.verifyPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      const { data } = await Promise.resolve(await register(formData));
+      setFormData({
+        ...formData,
+        token: data.token,
+      });
+      toast.success("OTP sent successfully");
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  }
+
+  async function verify(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+  }
+
+  return (
+    <Fragment>
+      {!formData.token ? (
+        <Register
+          formData={formData}
+          setShowPassword={setShowPassword}
+          onChange={onChange}
+          onSubmit={registerUser}
+        />
+      ) : (
+        <Verify formData={formData} onChange={onChange} onSubmit={verify} />
+      )}
+    </Fragment>
   );
 }
