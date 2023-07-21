@@ -1,11 +1,14 @@
 import "@/styles/globals.css";
-import { Open_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 
 import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const openSans = Open_Sans({ subsets: ["latin"] });
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "OptySys",
@@ -20,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={openSans.className}>
+      <body className={poppins.className}>
         <NextTopLoader showSpinner={false} />
         <ToastContainer
           position="top-center"

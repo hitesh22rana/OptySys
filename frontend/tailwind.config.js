@@ -5,8 +5,11 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    screens: {
-      "3xl": "2000px",
-    },
+    extend: {
+      screens: {
+        '3xl': '2000px'
+      }
+    }
   },
+  plugins: []
 }

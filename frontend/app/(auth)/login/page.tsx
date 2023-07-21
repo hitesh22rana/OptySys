@@ -4,18 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { FormData } from "@/types/common";
+import { LoginFormData } from "@/types/common";
 import { login } from "@/http";
 
 import useUserStore from "@/stores/user";
 
 import FormWrapper from "@/components/auth/FormWrapper";
 
+import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { BiKey } from "react-icons/bi";
+
 export default function Home() {
   const { setUser } = useUserStore();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
+    showPassword: false,
   });
 
   const router = useRouter();
@@ -43,6 +47,10 @@ export default function Home() {
     }
   }
 
+  function setShowPassword() {
+    setFormData({ ...formData, showPassword: !formData.showPassword });
+  }
+
   return (
     <FormWrapper
       title="Login"
@@ -50,21 +58,41 @@ export default function Home() {
       onSubmit={onSubmit}
     >
       <div className="flex flex-col gap-4 w-full">
-        <input
-          name="email"
-          type="email"
-          placeholder="Enter email"
-          className="outline-none border-2 p-2 rounded"
-          onChange={onChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Enter password"
-          className="outline-none border-2 p-2 rounded"
-          minLength={3}
-          onChange={onChange}
-        />
+        <div className="relative w-full h-full">
+          <MdOutlineEmail className="absolute text-2xl top-3 left-2 text-gray-400" />
+          <input
+            name="email"
+            type="email"
+            placeholder="Enter email"
+            className="outline-none border-[1px] px-2 py-3 rounded focus:border-gray-400 w-full h-full pl-10 text-gray-500 pr-4"
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="relative w-full h-full">
+          <BiKey className="absolute text-3xl top-2 left-2 text-gray-400" />
+          <input
+            name="password"
+            type={formData.showPassword ? "text" : "password"}
+            placeholder="Enter password"
+            className="outline-none border-[1px] px-10 py-3 rounded focus:border-gray-400 w-full h-full text-gray-500"
+            minLength={3}
+            onChange={onChange}
+          />
+          {formData.showPassword ? (
+            <MdVisibility
+              name="showPassword"
+              onClick={setShowPassword}
+              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+            />
+          ) : (
+            <MdVisibilityOff
+              name="showPassword"
+              onClick={setShowPassword}
+              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+            />
+          )}
+        </div>
       </div>
     </FormWrapper>
   );
