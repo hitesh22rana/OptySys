@@ -27,36 +27,36 @@ function Register({
       subtitle="Create your account and let the fun begin!"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col sm:gap-3 gap-2 w-full">
+      <div className="flex flex-col gap-[10px] w-full">
         <div className="relative w-full h-full">
-          <BiUser className="absolute text-2xl top-3 left-2 text-gray-400" />
+          <BiUser className="absolute text-xl top-3 left-2 text-gray-400" />
           <input
             name="name"
             type="text"
             placeholder="Enter name"
-            className="outline-none border-[1px] px-2 py-3 rounded focus:border-gray-400 w-full h-full pl-10 text-gray-500 pr-4"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
 
         <div className="relative w-full h-full">
-          <MdOutlineEmail className="absolute text-2xl top-3 left-2 text-gray-400" />
+          <MdOutlineEmail className="absolute text-xl top-3 left-2 text-gray-400" />
           <input
             name="email"
             type="email"
             placeholder="Enter email"
-            className="outline-none border-[1px] px-2 py-3 rounded focus:border-gray-400 w-full h-full pl-10 text-gray-500 pr-4"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
 
         <div className="relative w-full h-full">
-          <BiKey className="absolute text-3xl top-2 left-2 text-gray-400" />
+          <BiKey className="absolute text-2xl top-[11px] left-2 text-gray-400" />
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-10 py-3 rounded focus:border-gray-400 w-full h-full text-gray-500"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             minLength={3}
             onChange={onChange}
           />
@@ -64,24 +64,24 @@ function Register({
             <MdVisibility
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           )}
         </div>
 
         <div className="relative w-full h-full">
-          <BiLock className="absolute text-2xl top-3 left-2 text-gray-400" />
+          <BiLock className="absolute text-xl top-3 left-2 text-gray-400" />
           <input
             name="verifyPassword"
             type={formData.showVerifyPassword ? "text" : "password"}
             placeholder="Confirm password"
-            className="outline-none border-[1px] px-10 py-3 rounded focus:border-gray-400 w-full h-full text-gray-500"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             minLength={3}
             onChange={onChange}
           />
@@ -89,13 +89,13 @@ function Register({
             <MdVisibility
               name="showVerifyPassword"
               onClick={() => setShowPassword("showVerifyPassword")}
-              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showVerifyPassword"
               onClick={() => setShowPassword("showVerifyPassword")}
-              className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
+              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           )}
         </div>
