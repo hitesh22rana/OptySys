@@ -71,6 +71,6 @@ OptySys is licensed under the [MIT License](LICENSE.md)
 
 ## Contributors 👥                                           
 <a href="https://github.com/hitesh22rana/OptySys/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=hitesh22rana/OptySys" />
+  <img src="https://contrib.rocks/image?repo=hitesh22rana/OptySys&all=true" />
 </a>
 
