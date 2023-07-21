@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "react-toastify";
 
 import { LoginFormData } from "@/types/common";
@@ -92,6 +93,18 @@ export default function Home() {
               className="cursor-pointer absolute text-2xl top-3 right-2 text-gray-400"
             />
           )}
+        </div>
+      </div>
+
+      <div className="text-gray-500 absolute -bottom-10 flex flex-col items-center justify-start gap-4 w-full">
+        <div className="flex flex-row gap-2  text-sm">
+          <span>Don&apos;t have an account?</span>
+          <Link
+            href="/register"
+            className="text-blue-500 underline underline-offset-2"
+          >
+            Register
+          </Link>
         </div>
       </div>
     </FormWrapper>
