@@ -5,6 +5,7 @@ export interface WrapperProps {
 }
 
 export interface RegisterFormProps {
+  error: string | null;
   formData: RegisterFormData;
   setShowPassword: (value: string) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

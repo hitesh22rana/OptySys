@@ -3,19 +3,22 @@
 import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import OtpInput from "react-otp-input";
-
-import FormWrapper from "@/components/auth/FormWrapper";
-
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
+
+import FormWrapper from "@/components/auth/FormWrapper";
 
 import { RegisterFormData } from "@/types/auth";
 import { register, verify } from "@/http";
 import { RegisterFormProps, VerifyFormProps } from "@/types/common";
+import { getRegisterFormErrors } from "@/utils/errors";
 
 function Register({
+  error,
   formData,
   setShowPassword,
   onChange,
@@ -57,7 +60,6 @@ function Register({
             type={formData.showPassword ? "text" : "password"}
             placeholder="Enter password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
-            minLength={3}
             onChange={onChange}
           />
           {formData.showPassword ? (
@@ -78,27 +80,28 @@ function Register({
         <div className="relative w-full h-full">
           <BiLock className="absolute text-xl top-3 left-2 text-gray-400" />
           <input
-            name="verifyPassword"
-            type={formData.showVerifyPassword ? "text" : "password"}
+            name="confirmPassword"
+            type={formData.showConfirmPassword ? "text" : "password"}
             placeholder="Confirm password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
-            minLength={3}
             onChange={onChange}
           />
-          {formData.showVerifyPassword ? (
+          {formData.showConfirmPassword ? (
             <MdVisibility
-              name="showVerifyPassword"
-              onClick={() => setShowPassword("showVerifyPassword")}
+              name="showConfirmPassword"
+              onClick={() => setShowPassword("showConfirmPassword")}
               className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           ) : (
             <MdVisibilityOff
-              name="showVerifyPassword"
-              onClick={() => setShowPassword("showVerifyPassword")}
+              name="showConfirmPassword"
+              onClick={() => setShowPassword("showConfirmPassword")}
               className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
             />
           )}
         </div>
+
+        <span className="text-red-500 text-xs h-0">{error}</span>
       </div>
 
       <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
@@ -145,6 +148,7 @@ function Verify({ onSubmit }: VerifyFormProps) {
           border: "none",
           outline: "none",
           fontSize: "1.5rem",
+          borderRadius: "0.4rem",
           color: "rgb(3, 7, 18)",
           backgroundColor: "rgb(246, 247, 249)",
           padding: "0.5rem",
@@ -160,9 +164,63 @@ export default function Home() {
   const [formData, setFormData] = useState<RegisterFormData>(
     {} as RegisterFormData
   );
+  const [error, setError] = useState<string | null>(null);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const name: string = e.target.name;
+    const value: string = e.target.value;
+
+    setFormData({ ...formData, [name]: value });
+
+    let userName;
+    let email;
+    let password;
+    let confirmPassword;
+
+    switch (name) {
+      case "name":
+        userName = value;
+        email = formData.email;
+        password = formData.password;
+        confirmPassword = formData.confirmPassword;
+        break;
+
+      case "email":
+        userName = formData.name;
+        email = value;
+        password = formData.password;
+        confirmPassword = formData.confirmPassword;
+        break;
+
+      case "password":
+        userName = formData.name;
+        email = formData.email;
+        password = value;
+        confirmPassword = formData.confirmPassword;
+        break;
+
+      case "confirmPassword":
+        userName = formData.name;
+        email = formData.email;
+        password = formData.password;
+        confirmPassword = value;
+        break;
+
+      default:
+        userName = formData.name;
+        email = formData.email;
+        password = formData.password;
+        confirmPassword = formData.confirmPassword;
+    }
+
+    const errorMessage = getRegisterFormErrors(
+      userName,
+      email,
+      password,
+      confirmPassword
+    );
+
+    setError(errorMessage);
   }
 
   function setShowPassword(name: string) {
@@ -173,18 +231,15 @@ export default function Home() {
     e.preventDefault();
 
     // checks for formdata
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.verifyPassword
-    ) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+    const errorMessage = getRegisterFormErrors(
+      formData.name,
+      formData.email,
+      formData.password,
+      formData.confirmPassword
+    );
 
-    if (formData.password !== formData.verifyPassword) {
-      toast.error("Passwords do not match");
+    if (errorMessage) {
+      toast.error(errorMessage);
       return;
     }
 
@@ -194,9 +249,15 @@ export default function Home() {
         ...formData,
         token: data.token,
       });
-      toast.success("OTP sent successfully");
-    } catch (err) {
-      toast.error("Something went wrong");
+      toast.success("OTP sent successfully.");
+    } catch (err: AxiosError | any) {
+      const errorMessage: string | Array<string> = err.response?.data?.detail;
+
+      if (errorMessage) {
+        toast.error(errorMessage);
+        return;
+      }
+      toast.error("Something went wrong.");
     }
   }
 
@@ -204,18 +265,13 @@ export default function Home() {
     e.preventDefault();
 
     // checks for formdata
-    if (!otp) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
     if (otp.length !== 6) {
-      toast.error("OTP must be 6 digits");
+      toast.error("OTP must be 6 digits.");
       return;
     }
 
     try {
-      const { data } = await Promise.resolve(
+      await Promise.resolve(
         await verify({
           user_details: {
             email: formData.email,
@@ -226,10 +282,9 @@ export default function Home() {
           token: formData.token,
         })
       );
-      console.log(data);
       router.push("/dashboard");
     } catch (err) {
-      toast.error("Invalid OTP");
+      toast.error("Invalid OTP.");
     }
   }
 
@@ -237,6 +292,7 @@ export default function Home() {
     <Fragment>
       {!formData.token ? (
         <Register
+          error={error}
           formData={formData}
           setShowPassword={setShowPassword}
           onChange={onChange}

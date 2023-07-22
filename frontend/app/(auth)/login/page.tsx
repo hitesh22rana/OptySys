@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
+import { toast } from "react-toastify";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 
@@ -67,10 +67,10 @@ export default function Home() {
     try {
       const { data } = await Promise.resolve(await login(formData));
       setUser(data);
-      toast.success("Successfully logged in");
+      toast.success("Successfully logged in.");
       router.push("/dashboard");
     } catch (err) {
-      toast.error("Invalid credentials");
+      toast.error("Invalid credentials.");
     }
   }
 
@@ -103,7 +103,6 @@ export default function Home() {
             type={formData.showPassword ? "text" : "password"}
             placeholder="Enter password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
-            minLength={3}
             onChange={onChange}
           />
           {formData.showPassword ? (
@@ -121,7 +120,7 @@ export default function Home() {
           )}
         </div>
 
-        <span className="text-red-500 text-xs h-4">{error}</span>
+        <span className="text-red-500 text-xs h-0">{error}</span>
       </div>
 
       <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">

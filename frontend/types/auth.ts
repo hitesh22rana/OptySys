@@ -36,8 +36,8 @@ export interface RegisterFormData {
   name: string;
   email: string;
   password: string;
-  verifyPassword: string;
+  confirmPassword: string;
   showPassword: boolean;
-  showVerifyPassword: boolean;
+  showConfirmPassword: boolean;
   token: string;
 }
