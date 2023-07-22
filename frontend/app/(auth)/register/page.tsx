@@ -36,6 +36,7 @@ function Register({
           <input
             name="name"
             type="text"
+            value={formData.name}
             placeholder="Enter name"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
@@ -47,6 +48,7 @@ function Register({
           <input
             name="email"
             type="email"
+            value={formData.email}
             placeholder="Enter email"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
@@ -58,6 +60,7 @@ function Register({
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
+            value={formData.password}
             placeholder="Enter password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
@@ -82,6 +85,7 @@ function Register({
           <input
             name="confirmPassword"
             type={formData.showConfirmPassword ? "text" : "password"}
+            value={formData.confirmPassword}
             placeholder="Confirm password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}

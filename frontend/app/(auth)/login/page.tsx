@@ -88,6 +88,7 @@ export default function Home() {
           <input
             name="email"
             type="email"
+            value={formData.email}
             placeholder="Enter email"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
@@ -99,6 +100,7 @@ export default function Home() {
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
+            value={formData.password}
             placeholder="Enter password"
             className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
