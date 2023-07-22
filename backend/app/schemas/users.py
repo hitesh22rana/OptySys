@@ -30,6 +30,7 @@ class UserDetailsSchema(BaseModel):
         ...,
         description="Password of the user",
         min_length=8,
+        max_length=50,
         regex="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%^&*])[a-zA-Z\d@!#$%^&*]{8,}$",
         type="string",
     )
@@ -86,7 +87,7 @@ class UserLoginRequestSchema(BaseModel):
     password: str = Field(
         ...,
         description="Password of the user",
-        min_length=3,
+        min_length=8,
         max_length=50,
         type="string",
     )
