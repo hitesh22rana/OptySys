@@ -1,5 +1,5 @@
-import Navbar from "@/components/common/Navbar";
-import Wrapper from "@/components/common/Wrapper";
+import Navbar from "@/components/home/Navbar";
+import Wrapper from "@/components/home/Wrapper";
 
 export default function Home() {
   return (

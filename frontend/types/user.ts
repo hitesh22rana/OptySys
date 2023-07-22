@@ -14,7 +14,7 @@ interface Experience {
   description: Array<string>;
 }
 
-export interface IUserActivated {
+export interface IUser {
   id: string;
   email: string;
   name: string;

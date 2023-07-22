@@ -1,10 +1,18 @@
-import { IUserActivated } from "./user";
+import { IUser } from "./user";
 
-export interface IUserActivatedStore {
-  user: IUserActivated;
+export interface IUserStore {
+  user: IUser;
   accessToken: string;
 
-  setUser(user: IUserActivated): void;
+  setUser(user: IUser): void;
   setAccessToken(accessToken: string): void;
+  getActivationStatus(): boolean;
+
   logoutUser(): void;
+}
+
+export interface IDashboardStore {
+  isSidebarOpen: boolean;
+
+  toggleSidebar(): void;
 }

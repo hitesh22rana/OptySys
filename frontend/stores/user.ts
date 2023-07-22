@@ -1,16 +1,20 @@
 import { create } from "zustand";
 
-import { IUserActivated } from "@/types/user";
-import { IUserActivatedStore } from "@/types/store";
+import { IUser } from "@/types/user";
+import { IUserStore } from "@/types/store";
 
-const useUserStore = create<IUserActivatedStore>()((set) => ({
-  user: {} as IUserActivated,
+const useUserStore = create<IUserStore>()((set, get) => ({
+  user: {} as IUser,
   accessToken: "" as string,
 
-  setUser: (user: IUserActivated) => set({ user }),
+  setUser: (user: IUser) => set({ user }),
   setAccessToken: (accessToken: string) => set({ accessToken }),
-  logoutUser: () =>
-    set({ user: {} as IUserActivated, accessToken: "" as string }),
+
+  getActivationStatus() {
+    return get().user.activated;
+  },
+
+  logoutUser: () => set({ user: {} as IUser, accessToken: "" as string }),
 }));
 
 export default useUserStore;

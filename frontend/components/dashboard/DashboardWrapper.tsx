@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 
-import useUserStore from "@/stores/user";
+import { useUserStore, useDashboardStore } from "@/stores";
 
 import { WrapperProps } from "@/types/common";
 import { deleteCookie, getAccessToken } from "@/app/(actions)/common";
@@ -17,6 +17,7 @@ import { getUser } from "@/http";
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();
   const { setUser, setAccessToken, logoutUser } = useUserStore();
+  const { isSidebarOpen } = useDashboardStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +40,11 @@ export default function DashboardWrapper({ children }: WrapperProps) {
   return (
     <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
       <Sidebar />
-      <div className="flex flex-col 3xl:max-w-[calc(100%-20rem)] max-w-[calc(100%-16rem)] w-full h-full">
+      <div
+        className={`flex flex-col 3xl:max-w-[calc(100%-20rem)] ease-in-out duration-300 ${
+          isSidebarOpen ? "max-w-[calc(100%-16rem)]" : "max-w-[calc(100%-8rem)]"
+        } w-full h-full py-3 px-10`}
+      >
         <Topbar />
         {children}
       </div>

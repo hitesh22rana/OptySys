@@ -1,6 +1,6 @@
-import Wrapper from "@/components/common/Wrapper";
+import Wrapper from "@/components/home/Wrapper";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
