@@ -1,12 +1,28 @@
-const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+import { isValidEmail, isValidPassword } from "./validators";
 
 function getInvalidEmailError(email: string): string | null {
   if (!email) {
     return "Email cannot be empty.";
   }
 
-  if (!emailRegex.test(email)) {
+  if (!isValidEmail(email)) {
     return "Invalid email format.";
+  }
+
+  return null;
+}
+
+function getInvalidPasswordError(password: string): string | null {
+  if (!password) {
+    return "Password cannot be empty.";
+  }
+
+  if (password.length < 8) {
+    return "Password must be at least 8 characters long.";
+  }
+
+  if (!isValidPassword(password)) {
+    return "Invalid password format.";
   }
 
   return null;
@@ -21,8 +37,9 @@ export function getLoginFormErrors(
     return emailError;
   }
 
-  if (!password) {
-    return "Password cannot be empty.";
+  const passwordError = getInvalidPasswordError(password);
+  if (passwordError) {
+    return passwordError;
   }
 
   return null;

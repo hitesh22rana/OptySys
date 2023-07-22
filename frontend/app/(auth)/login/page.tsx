@@ -57,8 +57,10 @@ export default function Home() {
     e.preventDefault();
 
     // checks for formdata
-    if (!formData.email || !formData.password) {
-      toast.error("Please fill in all fields");
+    const errorMessage = getLoginFormErrors(formData.email, formData.password);
+
+    if (errorMessage) {
+      toast.error(errorMessage);
       return;
     }
 
