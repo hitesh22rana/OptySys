@@ -101,7 +101,7 @@ function Register({
         </div>
       </div>
 
-      <div className="text-gray-500 absolute -bottom-10 flex flex-col items-center justify-start gap-4 w-full">
+      <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
         <div className="flex flex-row gap-2  text-sm">
           <span>Already have an account?</span>
           <Link
@@ -155,11 +155,11 @@ function Verify({ onSubmit }: VerifyFormProps) {
 }
 
 export default function Home() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<RegisterFormData>(
     {} as RegisterFormData
   );
-
-  const router = useRouter();
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });

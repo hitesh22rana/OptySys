@@ -14,15 +14,43 @@ import { LoginFormData } from "@/types/auth";
 import { login } from "@/http";
 
 import useUserStore from "@/stores/user";
+import { getLoginFormErrors } from "@/utils/errors";
 
 export default function Home() {
-  const { setUser } = useUserStore();
-  const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
-
   const router = useRouter();
 
+  const { setUser } = useUserStore();
+  const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
+  const [error, setError] = useState<string | null>(null);
+
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const name: string = e.target.name;
+    const value: string = e.target.value;
+
+    setFormData({ ...formData, [name]: value });
+
+    let email;
+    let password;
+
+    switch (name) {
+      case "email":
+        email = value;
+        password = formData.password;
+        break;
+
+      case "password":
+        email = formData.email;
+        password = value;
+        break;
+
+      default:
+        email = formData.email;
+        password = formData.password;
+    }
+
+    const errorMessage = getLoginFormErrors(email, password);
+
+    setError(errorMessage);
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -90,9 +118,11 @@ export default function Home() {
             />
           )}
         </div>
+
+        <span className="text-red-500 text-xs h-4">{error}</span>
       </div>
 
-      <div className="text-gray-500 absolute -bottom-10 flex flex-col items-center justify-start gap-4 w-full">
+      <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
         <div className="flex flex-row gap-2  text-sm">
           <span>Don&apos;t have an account?</span>
           <Link
