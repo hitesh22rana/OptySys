@@ -37,7 +37,8 @@ class EmailService:
 
         except smtplib.SMTPException as e:
             cls.max_attempts -= 1
-            cls._login()
+            if cls.max_attempts > 0:
+                cls._login()
             logger.error(f"SMTP Error: {e}")
 
         except Exception as e:
