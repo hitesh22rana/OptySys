@@ -64,7 +64,7 @@ export default function Home() {
     }
 
     try {
-      await Promise.resolve(await login(formData));
+      await login(formData);
       toast.success("Successfully logged in.");
       router.push("/dashboard");
     } catch (err: AxiosError | any) {
@@ -90,7 +90,7 @@ export default function Home() {
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -102,7 +102,7 @@ export default function Home() {
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showPassword ? (

@@ -25,7 +25,7 @@ export default function DashboardWrapper({ children }: WrapperProps) {
       setAccessToken(accessToken);
 
       try {
-        const { data } = await Promise.resolve(await getUser(accessToken));
+        const { data } = await getUser(accessToken);
         setUser(data);
       } catch (err) {
         toast.error("Session expired");
@@ -41,8 +41,8 @@ export default function DashboardWrapper({ children }: WrapperProps) {
     <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
       <Sidebar />
       <div
-        className={`flex flex-col 3xl:max-w-[calc(100%-20rem)] ease-in-out duration-300 ${
-          isSidebarOpen ? "max-w-[calc(100%-16rem)]" : "max-w-[calc(100%-8rem)]"
+        className={`flex flex-col 3xl:max-w-[calc(100%-20rem)] min-h-screen ease-in-out duration-300 ${
+          isSidebarOpen ? "max-w-[calc(100%-13rem)]" : "max-w-[calc(100%-6rem)]"
         } w-full h-full py-3 px-10`}
       >
         <Topbar />

@@ -38,7 +38,7 @@ function Register({
             type="text"
             value={formData.name}
             placeholder="Enter name"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -50,7 +50,7 @@ function Register({
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -62,7 +62,7 @@ function Register({
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showPassword ? (
@@ -87,7 +87,7 @@ function Register({
             type={formData.showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             placeholder="Confirm password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-gray-400 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showConfirmPassword ? (
@@ -248,7 +248,7 @@ export default function Home() {
     }
 
     try {
-      const { data } = await Promise.resolve(await register(formData));
+      const { data } = await register(formData);
       setFormData({
         ...formData,
         token: data.token,
@@ -275,17 +275,16 @@ export default function Home() {
     }
 
     try {
-      await Promise.resolve(
-        await verify({
-          user_details: {
-            email: formData.email,
-            password: formData.password,
-            name: formData.name,
-          },
-          otp: otp,
-          token: formData.token,
-        })
-      );
+      await verify({
+        user_details: {
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+        },
+        otp: otp,
+        token: formData.token,
+      });
+
       router.push("/dashboard");
     } catch (err) {
       toast.error("Invalid OTP.");

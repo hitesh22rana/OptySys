@@ -18,31 +18,34 @@ export default function Topbar() {
 
   async function handleLogout() {
     try {
-      await Promise.resolve(await logout(accessToken));
+      await logout(accessToken);
       logoutUser();
       toast.success("Logout successfully");
-      router.push("/");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     } catch (err) {
       toast.error("Logout failed");
     }
   }
 
   return (
-    <header className="flex flex-row items-center justify-between bg-white w-full transition-width ease-in-out duration-300">
+    <header className="flex flex-row items-center justify-between bg-white w-full">
       <div
-        className="relative flex items-center justify-center bg-gray-50 border-[1px] border-gray-100 p-2 text-gray-800 rounded-full cursor-pointer transition-all ease-out"
+        className="relative flex items-center justify-center bg-slate-50 hover:bg-slate-100 border-[1px] border-gray-200 p-2 text-gray-800 rounded-full cursor-pointer duration-150 transition-all ease-out"
         onClick={toggleSidebar}
       >
-        <RxHamburgerMenu className="cursor-pointer text-2xl" />
+        <RxHamburgerMenu className="cursor-pointer text-xl" />
       </div>
 
-      <div className="flex flex-row items-center gap-8">
-        <div className="relative flex items-center justify-center bg-gray-50 border-[1px] border-gray-100 p-2 text-gray-800 rounded-full cursor-pointer">
-          <div className="absolute bg-red-500 top-[9px] right-[11px] w-[8px] h-[8px] rounded-full" />
+      <div className="relative flex flex-row items-center gap-8">
+        <div className="relative flex items-center justify-center bg-slate-50 hover:bg-slate-100 border-[1px] border-gray-200 p-2 text-gray-800 rounded-full cursor-pointer duration-150">
+          <div className="absolute bg-red-500 top-[11px] right-[10px] w-[6px] h-[7px] rounded-full" />
           <IoMdNotifications className="text-2xl" />
         </div>
 
-        <div className="relative flex items-center justify-center bg-gray-50 border-[1px] border-gray-100 p-2 text-gray-800 rounded-full cursor-pointer">
+        <div className="relative flex items-center justify-center bg-slate-50 hover:bg-slate-100 border-[1px] border-gray-200 p-2 text-gray-800 rounded-full cursor-pointer duration-150">
           <BiUser className="cursor-pointer text-2xl" />
         </div>
         {/* <button
@@ -51,6 +54,12 @@ export default function Topbar() {
         >
           Logout
         </button> */}
+
+        <div className="absolute top-12 right-5 w-52 h-52 bg-blue-50 rounded-lg rounded-tr-none">
+          <div className="relative flex flex-col items-center justify-center h-full">
+            <span className="absolute bg-slate-950 -top-1 w-4 h-4 -right-1" />
+          </div>
+        </div>
       </div>
     </header>
   );
