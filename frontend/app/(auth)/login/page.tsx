@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
@@ -13,13 +14,11 @@ import FormWrapper from "@/components/auth/FormWrapper";
 import { LoginFormData } from "@/types/auth";
 import { login } from "@/http";
 
-import useUserStore from "@/stores/user";
 import { getLoginFormErrors } from "@/utils/errors";
 
 export default function Home() {
   const router = useRouter();
 
-  const { setUser } = useUserStore();
   const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
   const [error, setError] = useState<string | null>(null);
 
@@ -65,11 +64,10 @@ export default function Home() {
     }
 
     try {
-      const { data } = await Promise.resolve(await login(formData));
-      setUser(data);
+      await Promise.resolve(await login(formData));
       toast.success("Successfully logged in.");
       router.push("/dashboard");
-    } catch (err) {
+    } catch (err: AxiosError | any) {
       toast.error("Invalid credentials.");
     }
   }
