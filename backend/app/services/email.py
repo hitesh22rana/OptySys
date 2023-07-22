@@ -20,6 +20,7 @@ class EmailService:
     otp_template = "otp.html"
     cover_letter_template = "cover_letter.html"
     server = None
+    max_attempts = 3
 
     @classmethod
     def __init__(cls):
@@ -28,12 +29,15 @@ class EmailService:
     @classmethod
     def _login(cls):
         try:
-            if not cls.server:
+            if not cls.server or cls.max_attempts > 0:
                 cls.server = smtplib.SMTP(cls.smtp_server, cls.smtp_port)
                 cls.server.starttls()
                 cls.server.login(cls.sender, cls.password)
+                cls.max_attempts = 3
 
         except smtplib.SMTPException as e:
+            cls.max_attempts -= 1
+            cls._login()
             logger.error(f"SMTP Error: {e}")
 
         except Exception as e:
@@ -55,8 +59,6 @@ class EmailService:
 
     @classmethod
     def send_email_to_user(cls, recipient, subject, message):
-        cls._login()
-
         try:
             msg = MIMEMultipart("alternative")
             msg["Subject"] = subject

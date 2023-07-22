@@ -181,7 +181,11 @@ class Users:
             result = await cls.db[cls.name].insert_one(user)
 
             response = UserResponseSchema(user).response()
-            response = Created(response)
+            response = Created(
+                {
+                    "detail": "Success: User verified successfully",
+                }
+            )
 
             expiry = cls._set_expires()
             jwt_token = cls.jwt.encode(
@@ -222,7 +226,10 @@ class Users:
         await cls.__initiate_db()
 
         try:
-            user = await cls.db[cls.name].find_one({"email": user_details.email})
+            user = await cls.db[cls.name].find_one(
+                {"email": user_details.email},
+                {"_id": 1, "password": 1},
+            )
 
             if user is None:
                 raise Exception(
@@ -240,8 +247,7 @@ class Users:
                     }
                 )
 
-            response = UserResponseSchema(user).response()
-            response = OK(response)
+            response = OK({"detail": "Success: User logged in successfully"})
 
             expiry = cls._set_expires()
             jwt_token = cls.jwt.encode({"user_id": str(user["_id"]), "expiry": expiry})
@@ -275,7 +281,7 @@ class Users:
 
     @classmethod
     async def logout_user(cls):
-        response = OK({"message": "Logged out successfully"})
+        response = OK({"detail": "Success: User logged out successfully"})
 
         response.delete_cookie(key="access_token")
 
