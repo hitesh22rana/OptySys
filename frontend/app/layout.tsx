@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const poppins = Poppins({
+const inter = Inter({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={inter.className}>
         <NextTopLoader showSpinner={false} />
         <ToastContainer
           position="top-center"

@@ -15,3 +15,8 @@ export interface RegisterFormProps {
 export interface VerifyFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>, otp: string) => Promise<void>;
 }
+
+export interface DropdownMenuProps {
+  className: string;
+  children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
+}
