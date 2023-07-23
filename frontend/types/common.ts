@@ -20,3 +20,8 @@ export interface DropdownMenuProps {
   className: string;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
+
+export interface IconProps {
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
+}
