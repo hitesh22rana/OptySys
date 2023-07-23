@@ -10,6 +10,7 @@ import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 
 import FormWrapper from "@/components/common/FormWrapper";
+import ErrorField from "@/components/common/ErrorField";
 
 import { LoginFormData } from "@/types/auth";
 import { login } from "@/http";
@@ -121,7 +122,7 @@ export default function Home() {
           )}
         </div>
 
-        <span className="text-red-500 text-xs h-0">{error}</span>
+        <ErrorField error={error} />
       </div>
 
       <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">

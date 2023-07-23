@@ -3,7 +3,8 @@ import Link from "next/link";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
-import FormWrapper from "../common/FormWrapper";
+import FormWrapper from "@/components/common/FormWrapper";
+import ErrorField from "@/components/common/ErrorField";
 
 import { RegisterFormProps } from "@/types/common";
 
@@ -96,7 +97,7 @@ export default function Register({
           )}
         </div>
 
-        <span className="text-red-500 text-xs h-0">{error}</span>
+        <ErrorField error={error} />
       </div>
 
       <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">

@@ -8,6 +8,7 @@ import { DetailStep } from "@/types/auth";
 
 import { getAboutStepErrors } from "@/utils/errors";
 import { useDetailsStore } from "@/stores";
+import ErrorField from "@/components/common/ErrorField";
 
 export default function StepAbout({ onNext }: DetailStep) {
   const { setDetails } = useDetailsStore();
@@ -63,7 +64,7 @@ export default function StepAbout({ onNext }: DetailStep) {
           />
         </div>
 
-        <span className="text-red-500 text-xs h-0">{error}</span>
+        <ErrorField error={error} />
       </div>
     </FormWrapper>
   );
