@@ -1,3 +1,4 @@
+import { DetailsFormData } from "./auth";
 import { IUser } from "./user";
 
 export interface IUserStore {
@@ -15,4 +16,10 @@ export interface IDashboardStore {
   isSidebarOpen: boolean;
 
   toggleSidebar(): void;
+}
+
+export interface IDetailsStore {
+  details: DetailsFormData;
+
+  setDetails(name: string, value: string): void;
 }

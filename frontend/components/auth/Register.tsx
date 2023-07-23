@@ -18,6 +18,7 @@ export default function Register({
     <FormWrapper
       title="Register"
       subtitle="Create your account and let the fun begin!"
+      buttonText="Register"
       onSubmit={onSubmit}
     >
       <div className="flex flex-col gap-[10px] w-full">

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
+import Details from "@/components/auth/Details";
 
 import { useUserStore, useDashboardStore } from "@/stores";
 
@@ -16,7 +17,8 @@ import { getUser } from "@/http";
 
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();
-  const { setUser, setAccessToken, logoutUser } = useUserStore();
+  const { setUser, setAccessToken, logoutUser, getActivationStatus } =
+    useUserStore();
   const { isSidebarOpen } = useDashboardStore();
 
   useEffect(() => {
@@ -38,18 +40,24 @@ export default function DashboardWrapper({ children }: WrapperProps) {
   }, [setUser, setAccessToken, logoutUser, router]);
 
   return (
-    <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
-      <Sidebar />
-      <div
-        className={`flex flex-col min-h-screen ease-in-out duration-300 w-screen ${
-          isSidebarOpen
-            ? "3xl:max-w-[calc(100%-20rem)] sm:max-w-[calc(100%-13rem)]"
-            : "3xl:max-w-[calc(100%-10rem)] sm:max-w-[calc(100%-6rem)]"
-        } w-full h-full sm:py-2 sm:px-10 p-5`}
-      >
-        <Topbar />
-        {children}
-      </div>
-    </div>
+    <Fragment>
+      {getActivationStatus() ? (
+        <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
+          <Sidebar />
+          <div
+            className={`flex flex-col min-h-screen ease-in-out duration-300 w-screen ${
+              isSidebarOpen
+                ? "3xl:max-w-[calc(100%-20rem)] sm:max-w-[calc(100%-13rem)]"
+                : "3xl:max-w-[calc(100%-10rem)] sm:max-w-[calc(100%-6rem)]"
+            } w-full h-full sm:py-2 sm:px-10 p-5`}
+          >
+            <Topbar />
+            {children}
+          </div>
+        </div>
+      ) : (
+        <Details />
+      )}
+    </Fragment>
   );
 }

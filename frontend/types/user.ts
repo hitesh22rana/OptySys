@@ -1,4 +1,4 @@
-interface Social {
+export interface Social {
   resume?: string;
   portfolio?: string;
   linkedin?: string;
@@ -8,7 +8,7 @@ interface Social {
   dribble?: string;
 }
 
-interface Experience {
+export interface Experience {
   title: string;
   company: string;
   description: Array<string>;

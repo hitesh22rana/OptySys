@@ -100,3 +100,19 @@ export function getRegisterFormErrors(
 
   return null;
 }
+
+export function getAboutStepErrors(summary: string): string | null {
+  if (!summary) {
+    return "Summary cannot be empty.";
+  }
+
+  if (summary.length < 10) {
+    return "Summary must be at least 10 characters long.";
+  }
+
+  if (summary.length >= 500) {
+    return "Summary must be atmost 500 characters long.";
+  }
+
+  return null;
+}

@@ -13,6 +13,7 @@ export default function Verify({ onSubmit }: VerifyFormProps) {
     <FormWrapper
       title="Verify"
       subtitle="Enter the OTP sent to your email"
+      buttonText="Verify"
       onSubmit={(e) => onSubmit(e, otp)}
     >
       <OtpInput

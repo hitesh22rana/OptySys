@@ -1,3 +1,5 @@
+import { Experience, Social } from "./user";
+
 interface UserDetailsData {
   email: string;
   password: string;
@@ -22,7 +24,10 @@ export interface VerifyData {
 export interface FormProps {
   title: string;
   subtitle: string;
+  buttonText: string;
+
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+
   children: JSX.Element | Array<JSX.Element>;
 }
 
@@ -40,4 +45,20 @@ export interface RegisterFormData {
   showPassword: boolean;
   showConfirmPassword: boolean;
   token: string;
+}
+
+export interface DetailsFormData {
+  summary: string;
+  socials: Array<Social>;
+  experiences: Array<Experience>;
+  skills: Array<string>;
+  achievements: Array<string>;
+}
+
+export interface DetailStep {
+  onNext(): void;
+}
+
+export interface DetailsStep {
+  [key: number]: ({ onNext }: DetailStep) => JSX.Element;
 }

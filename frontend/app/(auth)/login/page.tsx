@@ -80,6 +80,7 @@ export default function Home() {
     <FormWrapper
       title="Login"
       subtitle="Login to manage your account"
+      buttonText="Login"
       onSubmit={onSubmit}
     >
       <div className="flex flex-col gap-[10px] w-full">

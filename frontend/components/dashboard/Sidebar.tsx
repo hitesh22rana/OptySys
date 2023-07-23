@@ -10,7 +10,7 @@ export default function Sidebar() {
       <div
         className={`sm:hidden ${
           isSidebarOpen ? "block" : "hidden"
-        } w-full fixed top-0 left-0 bg-[#00000080] z-[99] backdrop-blur h-full`}
+        } w-full fixed bg-[#00000080] z-[99] backdrop-blur inset-0 h-full`}
         onClick={toggleSidebar}
       />
       <aside
