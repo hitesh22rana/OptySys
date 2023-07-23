@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 
-import FormWrapper from "@/components/auth/FormWrapper";
+import FormWrapper from "@/components/common/FormWrapper";
 
 import { LoginFormData } from "@/types/auth";
 import { login } from "@/http";

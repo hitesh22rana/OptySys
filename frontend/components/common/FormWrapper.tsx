@@ -1,6 +1,6 @@
 import { FormProps } from "@/types/auth";
 
-export default function Form({
+export default function FormWrapper({
   title,
   subtitle,
   onSubmit,

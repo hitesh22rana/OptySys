@@ -3,7 +3,7 @@
 import { IoMdNotifications } from "react-icons/io";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 
-import TopbarDropDown from "@/components/dashboard/TopbarDropDown";
+import TopbarDropDown from "@/components/dashboard/lib/TopbarDropDown";
 import Icon from "@/components/common/Icon";
 
 import { useDashboardStore } from "@/stores";
