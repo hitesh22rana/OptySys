@@ -39,7 +39,7 @@ async def get_user(request: Request):
         HTTPException: Bad request error
 
     Returns:
-        _type_: User
+        _type_: Message
 """
 
 
