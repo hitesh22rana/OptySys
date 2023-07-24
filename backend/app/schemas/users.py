@@ -145,7 +145,7 @@ class UserUpdateRequestSchema(BaseModel):
                     {"github": "https://github.com/johndoe"},
                     {"twitter": "https://twitter.com/johndoe"},
                     {"behance": "https://behance.com/johndoe"},
-                    {"dribble": "https://dribble.com/johndoe"},
+                    {"dribbble": "https://dribbble.com/johndoe"},
                 ],
                 "experiences": [
                     {

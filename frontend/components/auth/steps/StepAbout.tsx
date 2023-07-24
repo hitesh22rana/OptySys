@@ -7,14 +7,15 @@ import { MultiValue } from "react-select/dist/declarations/src";
 import FormWrapper from "@/components/common/FormWrapper";
 import ErrorField from "@/components/common/ErrorField";
 
-import { DetailStep } from "@/types/auth";
+import { useDetailsStore } from "@/stores";
+
+import { DetailStepProps } from "@/types/auth";
 import { IOption } from "@/types/common";
 
 import { getAboutStepErrors } from "@/utils/errors";
 import { getSkillsList } from "@/lib/helpers";
-import { useDetailsStore } from "@/stores";
 
-export default function StepAbout({ onNext }: DetailStep) {
+export default function StepAbout({ onNext }: DetailStepProps) {
   const { setDetails } = useDetailsStore();
 
   const [allSkills, setAllSkills] = useState<Array<IOption>>([]);
@@ -66,8 +67,6 @@ export default function StepAbout({ onNext }: DetailStep) {
     setDetails("summary", summary);
     setDetails("skills", skills);
 
-    return;
-
     onNext();
   }
 
@@ -87,7 +86,7 @@ export default function StepAbout({ onNext }: DetailStep) {
             name="summary"
             value={summary}
             placeholder="e.g. Experienced technical specialist and IT professional, proficient in systems administration, with a background in programming."
-            className="outline-none border-[1px] h-auto max-h-32 min-h-[6rem] p-2 rounded focus:border-blue-500 w-full text-gray-500 text-sm placeholder:text-xs placeholder:font-light"
+            className="outline-none border-[1px] h-auto max-h-32 min-h-[8rem] p-2 rounded focus:border-blue-500 w-full text-gray-500 text-sm placeholder:text-xs placeholder:font-light"
             onChange={onSummaryChange}
           />
         </div>

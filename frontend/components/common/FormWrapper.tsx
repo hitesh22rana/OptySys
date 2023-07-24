@@ -4,13 +4,14 @@ export default function FormWrapper({
   title,
   subtitle,
   buttonText,
+  className,
   onSubmit,
   children,
 }: FormProps) {
   return (
     <form
       onSubmit={onSubmit}
-      className="relative flex flex-col justify-between sm:gap-10 gap-8 sm:p-5 p-3 border-2 border-gray-200 bg-white shadow rounded max-w-md m-auto w-full h-auto"
+      className={`relative flex flex-col justify-between sm:gap-10 gap-8 sm:p-5 p-3 border-2 border-gray-200 bg-white shadow rounded max-w-md m-auto w-full h-auto ${className}`}
     >
       <div className="flex flex-col gap-2">
         <h3 className="text-3xl font-bold text-pink">{title}</h3>

@@ -25,6 +25,7 @@ export interface FormProps {
   title: string;
   subtitle: string;
   buttonText: string;
+  className?: string;
 
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 
@@ -55,10 +56,17 @@ export interface DetailsFormData {
   achievements: Array<string>;
 }
 
-export interface DetailStep {
+export interface DetailStepProps {
   onNext(): void;
 }
 
 export interface DetailsStep {
-  [key: number]: ({ onNext }: DetailStep) => JSX.Element;
+  [key: number]: ({ onNext }: DetailStepProps) => JSX.Element;
+}
+
+export interface SocialMap {
+  name: string;
+  text: string;
+  value: string | undefined;
+  placeholder: string;
 }

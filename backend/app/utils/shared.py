@@ -37,4 +37,4 @@ class SocialLinks(str, Enum):
     github = "github"
     twitter = "twitter"
     behance = "behance"
-    dribble = "dribble"
+    dribbble = "dribbble"

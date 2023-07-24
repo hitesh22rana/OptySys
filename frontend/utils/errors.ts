@@ -1,3 +1,4 @@
+import { Social } from "@/types/user";
 import { isValidEmail, isValidPassword } from "./validators";
 
 function getInvalidEmailError(email: string): string | null {
@@ -119,6 +120,22 @@ export function getAboutStepErrors(
 
   if (skills.length === 0) {
     return "At least one skill is required.";
+  }
+
+  return null;
+}
+
+export function getSocialStepErrors(socials: Social): string | null {
+  if (
+    !socials.resume &&
+    !socials.portfolio &&
+    !socials.linkedin &&
+    !socials.github &&
+    !socials.github &&
+    !socials.behance &&
+    !socials.dribbble
+  ) {
+    return "Atleast one social link is required.";
   }
 
   return null;

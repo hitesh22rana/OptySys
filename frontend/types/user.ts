@@ -5,7 +5,7 @@ export interface Social {
   github?: string;
   twitter?: string;
   behance?: string;
-  dribble?: string;
+  dribbble?: string;
 }
 
 export interface Experience {

@@ -3,12 +3,12 @@ import Image from "next/image";
 import FormWrapper from "@/components/common/FormWrapper";
 import { DetailStepProps } from "@/types/auth";
 
-export default function StepBanner({ onNext }: DetailStepProps) {
+export default function StepSubmit({ onNext }: DetailStepProps) {
   return (
     <FormWrapper
-      title="Basic Details"
-      subtitle="Please provide the basic details."
-      buttonText="Start"
+      title="Hurray🎊 all set"
+      subtitle="Get ready for a smoother ride with OptySys! 🚀✨"
+      buttonText="Dashboard"
       onSubmit={onNext}
     >
       <div className="flex flex-col gap-[10px] w-full">
@@ -20,8 +20,10 @@ export default function StepBanner({ onNext }: DetailStepProps) {
           className="mx-auto"
         />
         <span className="text-gray-500 font-medium text-sm">
-          These details are important to activate your account and streamline
-          the automation process.
+          Hey there! 🎉 superstar! Ready to unleash the power of streamlining
+          and automation? Don&apos;t be shy, update your details anytime you
+          like, and let the streamlining wizardry work its charm! 🧙‍♂️✨
+          Don&apos;t miss out on the fun, hop in and witness the magic! 🌟😄
         </span>
       </div>
     </FormWrapper>
