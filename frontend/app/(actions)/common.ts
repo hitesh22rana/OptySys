@@ -1,5 +1,6 @@
 "use server";
 
+import fs from "fs";
 import { cookies } from "next/headers";
 
 import { normalizeAccessToken } from "@/lib/helpers";
@@ -18,4 +19,15 @@ export async function deleteCookie(name: string) {
     maxAge: 0,
     path: "/",
   });
+}
+
+export async function getCSVData(filePath: string): Promise<Array<any>> {
+  const skills: Array<string> = [];
+
+  fs.readFileSync(filePath, "utf8")
+    .split(",")
+    .forEach((skill) => {
+      skills.push(skill);
+    });
+  return skills;
 }

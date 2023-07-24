@@ -1,5 +1,5 @@
 import { DetailsFormData } from "./auth";
-import { IUser } from "./user";
+import { Experience, IUser, Social } from "./user";
 
 export interface IUserStore {
   user: IUser;
@@ -21,5 +21,8 @@ export interface IDashboardStore {
 export interface IDetailsStore {
   details: DetailsFormData;
 
-  setDetails(name: string, value: string): void;
+  setDetails(
+    name: string,
+    value: string | Array<string> | Array<Social> | Array<Experience>
+  ): void;
 }

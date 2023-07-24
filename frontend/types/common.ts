@@ -30,3 +30,8 @@ export interface ModalProps {
   bgMaskColor: string;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
+
+export interface IOption {
+  label: string;
+  value: string;
+}

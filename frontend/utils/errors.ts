@@ -101,7 +101,10 @@ export function getRegisterFormErrors(
   return null;
 }
 
-export function getAboutStepErrors(summary: string): string | null {
+export function getAboutStepErrors(
+  summary: string,
+  skills: Array<string>
+): string | null {
   if (!summary) {
     return "Summary cannot be empty.";
   }
@@ -112,6 +115,10 @@ export function getAboutStepErrors(summary: string): string | null {
 
   if (summary.length >= 500) {
     return "Summary must be atmost 500 characters long.";
+  }
+
+  if (skills.length === 0) {
+    return "At least one skill is required.";
   }
 
   return null;

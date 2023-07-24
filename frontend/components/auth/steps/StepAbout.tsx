@@ -1,27 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
+import Select from "react-select";
+import { MultiValue } from "react-select/dist/declarations/src";
 
 import FormWrapper from "@/components/common/FormWrapper";
+import ErrorField from "@/components/common/ErrorField";
 
 import { DetailStep } from "@/types/auth";
+import { IOption } from "@/types/common";
 
 import { getAboutStepErrors } from "@/utils/errors";
+import { getSkillsList } from "@/lib/helpers";
 import { useDetailsStore } from "@/stores";
-import ErrorField from "@/components/common/ErrorField";
 
 export default function StepAbout({ onNext }: DetailStep) {
   const { setDetails } = useDetailsStore();
+
+  const [allSkills, setAllSkills] = useState<Array<IOption>>([]);
+
   const [summary, setSummary] = useState<string>("");
+  const [skills, setSkills] = useState<Array<string>>([]);
+
   const [error, setError] = useState<string | null>(null);
 
-  function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  useEffect(() => {
+    async function getSkillsData() {
+      const data = await getSkillsList();
+      setAllSkills(data);
+    }
+
+    getSkillsData();
+  }, []);
+
+  function onSummaryChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value: string = e.target.value;
 
     setSummary(value);
 
-    const errorMessage = getAboutStepErrors(value);
+    const errorMessage = getAboutStepErrors(value, skills);
 
+    setError(errorMessage);
+  }
+
+  function onSkillsChange(option: MultiValue<IOption>) {
+    const currentSkills: Array<string> = option.map((opt) => opt.value);
+
+    setSkills(currentSkills);
+
+    const errorMessage = getAboutStepErrors(summary, currentSkills);
     setError(errorMessage);
   }
 
@@ -29,7 +56,7 @@ export default function StepAbout({ onNext }: DetailStep) {
     e.preventDefault();
 
     // checks for data
-    const errorMessage = getAboutStepErrors(summary);
+    const errorMessage = getAboutStepErrors(summary, skills);
 
     if (errorMessage) {
       toast.error(errorMessage);
@@ -37,10 +64,11 @@ export default function StepAbout({ onNext }: DetailStep) {
     }
 
     setDetails("summary", summary);
+    setDetails("skills", skills);
 
     return;
 
-    // onNext();
+    onNext();
   }
 
   return (
@@ -50,7 +78,7 @@ export default function StepAbout({ onNext }: DetailStep) {
       buttonText="Next"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-[10px] w-full">
+      <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col gap-[5px] w-full h-full">
           <label htmlFor="summary" className="font-medium text-sm">
             Briefly summarize your professional background
@@ -60,7 +88,27 @@ export default function StepAbout({ onNext }: DetailStep) {
             value={summary}
             placeholder="e.g. Experienced technical specialist and IT professional, proficient in systems administration, with a background in programming."
             className="outline-none border-[1px] h-auto max-h-32 min-h-[6rem] p-2 rounded focus:border-blue-500 w-full text-gray-500 text-sm placeholder:text-xs placeholder:font-light"
-            onChange={onChange}
+            onChange={onSummaryChange}
+          />
+        </div>
+
+        <div className="flex flex-col gap-[5px] w-full h-full">
+          <span className="font-medium text-sm">Add skills</span>
+          <Select
+            options={allSkills}
+            isMulti={true}
+            isSearchable={true}
+            onChange={onSkillsChange}
+            backspaceRemovesValue={true}
+            autoFocus={true}
+            blurInputOnSelect={true}
+            styles={{
+              menuList: (provided) => ({
+                ...provided,
+                height: "100%",
+                maxHeight: "170px",
+              }),
+            }}
           />
         </div>
 
