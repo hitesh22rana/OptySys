@@ -67,7 +67,7 @@ export default function StepAbout({ onNext }: DetailStepProps) {
     setDetails("summary", summary);
     setDetails("skills", skills);
 
-    onNext();
+    onNext(e);
   }
 
   return (
@@ -99,7 +99,6 @@ export default function StepAbout({ onNext }: DetailStepProps) {
             isSearchable={true}
             onChange={onSkillsChange}
             backspaceRemovesValue={true}
-            autoFocus={true}
             blurInputOnSelect={true}
             styles={{
               menuList: (provided) => ({

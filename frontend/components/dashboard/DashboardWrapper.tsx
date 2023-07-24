@@ -17,7 +17,7 @@ import { getUser } from "@/http";
 
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();
-  const { setUser, setAccessToken, logoutUser, getActivationStatus } =
+  const { user, setUser, setAccessToken, logoutUser, getActivationStatus } =
     useUserStore();
   const { isSidebarOpen } = useDashboardStore();
 

@@ -79,9 +79,17 @@ export default function StepSocials({ onNext }: DetailStepProps) {
       return;
     }
 
-    setDetails("socials", socials);
+    const socialsList: Array<Social> = [];
 
-    onNext();
+    for (const key in socials) {
+      if (socials[key]) {
+        socialsList.push({ [key]: socials[key] });
+      }
+    }
+
+    setDetails("socials", socialsList);
+
+    onNext(e);
   }
 
   return (

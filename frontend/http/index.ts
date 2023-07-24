@@ -1,4 +1,10 @@
-import { LoginData, RegisterData, VerifyData } from "@/types/auth";
+import {
+  DetailsFormData,
+  LoginData,
+  RegisterData,
+  VerifyData,
+} from "@/types/auth";
+import { IUser } from "@/types/user";
 
 import axios from "axios";
 
@@ -34,5 +40,15 @@ export const getUser = (accessToken: string): Promise<any> => {
   setAuthorizationHeader(accessToken);
   return (async () => {
     return api.get("/users");
+  })();
+};
+
+export const updateUser = (
+  accessToken: string,
+  data: DetailsFormData
+): Promise<any> => {
+  setAuthorizationHeader(accessToken);
+  return (async () => {
+    return api.put("/users", data);
   })();
 };

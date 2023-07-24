@@ -4,7 +4,9 @@ import { IUser } from "@/types/user";
 import { IUserStore } from "@/types/store";
 
 const useUserStore = create<IUserStore>()((set, get) => ({
-  user: {} as IUser,
+  user: {
+    activated: true,
+  } as IUser,
   accessToken: "" as string,
 
   setUser: (user: IUser) => set({ user }),

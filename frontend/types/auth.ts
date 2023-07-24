@@ -51,13 +51,13 @@ export interface RegisterFormData {
 export interface DetailsFormData {
   summary: string;
   socials: Array<Social>;
-  experiences: Array<Experience>;
   skills: Array<string>;
+  experiences: Array<Experience>;
   achievements: Array<string>;
 }
 
 export interface DetailStepProps {
-  onNext(): void;
+  onNext(e: React.FormEvent<HTMLFormElement>): void;
 }
 
 export interface DetailsStep {

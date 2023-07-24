@@ -23,6 +23,6 @@ export interface IDetailsStore {
 
   setDetails(
     name: string,
-    value: string | Array<string> | Social | Array<Experience>
+    value: string | Array<string> | Array<Social> | Array<Experience>
   ): void;
 }
