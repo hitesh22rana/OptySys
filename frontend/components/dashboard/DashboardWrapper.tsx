@@ -50,7 +50,7 @@ export default function DashboardWrapper({ children }: WrapperProps) {
             isSidebarOpen
               ? "3xl:max-w-[calc(100%-20rem)] sm:max-w-[calc(100%-13rem)]"
               : "3xl:max-w-[calc(100%-10rem)] sm:max-w-[calc(100%-6rem)]"
-          } w-full h-full sm:py-2 sm:px-10 p-5`}
+          } w-full h-full sm:py-2 px-5`}
         >
           <Topbar />
           {children}

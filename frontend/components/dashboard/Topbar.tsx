@@ -12,7 +12,7 @@ export default function Topbar() {
   const { isSidebarOpen, toggleSidebar } = useDashboardStore();
 
   return (
-    <header className="flex flex-row items-center justify-between bg-white w-full">
+    <header className="flex flex-row items-center justify-between bg-white w-full py-2">
       <Icon onClick={toggleSidebar}>
         {isSidebarOpen ? (
           <RiMenuFoldLine className="cursor-pointer text-xl" />

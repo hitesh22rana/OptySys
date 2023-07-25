@@ -31,12 +31,12 @@ export default function TopbarDropDown() {
   }
 
   return (
-    <div className="group relative flex items-center justify-center py-2">
+    <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
       <Icon>
         <FiSettings className="text-2xl" />
       </Icon>
       <DropdownMenu className="w-auto max-w-[250px]">
-        <div className="flex items-center w-full gap-2 justify-start p-2 transition-all duration-200 border-b-2 pb-3">
+        <div className="cursor-text flex items-center w-full gap-2 justify-start p-2 transition-all duration-200 border-b-2 pb-3">
           <BiUser className="text-xl min-w-fit" />
           <div className="flex flex-col items-start justify-start">
             <span className="font-medium text-sm text-gray-600 line-clamp-1">
