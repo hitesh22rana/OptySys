@@ -17,8 +17,7 @@ import { getUser } from "@/http";
 
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();
-  const { setUser, setAccessToken, logoutUser, getActivationStatus } =
-    useUserStore();
+  const { setUser, setAccessToken, logoutUser } = useUserStore();
   const { isSidebarOpen } = useDashboardStore();
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function DashboardWrapper({ children }: WrapperProps) {
 
   return (
     <Fragment>
-      {!getActivationStatus() && <Details />}
+      <Details />
 
       <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
         <Sidebar />

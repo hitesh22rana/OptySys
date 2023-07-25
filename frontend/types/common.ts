@@ -28,6 +28,7 @@ export interface IconProps {
 
 export interface ModalProps {
   bgMaskColor: string;
+  isOpen: boolean;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
 

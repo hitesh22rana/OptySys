@@ -24,7 +24,7 @@ export default function Details() {
   const router = useRouter();
 
   const { details } = useDetailsStore();
-  const { accessToken } = useUserStore();
+  const { accessToken, getActivationStatus } = useUserStore();
 
   const [step, setStep] = useState<number>(1);
 
@@ -54,7 +54,7 @@ export default function Details() {
   }
 
   return (
-    <Modal bgMaskColor="rgba(4, 4, 16, 0.6)">
+    <Modal isOpen={!getActivationStatus()} bgMaskColor="rgba(4, 4, 16, 0.6)">
       <Step onNext={onNext} />
     </Modal>
   );
