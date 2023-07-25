@@ -62,7 +62,7 @@ git clone https://github.com/hitesh22rana/OptySys.git
 ## Contributing
 
 We value contributions from the community as they help improve and enhance OptySys. If you would like to contribute
-follow the [Contribution Guide](https://github.com/hitesh22rana/OptySys/blob/main/CONTRIBUTION.md)
+follow the [Contribution Guide](CONTRIBUTING.md)
 
 ## License
 
