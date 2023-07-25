@@ -98,6 +98,7 @@ export default function StepSocials({ onNext }: DetailStepProps) {
       subtitle="Please provide atleast one of your social links"
       buttonText="Next"
       onSubmit={onSubmit}
+      className="sm:gap-6"
     >
       <div
         className="flex flex-col w-full h-full"
@@ -105,12 +106,12 @@ export default function StepSocials({ onNext }: DetailStepProps) {
           scrollbarWidth: "none",
         }}
       >
-        <div className="flex flex-col gap-2 w-full h-full">
+        <div className="flex flex-col gap-4 w-full h-full">
           {socialMap.map((item, index) => {
             return (
               <div
                 key={index}
-                className="flex flex-row 2xl:flex-col items-center 2xl:items-start h-full w-full"
+                className="flex flex-row gap-1 2xl:flex-col items-center 2xl:items-start h-full w-full"
               >
                 <label
                   htmlFor={item.name}

@@ -17,7 +17,7 @@ import { getUser } from "@/http";
 
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();
-  const { user, setUser, setAccessToken, logoutUser, getActivationStatus } =
+  const { setUser, setAccessToken, logoutUser, getActivationStatus } =
     useUserStore();
   const { isSidebarOpen } = useDashboardStore();
 
@@ -41,23 +41,21 @@ export default function DashboardWrapper({ children }: WrapperProps) {
 
   return (
     <Fragment>
-      {getActivationStatus() ? (
-        <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
-          <Sidebar />
-          <div
-            className={`flex flex-col min-h-screen ease-in-out duration-300 w-screen ${
-              isSidebarOpen
-                ? "3xl:max-w-[calc(100%-20rem)] sm:max-w-[calc(100%-13rem)]"
-                : "3xl:max-w-[calc(100%-10rem)] sm:max-w-[calc(100%-6rem)]"
-            } w-full h-full sm:py-2 sm:px-10 p-5`}
-          >
-            <Topbar />
-            {children}
-          </div>
+      {!getActivationStatus() && <Details />}
+
+      <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
+        <Sidebar />
+        <div
+          className={`flex flex-col min-h-screen ease-in-out duration-300 w-screen ${
+            isSidebarOpen
+              ? "3xl:max-w-[calc(100%-20rem)] sm:max-w-[calc(100%-13rem)]"
+              : "3xl:max-w-[calc(100%-10rem)] sm:max-w-[calc(100%-6rem)]"
+          } w-full h-full sm:py-2 sm:px-10 p-5`}
+        >
+          <Topbar />
+          {children}
         </div>
-      ) : (
-        <Details />
-      )}
+      </div>
     </Fragment>
   );
 }

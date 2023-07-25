@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { IDashboardStore } from "@/types/store";
 
 const useDashboardStore = create<IDashboardStore>((set, get) => ({
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   toggleSidebar: () => set(() => ({ isSidebarOpen: !get().isSidebarOpen })),
 }));
 

@@ -54,7 +54,7 @@ export default function Details() {
   }
 
   return (
-    <Modal bgMaskColor="rgba(105,105,105,0.1)">
+    <Modal bgMaskColor="rgba(4, 4, 16, 0.6)">
       <Step onNext={onNext} />
     </Modal>
   );
