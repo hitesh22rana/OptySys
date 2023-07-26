@@ -13,6 +13,9 @@ const useUserStore = create<IUserStore>()((set, get) => ({
   setAccessToken: (accessToken: string) => set({ accessToken }),
 
   getActivationStatus() {
+    if (get().accessToken === "") {
+      return true;
+    }
     return get().user.activated;
   },
 

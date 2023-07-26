@@ -13,7 +13,7 @@ import { RegisterFormData } from "@/types/auth";
 import { register, verify } from "@/http";
 import { getRegisterFormErrors } from "@/utils/errors";
 
-export default function Home() {
+export default function RegisterPage() {
   const router = useRouter();
 
   const [formData, setFormData] = useState<RegisterFormData>(

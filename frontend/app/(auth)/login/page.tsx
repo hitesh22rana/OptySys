@@ -17,7 +17,7 @@ import { login } from "@/http";
 
 import { getLoginFormErrors } from "@/utils/errors";
 
-export default function Home() {
+export default function LoginPage() {
   const router = useRouter();
 
   const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
