@@ -22,6 +22,7 @@ export interface DropdownMenuProps {
 }
 
 export interface IconProps {
+  disabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
@@ -35,4 +36,9 @@ export interface ModalProps {
 export interface IOption {
   label: string;
   value: string;
+}
+
+export interface IJsonNotification {
+  id: string;
+  data: any;
 }

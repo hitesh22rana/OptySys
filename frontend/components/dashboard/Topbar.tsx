@@ -8,14 +8,15 @@ import Icon from "@/components/common/Icon";
 
 import { useDashboardStore, useUserStore } from "@/stores";
 
-import useWebSocket from "react-use-websocket";
+import useNotification from "@/hooks/useNotifications";
 
 export default function Topbar() {
   const { accessToken } = useUserStore();
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket(
+  const { isReady, notifications } = useNotification(
     `ws://localhost:8000/api/v1/ws/notifications?access_token=${accessToken}`
   );
+
   const { isSidebarOpen, toggleSidebar } = useDashboardStore();
 
   return (
@@ -29,7 +30,7 @@ export default function Topbar() {
       </Icon>
 
       <div className="relative flex flex-row items-center gap-8">
-        <Icon>
+        <Icon disabled={!isReady} onClick={() => {}}>
           <div className="absolute bg-red-500 top-3 right-3 w-[5px] h-[5px] rounded-full" />
           <IoMdNotifications className="text-2xl" />
         </Icon>
