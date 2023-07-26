@@ -1,22 +1,14 @@
 "use client";
 
-import { IoMdNotifications } from "react-icons/io";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 
-import TopbarDropDown from "@/components/dashboard/lib/TopbarDropDown";
 import Icon from "@/components/common/Icon";
+import Settings from "@/components/dashboard/lib/Settings";
+import Notifications from "@/components/dashboard/lib/Notifications";
 
-import { useDashboardStore, useUserStore } from "@/stores";
-
-import useNotification from "@/hooks/useNotifications";
+import { useDashboardStore } from "@/stores";
 
 export default function Topbar() {
-  const { accessToken } = useUserStore();
-
-  const { isReady, notifications } = useNotification(
-    `ws://localhost:8000/api/v1/ws/notifications?access_token=${accessToken}`
-  );
-
   const { isSidebarOpen, toggleSidebar } = useDashboardStore();
 
   return (
@@ -29,13 +21,10 @@ export default function Topbar() {
         )}
       </Icon>
 
-      <div className="relative flex flex-row items-center gap-8">
-        <Icon disabled={!isReady} onClick={() => {}}>
-          <div className="absolute bg-red-500 top-3 right-3 w-[5px] h-[5px] rounded-full" />
-          <IoMdNotifications className="text-2xl" />
-        </Icon>
+      <div className="flex flex-row items-center gap-8">
+        <Notifications />
 
-        <TopbarDropDown />
+        <Settings />
       </div>
     </header>
   );
