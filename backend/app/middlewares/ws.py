@@ -1,8 +1,6 @@
 # Purpose: WebSocket middlware to authenticate WebSocket connections
 # Path: backend\app\middlewares\ws.py
 
-from starlette.datastructures import Headers
-
 from app.utils.middlewares import (
     authentication_handler,
     check_authorization,
@@ -20,10 +18,21 @@ class WebSocketMiddleMiddleware:
         if not is_web_socket and scope["type"] != "websocket":
             return await self.app(scope, receive, send)
 
-        headers = Headers(scope=scope)
-        access_token = headers.get("Authorization")
+        access_token: str = scope["query_string"].decode()
+
+        if not access_token or access_token == "":
+            return await send(
+                {
+                    "type": "websocket.close",
+                    "code": 403,
+                    "reason": "No access token provided",
+                }
+            )
+
+        access_token = access_token.split("=")[1]
 
         try:
+            access_token = access_token.replace("Bearer%20", "Bearer ")
             current_user = authentication_handler(access_token)
         except Exception as e:
             return await send(

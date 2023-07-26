@@ -6,9 +6,16 @@ import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import TopbarDropDown from "@/components/dashboard/lib/TopbarDropDown";
 import Icon from "@/components/common/Icon";
 
-import { useDashboardStore } from "@/stores";
+import { useDashboardStore, useUserStore } from "@/stores";
+
+import useWebSocket from "react-use-websocket";
 
 export default function Topbar() {
+  const { accessToken } = useUserStore();
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
+    `ws://localhost:8000/api/v1/ws/notifications?access_token=${accessToken}`
+  );
   const { isSidebarOpen, toggleSidebar } = useDashboardStore();
 
   return (

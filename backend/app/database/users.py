@@ -352,7 +352,7 @@ class Users:
             user = await cls.db[cls.name].find_one_and_update(
                 {"_id": current_user},
                 {"$set": {**user_details.dict(exclude_unset=True), "activated": True}},
-                {"_id": 1}
+                {"_id": 1},
             )
 
             if user is None:
@@ -363,9 +363,7 @@ class Users:
                     }
                 )
 
-            return OK({
-                "deatil": "Success: User updated successfully"
-            })
+            return OK({"deatil": "Success: User updated successfully"})
 
         except ConnectionFailure:
             raise HTTPException(
