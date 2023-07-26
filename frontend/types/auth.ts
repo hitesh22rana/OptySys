@@ -1,4 +1,4 @@
-import { Experience, Social } from "./user";
+import { Experience, Social } from "@/types/user";
 
 interface UserDetailsData {
   email: string;

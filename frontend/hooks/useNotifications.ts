@@ -1,6 +1,7 @@
-import { IJsonNotification } from "@/types/common";
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+
+import { IJsonNotification } from "@/types/common";
 
 const useNotification = (socketUrl: string) => {
   const { lastJsonMessage, readyState } = useWebSocket(socketUrl);

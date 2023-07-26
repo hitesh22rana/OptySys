@@ -8,6 +8,7 @@ import { useDetailsStore } from "@/stores";
 
 import { DetailStepProps, SocialMap } from "@/types/auth";
 import { Social } from "@/types/user";
+
 import { getSocialStepErrors } from "@/utils/errors";
 
 export default function StepSocials({ onNext }: DetailStepProps) {

@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
+import { toast } from "react-toastify";
 import { BiUser } from "react-icons/bi";
 import { FiLogOut, FiSettings } from "react-icons/fi";
 
@@ -8,6 +8,7 @@ import DropdownMenu from "@/components/common/DropdownMenu";
 import Icon from "@/components/common/Icon";
 
 import { logout } from "@/http";
+
 import { useUserStore } from "@/stores";
 
 export default function Settings() {

@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { toast } from "react-toastify";
+
 import Modal from "@/components/common/Modal";
 import StepAbout from "@/components/auth/steps/StepAbout";
 import StepBanner from "@/components/auth/steps/StepBanner";
 import StepSubmit from "@/components/auth/steps/StepSubmit";
 import StepSocials from "@/components/auth/steps/StepSocials";
 
+import { updateUser } from "@/http";
+
 import { useDetailsStore, useUserStore } from "@/stores";
 
 import { DetailsStep } from "@/types/auth";
-import { updateUser } from "@/http";
-import { toast } from "react-toastify";
 
 const steps: DetailsStep = {
   1: StepBanner,

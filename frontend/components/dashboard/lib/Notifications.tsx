@@ -2,9 +2,9 @@ import { IoMdNotifications } from "react-icons/io";
 
 import Icon from "@/components/common/Icon";
 
-import { useUserStore } from "@/stores";
-
 import useNotification from "@/hooks/useNotifications";
+
+import { useUserStore } from "@/stores";
 
 export default function Notifications() {
   const { accessToken } = useUserStore();

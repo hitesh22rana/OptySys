@@ -1,5 +1,5 @@
 import { Social } from "@/types/user";
-import { isValidEmail, isValidPassword } from "./validators";
+import { isValidEmail, isValidPassword } from "@/utils/validators";
 
 function getInvalidEmailError(email: string): string | null {
   if (!email) {

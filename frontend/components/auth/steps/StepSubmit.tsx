@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import FormWrapper from "@/components/common/FormWrapper";
+
 import { DetailStepProps } from "@/types/auth";
 
 export default function StepSubmit({ onNext }: DetailStepProps) {

@@ -9,11 +9,13 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 import Details from "@/components/auth/Details";
 
+import { deleteCookie, getAccessToken } from "@/app/(actions)/common";
+
+import { getUser } from "@/http";
+
 import { useUserStore, useDashboardStore } from "@/stores";
 
 import { WrapperProps } from "@/types/common";
-import { deleteCookie, getAccessToken } from "@/app/(actions)/common";
-import { getUser } from "@/http";
 
 export default function DashboardWrapper({ children }: WrapperProps) {
   const router = useRouter();

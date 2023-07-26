@@ -4,7 +4,6 @@ import {
   RegisterData,
   VerifyData,
 } from "@/types/auth";
-import { IUser } from "@/types/user";
 
 import axios from "axios";
 

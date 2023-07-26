@@ -1,4 +1,4 @@
-import { RegisterFormData } from "./auth";
+import { RegisterFormData } from "@/types/auth";
 
 export interface WrapperProps {
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;

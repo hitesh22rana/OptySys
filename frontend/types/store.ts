@@ -1,5 +1,5 @@
-import { DetailsFormData } from "./auth";
-import { Experience, IUser, Social } from "./user";
+import { DetailsFormData } from "@/types/auth";
+import { Experience, IUser, Social } from "@/types/user";
 
 export interface IUserStore {
   user: IUser;
