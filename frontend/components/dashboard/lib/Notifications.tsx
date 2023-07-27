@@ -13,7 +13,7 @@ export default function Notifications() {
   const { accessToken } = useUserStore();
 
   const { isReady, notifications } = useNotification(
-    `ws://localhost:8000/api/v1/ws/notifications?access_token=${accessToken}`
+    process.env.NEXT_PUBLIC_WEBSOCKET_BASE_URL + "?access_token=" + accessToken
   );
 
   return (

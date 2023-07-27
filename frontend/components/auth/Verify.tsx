@@ -4,10 +4,18 @@ import OtpInput from "react-otp-input";
 
 import FormWrapper from "@/components/common/FormWrapper";
 
+import useTimer from "@/hooks/useTimer";
+
 import { VerifyFormProps } from "@/types/common";
 
-export default function Verify({ onSubmit }: VerifyFormProps) {
+export default function Verify({ resendOTP, onSubmit }: VerifyFormProps) {
+  const { startTimer, isTimerActive, remainingTime } = useTimer(120);
   const [otp, setOtp] = useState<string>("");
+
+  async function onResend() {
+    await resendOTP();
+    startTimer(120);
+  }
 
   return (
     <FormWrapper
@@ -29,7 +37,7 @@ export default function Verify({ onSubmit }: VerifyFormProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-evenly",
-          gap: "1rem",
+          gap: "0.8rem",
         }}
         inputStyle={{
           width: "100%",
@@ -42,6 +50,27 @@ export default function Verify({ onSubmit }: VerifyFormProps) {
           padding: "0.5rem",
         }}
       />
+
+      <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
+        <div className="flex flex-row gap-2  text-sm">
+          <span>Haven&apos;t received OTP?</span>
+          {isTimerActive ? (
+            <span>
+              Resend OTP in{" "}
+              <span className="text-blue-500 font-medium">{remainingTime}</span>{" "}
+              seconds
+            </span>
+          ) : (
+            <button
+              type="button"
+              className="text-blue-500 font-medium"
+              onClick={onResend}
+            >
+              Resend OTP
+            </button>
+          )}
+        </div>
+      </div>
     </FormWrapper>
   );
 }

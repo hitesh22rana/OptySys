@@ -82,6 +82,25 @@ export default function RegisterPage() {
     setFormData({ ...formData, [name]: !formData[name] });
   }
 
+  async function sendOTP() {
+    try {
+      const { data } = await register({ email: formData.email });
+      setFormData({
+        ...formData,
+        token: data.token,
+      });
+      toast.success("OTP sent successfully.");
+    } catch (err: AxiosError | any) {
+      const errorMessage: string | Array<string> = err.response?.data?.detail;
+
+      if (errorMessage) {
+        toast.error(errorMessage);
+        return;
+      }
+      toast.error("Something went wrong.");
+    }
+  }
+
   async function registerUser(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -98,22 +117,7 @@ export default function RegisterPage() {
       return;
     }
 
-    try {
-      const { data } = await register(formData);
-      setFormData({
-        ...formData,
-        token: data.token,
-      });
-      toast.success("OTP sent successfully.");
-    } catch (err: AxiosError | any) {
-      const errorMessage: string | Array<string> = err.response?.data?.detail;
-
-      if (errorMessage) {
-        toast.error(errorMessage);
-        return;
-      }
-      toast.error("Something went wrong.");
-    }
+    await sendOTP();
   }
 
   async function verifyUser(e: React.FormEvent<HTMLFormElement>, otp: string) {
@@ -153,7 +157,7 @@ export default function RegisterPage() {
           onSubmit={registerUser}
         />
       ) : (
-        <Verify onSubmit={verifyUser} />
+        <Verify resendOTP={sendOTP} onSubmit={verifyUser} />
       )}
     </Fragment>
   );

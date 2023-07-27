@@ -13,6 +13,7 @@ export interface RegisterFormProps {
 }
 
 export interface VerifyFormProps {
+  resendOTP: () => Promise<void>;
   onSubmit: (e: React.FormEvent<HTMLFormElement>, otp: string) => Promise<void>;
 }
 
