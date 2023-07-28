@@ -19,7 +19,9 @@ export default function Notifications() {
   return (
     <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
       <Icon disabled={!isReady}>
-        <div className="absolute bg-red-500 top-3 right-3 w-[5px] h-[5px] rounded-full" />
+        {isReady && notifications.length > 0 && (
+          <div className="absolute bg-red-500 top-3 right-3 w-[5px] h-[5px] rounded-full" />
+        )}
         <IoMdNotifications className="text-2xl" />
       </Icon>
       {isReady && notifications.length > 0 && (
