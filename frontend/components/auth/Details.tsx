@@ -56,7 +56,7 @@ export default function Details() {
   }
 
   return (
-    <Modal isOpen={!getActivationStatus()} bgMaskColor="rgba(4, 4, 16, 0.6)">
+    <Modal isOpen={!getActivationStatus()}>
       <Step onNext={onNext} />
     </Modal>
   );

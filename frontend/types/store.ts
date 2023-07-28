@@ -14,8 +14,10 @@ export interface IUserStore {
 
 export interface IDashboardStore {
   isSidebarOpen: boolean;
+  isLogoutAlert: boolean;
 
   toggleSidebar(): void;
+  toggleLogoutAlert(): void;
 }
 
 export interface IDetailsStore {

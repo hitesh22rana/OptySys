@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 import Details from "@/components/auth/Details";
+import LogoutAlertDialog from "@/components/dashboard/lib/LogoutAlertDialog";
 
 import { deleteCookie, getAccessToken } from "@/app/(actions)/common";
 
@@ -43,6 +44,7 @@ export default function DashboardWrapper({ children }: WrapperProps) {
   return (
     <Fragment>
       <Details />
+      <LogoutAlertDialog />
 
       <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
         <Sidebar />

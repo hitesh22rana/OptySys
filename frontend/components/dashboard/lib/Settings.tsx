@@ -1,35 +1,14 @@
-import { useRouter } from "next/navigation";
-
-import { toast } from "react-toastify";
 import { BiUser } from "react-icons/bi";
 import { FiLogOut, FiSettings } from "react-icons/fi";
 
 import DropdownMenu from "@/components/common/DropdownMenu";
 import Icon from "@/components/common/Icon";
 
-import { logout } from "@/http";
-
-import { useUserStore } from "@/stores";
+import { useDashboardStore, useUserStore } from "@/stores";
 
 export default function Settings() {
-  const router = useRouter();
-
-  const { accessToken, logoutUser, user } = useUserStore();
-
-  async function handleLogout() {
-    try {
-      await logout(accessToken);
-      logoutUser();
-      toast.success("Logout successfully");
-
-      setTimeout(() => {
-        router.push("/login");
-        window.location.reload();
-      }, 1000);
-    } catch (err) {
-      toast.error("Logout failed");
-    }
-  }
+  const { accessToken, user } = useUserStore();
+  const { toggleLogoutAlert } = useDashboardStore();
 
   return (
     <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
@@ -52,7 +31,7 @@ export default function Settings() {
           </div>
           <button
             className="flex items-center w-full gap-2 justify-start cursor-pointer transition-all duration-200 hover:bg-gray-100 rounded-md p-2"
-            onClick={handleLogout}
+            onClick={toggleLogoutAlert}
           >
             <FiLogOut className="text-gray-600 text-xl" />
             <span className="font-medium text-gray-600">Logout</span>
