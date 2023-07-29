@@ -32,7 +32,7 @@ export default function LogoutAlertDialog() {
 
   return (
     <AlertDialog isOpen={isLogoutAlert}>
-      <div className="flex flex-col sm:px-5 p-3 max-w-lg gap-5 shadow-lg drop-shadow-sm border-[1px] border-gray-50 w-full rounded-md">
+      <div className="flex flex-col sm:px-5 p-3 max-w-lg gap-5 shadow-lg drop-shadow-sm border-[1px] border-gray-200 bg-white w-full rounded-md">
         <h3 className="sm:text-xl text-lg font-medium">
           Are you sure you want to logout?
         </h3>
@@ -48,7 +48,7 @@ export default function LogoutAlertDialog() {
             cancel
           </button>
           <button
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shadow-sm bg-[#28282B] hover:[#36454F] text-gray-50 sm:h-9 h-8 sm:px-4 px-3 py-2"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shadow-sm bg-[#28282B] hover:bg-[#36454F] text-gray-50 sm:h-9 h-8 sm:px-4 px-3 py-2"
             onClick={handleLogout}
           >
             continue
