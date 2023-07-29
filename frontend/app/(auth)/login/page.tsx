@@ -84,9 +84,9 @@ export default function LoginPage() {
       buttonText="Login"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-[10px] w-full">
+      <div className="flex flex-col gap-3 w-full">
         <div className="relative w-full h-full">
-          <MdOutlineEmail className="absolute text-xl top-[14px] left-2 text-gray-400" />
+          <MdOutlineEmail className="absolute text-xl top-3 left-2 text-gray-400" />
           <input
             name="email"
             type="email"
@@ -98,7 +98,7 @@ export default function LoginPage() {
         </div>
 
         <div className="relative w-full h-full">
-          <BiKey className="absolute text-2xl top-[10px] left-2 text-gray-400" />
+          <BiKey className="absolute text-2xl top-[9px] left-2 text-gray-400" />
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
