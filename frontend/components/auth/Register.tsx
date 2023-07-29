@@ -30,7 +30,7 @@ export default function Register({
             type="text"
             value={formData.name}
             placeholder="Enter name"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -42,7 +42,7 @@ export default function Register({
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -54,7 +54,7 @@ export default function Register({
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showPassword ? (
@@ -79,7 +79,7 @@ export default function Register({
             type={formData.showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             placeholder="Confirm password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showConfirmPassword ? (
@@ -105,7 +105,7 @@ export default function Register({
           <span>Already have an account?</span>
           <Link
             href="/login"
-            className="text-blue-500 underline underline-offset-2 "
+            className="text-blue-500 underline underline-offset-2"
           >
             Login
           </Link>

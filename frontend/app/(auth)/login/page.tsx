@@ -92,7 +92,7 @@ export default function LoginPage() {
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
         </div>
@@ -104,7 +104,7 @@ export default function LoginPage() {
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-blue-500 w-full h-full text-gray-500 placeholder:text-sm"
+            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
             onChange={onChange}
           />
           {formData.showPassword ? (
