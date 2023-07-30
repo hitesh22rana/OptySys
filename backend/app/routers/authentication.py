@@ -4,7 +4,7 @@
 from fastapi import APIRouter, BackgroundTasks, Body, Depends
 from fastapi_limiter.depends import RateLimiter
 
-from app.database import Users
+from app.database import Authentication
 from app.schemas import (
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
@@ -37,7 +37,7 @@ router = APIRouter(
 async def register_user(
     background_tasks: BackgroundTasks, user: UserRegisterRequestSchema = Body(...)
 ):
-    return await Users().register_user(background_tasks, user)
+    return await Authentication().register_user(background_tasks, user)
 
 
 """
@@ -55,7 +55,7 @@ async def register_user(
 
 @router.post("/verify", response_description="Verify and sign up a new user")
 async def verify_user(payload: UserVerifyRequestSchema = Body(...)):
-    return await Users().verify_user(payload)
+    return await Authentication().verify_user(payload)
 
 
 """
@@ -73,7 +73,7 @@ async def verify_user(payload: UserVerifyRequestSchema = Body(...)):
 
 @router.post("/login", response_description="Login a user")
 async def login_user(user: UserLoginRequestSchema = Body(...)):
-    return await Users().login_user(user)
+    return await Authentication().login_user(user)
 
 
 """
@@ -91,4 +91,24 @@ async def login_user(user: UserLoginRequestSchema = Body(...)):
 
 @router.post("/logout", response_description="Logout a user")
 async def logout_user():
-    return await Users().logout_user()
+    return await Authentication().logout_user()
+
+
+"""
+    Post method to send a password reset link on user's registered email.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: Password reset link confirmation message
+"""
+
+
+@router.post(
+    "/forgot-password", response_description="Send a password reset link to a user"
+)
+async def forgot_password(email: str = Body(...)):
+    return await Authentication().forgot_password(email)
