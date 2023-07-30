@@ -18,8 +18,11 @@ class EmailService:
     sender = settings.smtp_username
     password = settings.smtp_password
     templates = Jinja2Templates(directory="app/templates")
+
     otp_template = "otp.html"
+    reset_password_template = "reset_password.html"
     cover_letter_template = "cover_letter.html"
+
     server = None
     last_activity_time = None
     timeout = 300  # 5 minutes
@@ -67,6 +70,13 @@ class EmailService:
     def send_otp(cls, recipient, subject, otp):
         template = cls.templates.get_template(cls.otp_template)
         rendered = template.render(otp=otp)
+
+        cls.send_email_to_user(recipient, subject, rendered)
+
+    @classmethod
+    def send_password_reset_email(cls, recipient, subject, link):
+        template = cls.templates.get_template(cls.reset_password_template)
+        rendered = template.render(link=link)
 
         cls.send_email_to_user(recipient, subject, rendered)
 

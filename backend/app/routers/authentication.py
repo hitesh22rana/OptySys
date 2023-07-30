@@ -6,6 +6,7 @@ from fastapi_limiter.depends import RateLimiter
 
 from app.database import Authentication
 from app.schemas import (
+    UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
     UserVerifyRequestSchema,
@@ -35,9 +36,10 @@ router = APIRouter(
     dependencies=[Depends(RateLimiter(times=5, seconds=60))],
 )
 async def register_user(
-    background_tasks: BackgroundTasks, user: UserRegisterRequestSchema = Body(...)
+    background_tasks: BackgroundTasks,
+    user_details: UserRegisterRequestSchema = Body(...),
 ):
-    return await Authentication().register_user(background_tasks, user)
+    return await Authentication().register_user(background_tasks, user_details)
 
 
 """
@@ -72,8 +74,8 @@ async def verify_user(payload: UserVerifyRequestSchema = Body(...)):
 
 
 @router.post("/login", response_description="Login a user")
-async def login_user(user: UserLoginRequestSchema = Body(...)):
-    return await Authentication().login_user(user)
+async def login_user(user_details: UserLoginRequestSchema = Body(...)):
+    return await Authentication().login_user(user_details)
 
 
 """
@@ -110,5 +112,8 @@ async def logout_user():
 @router.post(
     "/forgot-password", response_description="Send a password reset link to a user"
 )
-async def forgot_password(email: str = Body(...)):
-    return await Authentication().forgot_password(email)
+async def forgot_password(
+    background_tasks: BackgroundTasks,
+    user_details: UserForgotPasswordRequestSchema = Body(...),
+):
+    return await Authentication().forgot_password(background_tasks, user_details)

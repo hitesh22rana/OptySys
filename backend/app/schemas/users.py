@@ -83,7 +83,7 @@ class UserVerifyRequestSchema(BaseModel):
 
 
 class UserLoginRequestSchema(BaseModel):
-    email: EmailStr = Field(..., description="Email address of the user")
+    email: EmailStr = Field(..., description="Registered Email address of the user")
     password: str = Field(
         ...,
         description="Password of the user",
@@ -100,6 +100,20 @@ class UserLoginRequestSchema(BaseModel):
             "example": {
                 "email": "email@domain.com",
                 "password": "password",
+            }
+        }
+
+
+class UserForgotPasswordRequestSchema(BaseModel):
+    email: EmailStr = Field(..., description="Registered Email address of the user")
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "email": "email@domain.com",
             }
         }
 

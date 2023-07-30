@@ -10,6 +10,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError
 from app.config import settings
 from app.models import UserBaseModel
 from app.schemas import (
+    UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
     UserResponseSchema,
@@ -26,6 +27,9 @@ from app.utils.validators import validate_db_connection
 class Authentication:
     # Token expiry time in hours
     token_expiry_time: int = settings.token_expiry_time
+
+    # Frontend base url
+    frontend_base_url: str = settings.frontend_base_url
 
     name: str = "Users"
     db: MongoDBConnector = None
@@ -270,3 +274,77 @@ class Authentication:
         response.delete_cookie(key="access_token")
 
         return response
+
+    @classmethod
+    async def forgot_password(
+        cls,
+        background_tasks: BackgroundTasks,
+        user_details: UserForgotPasswordRequestSchema,
+    ):
+        await cls.__initiate_db()
+
+        try:
+            user = await cls.db[cls.name].find_one(
+                {"email": user_details.email},
+                {"_id": 1},
+            )
+            if user is None:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
+                )
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        otp = cls.hasher.get_otp()
+        expiry = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+
+        data = {
+            "email": user_details.email,
+            "otp": otp,
+            "expiry": expiry,
+        }
+
+        jwt_token = cls.jwt.encode(data)
+
+        link: str = f"{cls.frontend_base_url}/reset-password?token={jwt_token}"
+
+        try:
+            background_tasks.add_task(
+                email_service.send_password_reset_email,
+                user_details.email,
+                "OptySys User Password Reset",
+                link,
+            )
+
+            return OK({"detail": "Success: Password reset link sent successfully"})
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Error: Bad request",
+            ) from e
+
+        finally:
+            await MongoDBConnector().disconnect()

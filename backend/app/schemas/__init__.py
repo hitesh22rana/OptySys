@@ -13,6 +13,7 @@ from app.schemas.organizations import (
 from app.schemas.users import (
     SocialLinks,
     UserDetailsSchema,
+    UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
     UserResponseSchema,

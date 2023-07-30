@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     redis_host: str
     redis_port: int
     redis_password: str
+    frontend_base_url: str
     allowed_origins: list
 
     class Config:

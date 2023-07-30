@@ -57,6 +57,7 @@ BARD_TOKEN="<bard_token>"
 REDIS_HOST="<redis_host_url>"
 REDIS_PORT="<redis_port>"
 REDIS_PASSWORD="<redis_password>"
+FRONTEND_BASE_URL="http://localhost:3000"
 ALLOWED_ORIGINS='["http://localhost:3000"]'
 ```
 

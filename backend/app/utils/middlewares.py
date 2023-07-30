@@ -15,6 +15,7 @@ PUBLIC_ENDPOINTS = [
     {"path": "/auth/register", "method": "POST"},
     {"path": "/auth/verify", "method": "POST"},
     {"path": "/auth/login", "method": "POST"},
+    {"path": "/auth/forgot-password", "method": "POST"},
 ]
 
 UNAUTHORIZED_ENDPOINTS = [
