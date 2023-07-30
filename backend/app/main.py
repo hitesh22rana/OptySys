@@ -1,9 +1,11 @@
 # Purpose: Main file for FastAPI application
 # Path: backend\app\main.py
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.middlewares import AuthenticationMiddleware, WebSocketMiddleMiddleware
@@ -53,7 +55,7 @@ v1.include_router(ws.router)
 """Startup Event for Database"""
 
 
-@app.on_event("startup")
+@v1.on_event("startup")
 async def startup_db_client():
     await MongoDBConnector().connect()
     MongoDBConnector().connect_sync()
@@ -63,8 +65,18 @@ async def startup_db_client():
 """Shutdown Event for Database"""
 
 
-@app.on_event("shutdown")
+@v1.on_event("shutdown")
 async def shutdown_db_client():
     await MongoDBConnector().disconnect()
     MongoDBConnector().disconnect_sync()
     await RedisConnector().disconnect()
+
+
+"""Standard Error Handler"""
+
+
+@v1.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        content={"detail": "Error: Unprocessable Entity"}, status_code=422
+    )
