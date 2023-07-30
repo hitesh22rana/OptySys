@@ -122,11 +122,19 @@ export default function LoginPage() {
           )}
         </div>
 
-        <ErrorField error={error} />
+        <div className="flex flex-row items-center justify-between w-full">
+          <ErrorField error={error} />
+          <Link
+            href="/forgot-password"
+            className="text-blue-500 underline underline-offset-2 text-sm h-2"
+          >
+            Forgot password?
+          </Link>
+        </div>
       </div>
 
       <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
-        <div className="flex flex-row gap-2  text-sm">
+        <div className="flex flex-row gap-2 text-sm">
           <span>Don&apos;t have an account?</span>
           <Link
             href="/register"
