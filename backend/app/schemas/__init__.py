@@ -16,6 +16,7 @@ from app.schemas.users import (
     UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
+    UserResetPasswordRequestSchema,
     UserResponseSchema,
     UserUpdateRequestSchema,
     UserVerifyRequestSchema,

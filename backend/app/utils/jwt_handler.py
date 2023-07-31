@@ -32,7 +32,7 @@ class JwtTokenHandler:
                 raise Exception(
                     {
                         "status_code": 401,
-                        "detail": "Token has expired.",
+                        "detail": "Error: Token has expired.",
                     }
                 )
 
@@ -41,7 +41,7 @@ class JwtTokenHandler:
             raise Exception(
                 {
                     "status_code": 401,
-                    "detail": "Token has expired.",
+                    "detail": "Error: Token has expired.",
                 }
             )
 
@@ -49,6 +49,6 @@ class JwtTokenHandler:
             raise Exception(
                 {
                     "status_code": 401,
-                    "detail": "Invalid token.",
+                    "detail": "Error: Invalid token.",
                 }
             )

@@ -118,6 +118,20 @@ class UserForgotPasswordRequestSchema(BaseModel):
         }
 
 
+class UserResetPasswordRequestSchema(BaseModel):
+    password: str = Field(
+        ...,
+        description="Password of the user",
+        min_length=8,
+        max_length=50,
+        regex="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%^&*])[a-zA-Z\d@!#$%^&*]{8,}$",
+        type="string",
+    )
+    token: str = Field(
+        ..., description="JWT token for user verification", min_length=1, type="string"
+    )
+
+
 class UserUpdateRequestSchema(BaseModel):
     summary: str = Field(..., description="Summary of the user", max_length=500)
     socials: List[Dict[SocialLinks, str]] = Field(

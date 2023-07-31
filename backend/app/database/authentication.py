@@ -13,6 +13,7 @@ from app.schemas import (
     UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
+    UserResetPasswordRequestSchema,
     UserResponseSchema,
     UserVerifyRequestSchema,
 )
@@ -42,10 +43,14 @@ class Authentication:
         cls.jwt = JwtTokenHandler()
 
     @classmethod
-    def _set_expires(cls):
+    def _set_access_expires(cls):
         return (
             datetime.now(timezone.utc) + timedelta(hours=cls.token_expiry_time)
         ).isoformat()
+
+    @classmethod
+    def _set_action_expires(cls):
+        return (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
 
     @classmethod
     async def __initiate_db(cls):
@@ -87,7 +92,7 @@ class Authentication:
             ) from e
 
         otp = cls.hasher.get_otp()
-        expiry = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+        expiry = cls._set_action_expires()
 
         data = {
             "email": user_details.email,
@@ -139,6 +144,22 @@ class Authentication:
         try:
             payload_data = cls.jwt.decode(token)
 
+            if payload_data["otp"] != otp:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_401_UNAUTHORIZED,
+                        "detail": "Error: Invalid OTP",
+                    }
+                )
+
+            if payload_data["email"] != user_details.email:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_401_UNAUTHORIZED,
+                        "detail": "Error: Invalid email",
+                    }
+                )
+
         except Exception as e:
             status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
                 "detail", "Error: Bad Request"
@@ -147,18 +168,6 @@ class Authentication:
                 status_code=status_code,
                 detail=detail,
             ) from e
-
-        if payload_data["otp"] != otp:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Error: Invalid OTP",
-            )
-
-        if payload_data["email"] != user_details.email:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Error: Invalid email",
-            )
 
         hashed_password = cls.hasher.get_password_hash(user_details.password)
 
@@ -175,7 +184,7 @@ class Authentication:
                 }
             )
 
-            expiry = cls._set_expires()
+            expiry = cls._set_access_expires()
             jwt_token = cls.jwt.encode(
                 {"user_id": str(result.inserted_id), "expiry": expiry}
             )
@@ -237,7 +246,7 @@ class Authentication:
 
             response = OK({"detail": "Success: User logged in successfully"})
 
-            expiry = cls._set_expires()
+            expiry = cls._set_access_expires()
             jwt_token = cls.jwt.encode({"user_id": str(user["_id"]), "expiry": expiry})
 
             response.set_cookie(
@@ -311,12 +320,10 @@ class Authentication:
                 detail=detail,
             ) from e
 
-        otp = cls.hasher.get_otp()
-        expiry = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+        expiry = cls._set_action_expires()
 
         data = {
             "email": user_details.email,
-            "otp": otp,
             "expiry": expiry,
         }
 
@@ -344,6 +351,61 @@ class Authentication:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Error: Bad request",
+            ) from e
+
+        finally:
+            await MongoDBConnector().disconnect()
+
+    @classmethod
+    async def reset_password(cls, payload: UserResetPasswordRequestSchema):
+        await cls.__initiate_db()
+
+        token: str = payload.token
+
+        try:
+            payload_data = cls.jwt.decode(token)
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        email: str = payload_data["email"]
+        hashed_password = cls.hasher.get_password_hash(payload.password)
+
+        try:
+            res = await cls.db[cls.name].update_one(
+                {"email": email},
+                {"$set": {"password": hashed_password}},
+            )
+
+            if res.modified_count == 0:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: User not found",
+                    }
+                )
+
+            return OK({"detail": "Success: Password reset successfully"})
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
             ) from e
 
         finally:

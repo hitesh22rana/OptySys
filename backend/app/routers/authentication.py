@@ -9,6 +9,7 @@ from app.schemas import (
     UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,
     UserRegisterRequestSchema,
+    UserResetPasswordRequestSchema,
     UserVerifyRequestSchema,
 )
 
@@ -117,3 +118,21 @@ async def forgot_password(
     user_details: UserForgotPasswordRequestSchema = Body(...),
 ):
     return await Authentication().forgot_password(background_tasks, user_details)
+
+
+"""
+    Post method to reset user's password.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+    
+    Returns:
+        _type_: Password reset confirmation message
+"""
+
+
+@router.post("/reset-password", response_description="Reset user's password")
+async def reset_password(payload: UserResetPasswordRequestSchema = Body(...)):
+    return await Authentication().reset_password(payload)
