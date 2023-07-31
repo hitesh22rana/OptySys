@@ -125,7 +125,7 @@ export default function LoginPage() {
         <div className="flex flex-row items-center justify-between w-full">
           <ErrorField error={error} />
           <Link
-            href="/forgot-password"
+            href="/reset-password"
             className="text-blue-500 underline underline-offset-2 text-sm h-2"
           >
             Forgot password?
