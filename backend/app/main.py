@@ -55,7 +55,7 @@ v1.include_router(ws.router)
 """Startup Event for Database"""
 
 
-@v1.on_event("startup")
+@app.on_event("startup")
 async def startup_db_client():
     await MongoDBConnector().connect()
     MongoDBConnector().connect_sync()
@@ -65,7 +65,7 @@ async def startup_db_client():
 """Shutdown Event for Database"""
 
 
-@v1.on_event("shutdown")
+@app.on_event("shutdown")
 async def shutdown_db_client():
     await MongoDBConnector().disconnect()
     MongoDBConnector().disconnect_sync()
@@ -78,5 +78,6 @@ async def shutdown_db_client():
 @v1.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
-        content={"detail": "Error: Unprocessable Entity"}, status_code=422
+        content={"status_code": "422", "detail": "Error: Unprocessable Entity"},
+        status_code=422,
     )
