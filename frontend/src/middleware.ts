@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isPublicRoute } from "@/src/lib/auth";
 
 export const config = {
-  matcher: ["/", "/login", "/register", "/dashboard/:path*"],
+  matcher: ["/", "/login", "/register", "/reset-password", "/dashboard/:path*"],
 };
 
 export function middleware(request: NextRequest) {
