@@ -4,6 +4,10 @@ export interface WrapperProps {
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
 
+export interface ForgotPasswordFormProps {
+  toggleForgotPassword: () => void;
+}
+
 export interface RegisterFormProps {
   error: string | null;
   formData: RegisterFormData;
