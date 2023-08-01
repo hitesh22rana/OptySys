@@ -3,25 +3,47 @@
 import { useState } from "react";
 import Link from "next/link";
 
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import { MdOutlineEmail } from "react-icons/md";
 
 import FormWrapper from "@/src/components/common/FormWrapper";
 
-export default function ForgotPassword() {
+import { forgotPassword } from "@/src/http";
+
+import { forgotPasswordFormProps } from "@/src/types/common";
+
+import { getForgotPasswordErrors } from "@/src/utils/errors";
+
+export default function ForgotPassword({
+  toggleForgotPassword,
+}: forgotPasswordFormProps) {
   const [email, setEmail] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log(email);
+    // checks for formdata
+    const errorMessage = getForgotPasswordErrors(email);
 
-    console.log("forgot password");
+    if (errorMessage) {
+      toast.error(errorMessage);
+      return;
+    }
+
+    try {
+      await forgotPassword({ email: email });
+      toast.success("Successfully sent link.");
+      toggleForgotPassword();
+    } catch (err: AxiosError | any) {
+      toast.error("Unable to send link.");
+    }
   }
 
   return (
     <FormWrapper
       title="Forgot Password"
-      subtitle="Enter your email address and we'll send you a link to reset your password"
+      subtitle="Enter your registered email address to reset your password."
       buttonText="Submit"
       onSubmit={onSubmit}
     >

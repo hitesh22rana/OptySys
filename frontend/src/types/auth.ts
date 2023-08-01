@@ -21,6 +21,15 @@ export interface VerifyData {
   token: string;
 }
 
+export interface forgotPasswordData {
+  email: string;
+}
+
+export interface resetPasswordData {
+  password: string;
+  token: string;
+}
+
 export interface FormProps {
   title: string;
   subtitle: string;
@@ -36,6 +45,14 @@ export interface LoginFormData {
   email: string;
   password: string;
   showPassword: boolean;
+}
+
+export interface ResetPasswordFormData {
+  password: string;
+  confirmPassword: string;
+  showPassword: boolean;
+  showConfirmPassword: boolean;
+  token: string;
 }
 
 export interface RegisterFormData {

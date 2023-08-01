@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 import Register from "@/src/components/auth/Register";
 import Verify from "@/src/components/auth/Verify";
 
-import { RegisterFormData } from "@/src/types/auth";
 import { register, verify } from "@/src/http";
+
+import { RegisterFormData } from "@/src/types/auth";
 import { getRegisterFormErrors } from "@/src/utils/errors";
 
 export default function RegisterPage() {

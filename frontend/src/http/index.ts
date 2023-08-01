@@ -3,6 +3,8 @@ import {
   LoginData,
   RegisterData,
   VerifyData,
+  forgotPasswordData,
+  resetPasswordData,
 } from "@/src/types/auth";
 
 import axios from "axios";
@@ -33,6 +35,11 @@ export const logout = (accessToken: string): Promise<any> => {
     api.post("/auth/logout");
   })();
 };
+export const forgotPassword = (data: forgotPasswordData): Promise<any> =>
+  api.post("/auth/forgot-password", data);
+
+export const resetPassowrd = (data: resetPasswordData): Promise<any> =>
+  api.post("/auth/reset-password", data);
 
 // all user routes
 export const getUser = (accessToken: string): Promise<any> => {

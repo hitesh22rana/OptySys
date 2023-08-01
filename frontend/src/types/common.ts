@@ -4,7 +4,11 @@ export interface WrapperProps {
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
 
-export interface ForgotPasswordFormProps {
+export interface LoginFormProps {
+  toggleForgotPassword: () => void;
+}
+
+export interface forgotPasswordFormProps {
   toggleForgotPassword: () => void;
 }
 

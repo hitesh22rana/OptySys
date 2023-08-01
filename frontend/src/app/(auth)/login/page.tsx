@@ -17,7 +17,7 @@ export default function LoginPage() {
       {!forgotPassword ? (
         <Login toggleForgotPassword={toggleForgotPassword} />
       ) : (
-        <ForgotPassword />
+        <ForgotPassword toggleForgotPassword={toggleForgotPassword} />
       )}
     </Fragment>
   );

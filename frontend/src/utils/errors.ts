@@ -70,6 +70,39 @@ export function getLoginFormErrors(
   return null;
 }
 
+export function getForgotPasswordErrors(email: string): string | null {
+  if (!email) {
+    return "Email cannot be empty.";
+  }
+
+  const emailError = getInvalidEmailError(email);
+  if (emailError) {
+    return emailError;
+  }
+
+  return null;
+}
+
+export function getResetPasswordErrors(
+  password: string,
+  confirmPassword: string
+): string | null {
+  if (!password && !confirmPassword) {
+    return "All fields are required.";
+  }
+
+  const passwordError = getInvalidPasswordError(password);
+  if (passwordError) {
+    return passwordError;
+  }
+
+  if (password !== confirmPassword) {
+    return "Passwords must match.";
+  }
+
+  return null;
+}
+
 export function getRegisterFormErrors(
   name: string,
   email: string,

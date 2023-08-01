@@ -15,13 +15,11 @@ import ErrorField from "@/src/components/common/ErrorField";
 import { login } from "@/src/http";
 
 import { LoginFormData } from "@/src/types/auth";
-import { ForgotPasswordFormProps } from "@/src/types/common";
+import { LoginFormProps } from "@/src/types/common";
 
 import { getLoginFormErrors } from "@/src/utils/errors";
 
-export default function Login({
-  toggleForgotPassword,
-}: ForgotPasswordFormProps) {
+export default function Login({ toggleForgotPassword }: LoginFormProps) {
   const router = useRouter();
 
   const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
