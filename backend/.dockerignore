@@ -3,7 +3,12 @@
 
 .env
 venv
+
 Dockerfile*
 Dockerfile.*
-docker-compose*.yml
-docker-compose.*.yml
+*.yml
+*.yaml
+
+.*
+
+*.md
