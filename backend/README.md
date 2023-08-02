@@ -80,7 +80,7 @@ This will start the OptySys backend server on `http://localhost:8000`.
 If you prefer to run the entire project using Docker Compose, you can use the following command:
 
 ```bash
-docker-compose -f docker-compose.yml up
+docker-compose -f docker-compose.dev.yml up
 ```
 
 This will start all the necessary services, including the backend, MongoDB, and Redis, defined in the `docker-compose.yml` file.
