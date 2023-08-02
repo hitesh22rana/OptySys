@@ -1,0 +1,11 @@
+node_modules
+
+.next
+.vscode
+.gitignore
+.eslintignore
+.eslintrc.json
+.prettierignore
+.prettierrc
+
+Dockerfile*

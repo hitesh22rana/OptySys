@@ -22,7 +22,5 @@ services:
             - ./.env
         environment:
             - REDIS_HOST=redis
-        volumes:
-            - ./backend:/backend
         depends_on:
             - redis
