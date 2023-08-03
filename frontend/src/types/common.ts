@@ -1,3 +1,5 @@
+import { IconType } from "react-icons/lib";
+
 import { RegisterFormData } from "@/src/types/auth";
 
 export interface WrapperProps {
@@ -54,4 +56,11 @@ export interface IOption {
 export interface IJsonNotification {
   id: string;
   data: any;
+}
+
+export interface IRoute {
+  name: string;
+  icon: IconType;
+  path: string;
+  color: string;
 }

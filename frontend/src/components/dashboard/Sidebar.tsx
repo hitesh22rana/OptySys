@@ -6,6 +6,7 @@ import { SlOrganization } from "react-icons/sl";
 import { useDashboardStore } from "@/src/stores";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
+import { IRoute } from "@/src/types/common";
 
 const montserrat = Montserrat({
   weight: "600",
@@ -15,7 +16,7 @@ const montserrat = Montserrat({
 export default function Sidebar() {
   const { toggleSidebar, isSidebarOpen } = useDashboardStore();
 
-  const routes = [
+  const routes: Array<IRoute> = [
     {
       name: "Organizations",
       icon: SlOrganization,
@@ -45,7 +46,7 @@ export default function Sidebar() {
             OptySys
           </h2>
         </div>
-        {routes.map((route: any, index: number) => {
+        {routes.map((route: IRoute, index: number) => {
           return (
             <Link
               href={route.path}
