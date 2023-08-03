@@ -28,10 +28,10 @@ export default function RegisterPage() {
 
     setFormData({ ...formData, [name]: value });
 
-    let userName;
-    let email;
-    let password;
-    let confirmPassword;
+    let userName: string;
+    let email: string;
+    let password: string;
+    let confirmPassword: string;
 
     switch (name) {
       case "name":

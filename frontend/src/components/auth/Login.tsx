@@ -31,8 +31,8 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
 
     setFormData({ ...formData, [name]: value });
 
-    let email;
-    let password;
+    let email: string;
+    let password: string;
 
     switch (name) {
       case "email":

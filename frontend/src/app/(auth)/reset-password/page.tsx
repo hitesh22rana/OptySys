@@ -46,8 +46,8 @@ export default function ResetPasswordPage() {
 
     setFormData({ ...formData, [name]: value });
 
-    let password;
-    let confirmPassword;
+    let password: string;
+    let confirmPassword: string;
 
     switch (name) {
       case "password":
