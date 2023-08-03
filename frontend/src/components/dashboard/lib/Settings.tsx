@@ -11,7 +11,7 @@ export default function Settings() {
   const { toggleLogoutAlert } = useDashboardStore();
 
   return (
-    <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
+    <div className="group relative flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-100 border-[1px] border-transparent hover:border-gray-200">
       <Icon>
         <FiSettings className="text-2xl" />
       </Icon>

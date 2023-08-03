@@ -1,4 +1,4 @@
-import { IoMdNotifications } from "react-icons/io";
+import { FaRegBell } from "react-icons/fa";
 
 import Icon from "@/src/components/common/Icon";
 import DropdownMenu from "@/src/components/common/DropdownMenu";
@@ -20,9 +20,9 @@ export default function Notifications() {
     <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
       <Icon disabled={!isReady}>
         {isReady && notifications.length > 0 && (
-          <div className="absolute bg-red-500 top-3 right-3 w-[5px] h-[5px] rounded-full" />
+          <div className="absolute bg-red-500 top-2 right-[10px] w-[8px] h-[8px] rounded-full" />
         )}
-        <IoMdNotifications className="text-2xl" />
+        <FaRegBell className="text-2xl" />
       </Icon>
       {isReady && notifications.length > 0 && (
         <DropdownMenu className="max-h-96 w-[280px]">

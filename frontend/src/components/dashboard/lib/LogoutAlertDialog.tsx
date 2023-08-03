@@ -12,6 +12,7 @@ export default function LogoutAlertDialog() {
   const router = useRouter();
 
   const { accessToken, logoutUser } = useUserStore();
+  const { isLogoutAlert, toggleLogoutAlert } = useDashboardStore();
 
   async function handleLogout() {
     try {
@@ -27,8 +28,6 @@ export default function LogoutAlertDialog() {
       toast.error("Logout failed");
     }
   }
-
-  const { isLogoutAlert, toggleLogoutAlert } = useDashboardStore();
 
   return (
     <AlertDialog isOpen={isLogoutAlert}>
