@@ -14,7 +14,7 @@ export default function Topbar() {
   return (
     <header className="flex flex-row items-center justify-between bg-white w-full py-2">
       <Icon onClick={toggleSidebar}>
-        <RxHamburgerMenu className="sm:hidden cursor-pointer text-xl" />
+        <RxHamburgerMenu className="md:hidden cursor-pointer text-xl" />
       </Icon>
 
       <div className="flex flex-row items-center gap-5">
