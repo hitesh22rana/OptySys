@@ -1,11 +1,12 @@
 import { Fragment } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Montserrat } from "next/font/google";
 
+import { LuLayoutDashboard } from "react-icons/lu";
 import { SlOrganization } from "react-icons/sl";
 
 import { useDashboardStore } from "@/src/stores";
-import Image from "next/image";
-import { Montserrat } from "next/font/google";
 import { IRoute } from "@/src/types/common";
 
 const montserrat = Montserrat({
@@ -18,10 +19,16 @@ export default function Sidebar() {
 
   const routes: Array<IRoute> = [
     {
+      name: "Dashboard",
+      icon: LuLayoutDashboard,
+      path: "/dashboard",
+      color: "text-sky-500",
+    },
+    {
       name: "Organizations",
       icon: SlOrganization,
-      path: "/organizations",
-      color: "text-sky-500",
+      path: "/dashboard/organizations",
+      color: "text-violet-500",
     },
   ];
 
@@ -38,7 +45,7 @@ export default function Sidebar() {
           isSidebarOpen ? "flex" : "md:flex hidden"
         } h-screen left-0 top-0 bottom-0 shadow-gray-200 shadow z-[999] items-center gap-5 justify-start`}
       >
-        <div className="flex flex-row items-center justify-start gap-4 w-full">
+        <div className="flex flex-row items-center justify-start gap-4 w-full mb-5">
           <Image src="/images/logo.png" height={50} width={50} alt="logo" />
           <h2
             className={`text-white font-medium text-2xl ${montserrat.className}`}

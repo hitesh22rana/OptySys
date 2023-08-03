@@ -12,7 +12,7 @@ export default function Topbar() {
   const { toggleSidebar } = useDashboardStore();
 
   return (
-    <header className="flex flex-row items-center justify-between bg-white w-full py-2">
+    <header className="flex flex-row items-center justify-between w-full">
       <Icon onClick={toggleSidebar}>
         <RxHamburgerMenu className="md:hidden cursor-pointer text-xl" />
       </Icon>
