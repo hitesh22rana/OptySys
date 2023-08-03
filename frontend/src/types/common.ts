@@ -64,3 +64,13 @@ export interface IRoute {
   path: string;
   color: string;
 }
+
+export interface ICardData {
+  name: string;
+  icon: IconType;
+  path: string;
+  cardBackground: string;
+  iconColor: string;
+  iconBackground: string;
+  cardShadow: string;
+}

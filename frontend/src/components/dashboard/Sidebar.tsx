@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
@@ -15,6 +16,7 @@ const montserrat = Montserrat({
 });
 
 export default function Sidebar() {
+  const pathName = usePathname();
   const { toggleSidebar, isSidebarOpen } = useDashboardStore();
 
   const routes: Array<IRoute> = [
@@ -58,7 +60,11 @@ export default function Sidebar() {
             <Link
               href={route.path}
               key={index}
-              className="flex items-center rounded-md cursor-pointer flex-row w-full gap-4 p-3 text-white hover:bg-white/10"
+              className={`flex items-center rounded-md cursor-pointer flex-row w-full gap-4 p-3 text-white hover:bg-white/10 ${
+                pathName === route.path
+                  ? "text-white bg-white/10"
+                  : "text-zinc-400"
+              }`}
             >
               <route.icon className={`min-w-fit text-xl ${route.color}`} />
               <span className="text-sm font-medium">{route.name}</span>
