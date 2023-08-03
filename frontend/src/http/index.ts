@@ -58,3 +58,11 @@ export const updateUser = (
     return api.put("/users", data);
   })();
 };
+
+// all organization routes
+export const getOrganization = (accessToken: string): Promise<any> => {
+  setAuthorizationHeader(accessToken);
+  return (async () => {
+    return api.get("/organizations");
+  })();
+};
