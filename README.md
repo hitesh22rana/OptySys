@@ -1,12 +1,12 @@
-<center>
-
 # OptySys
+
+<img src="./.github/images/logo.png" width="200" />
 
 ## Streamlining opportunities with efficient matching and automation
 
 <br />
 
-<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%; gap: 16px; margin: 0px auto; padding: 10px;">
+<div style="display: flex; flex-direction: row; width: 100%; padding: 10px;">
 <a href="https://opensource.org/license/mit">
     <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-yellow.svg?style=social"/>
 </a>
@@ -23,15 +23,14 @@
     <img alt="Github issues" src="https://img.shields.io/github/issues/hitesh22rana/Optysys?style=social" />
 </a>
 </div>
-</center>
 
 ## Table of Contents
 
-- [About](#about)
-- [Key Features](#key-features)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [License](#license)
+-   [About](#about)
+-   [Key Features](#key-features)
+-   [Getting Started](#getting-started)
+-   [Contributing](#contributing)
+-   [License](#license)
 
 ## About
 
@@ -68,9 +67,8 @@ follow the [Contribution Guide](CONTRIBUTING.md)
 
 OptySys is licensed under the [MIT License](LICENSE.md)
 
+## Contributors 👥
 
-## Contributors 👥                                           
 <a href="https://github.com/hitesh22rana/OptySys/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=hitesh22rana/OptySys&all=true" />
 </a>
-
