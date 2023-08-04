@@ -63,7 +63,7 @@ export default function Sidebar() {
               className={`flex items-center rounded-md cursor-pointer flex-row w-full gap-4 p-3 text-white hover:bg-white/10 ${
                 pathName === route.path
                   ? "text-white bg-white/10"
-                  : "text-zinc-400"
+                  : "text-zinc-300"
               }`}
             >
               <route.icon className={`min-w-fit text-xl ${route.color}`} />

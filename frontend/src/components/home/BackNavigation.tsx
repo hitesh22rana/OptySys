@@ -9,7 +9,7 @@ export default function BackNavigation() {
         href="/"
         className="flex flex-row items-center justify-start gap-2 sm:text-xl text-lg font-semibold pt-2 text-[#28282B] hover:animate-pulse"
       >
-        <AiOutlineArrowLeft className="sm:text-2xl text-xl" />
+        <AiOutlineArrowLeft className="sm:text-xl text-lg" />
         <span>Back to main</span>
       </Link>
     </nav>

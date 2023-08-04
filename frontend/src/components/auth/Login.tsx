@@ -127,6 +127,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
         <div className="flex flex-row items-center justify-between w-full">
           <ErrorField error={error} />
           <button
+            type="button"
             onClick={toggleForgotPassword}
             className="text-blue-500 underline underline-offset-2 text-sm h-2"
           >
