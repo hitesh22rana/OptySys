@@ -20,7 +20,10 @@ export default function OrganizationsPage() {
   }
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full gap-5 my-4">
+      <h2 className="md:text-4xl text-3xl font-bold text-center">
+        Explore Organizations
+      </h2>
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full h-full">
         {data?.data?.data?.map((org, _) => {
           return (

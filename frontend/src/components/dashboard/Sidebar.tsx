@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
 
-import { LuLayoutDashboard } from "react-icons/lu";
 import { SlOrganization } from "react-icons/sl";
 
 import { useDashboardStore } from "@/src/stores";
@@ -20,12 +19,6 @@ export default function Sidebar() {
   const { toggleSidebar, isSidebarOpen } = useDashboardStore();
 
   const routes: Array<IRoute> = [
-    {
-      name: "Dashboard",
-      icon: LuLayoutDashboard,
-      path: "/dashboard",
-      color: "text-sky-500",
-    },
     {
       name: "Organizations",
       icon: SlOrganization,
@@ -43,24 +36,27 @@ export default function Sidebar() {
         onClick={toggleSidebar}
       />
       <aside
-        className={`flex-col bg-gray-900 fixed transition-width ease-in-out duration-300 p-4 3xl:w-80 sm:w-60 md:max-w-full max-w-[80%] w-full ${
+        className={`flex-col bg-gray-900 fixed transition-width ease-in-out duration-300 px-2 py-4 3xl:w-80 sm:w-64 md:max-w-full max-w-[80%] w-full ${
           isSidebarOpen ? "flex" : "md:flex hidden"
         } h-screen left-0 top-0 bottom-0 shadow-gray-200 shadow z-[999] items-center gap-5 justify-start`}
       >
-        <div className="flex flex-row items-center justify-start gap-4 w-full mb-5">
+        <Link
+          href="/dashboard"
+          className="flex flex-row items-center justify-start gap-4 w-full mb-5"
+        >
           <Image src="/images/logo.png" height={50} width={50} alt="logo" />
           <h2
             className={`text-white font-medium text-2xl ${montserrat.className}`}
           >
             OptySys
           </h2>
-        </div>
+        </Link>
         {routes.map((route: IRoute, index: number) => {
           return (
             <Link
               href={route.path}
               key={index}
-              className={`flex items-center rounded-md cursor-pointer flex-row w-full gap-4 p-3 text-white hover:bg-white/10 ${
+              className={`flex items-center rounded-md cursor-pointer flex-row w-full gap-4 px-4 py-3 text-white hover:bg-white/10 ${
                 pathName === route.path
                   ? "text-white bg-white/10"
                   : "text-zinc-300"
