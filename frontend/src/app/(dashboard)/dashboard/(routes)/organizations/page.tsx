@@ -19,6 +19,8 @@ export default function OrganizationsPage() {
     return <div>Loading...</div>;
   }
 
+  console.log(data?.data);
+
   return (
     <div className="flex flex-col w-full h-full gap-5 my-4">
       <h2 className="md:text-4xl text-3xl font-bold text-center">
@@ -29,11 +31,17 @@ export default function OrganizationsPage() {
           return (
             <div
               key={org._id}
-              className="p-4 shadow-md border-[1px] border-gray-200 rounded"
+              className="flex flex-col items-start gap-4 p-3 shadow-md border-[1px] border-gray-200 rounded"
             >
-              <h4>name: {org.name}</h4>
-              <p>desc: {org.description}</p>
-              <span>total members: {org.total_members}</span>
+              <div>
+                <h4>name: {org.name}</h4>
+                <p>desc: {org.description}</p>
+                <span>total members: {org.total_members}</span>
+              </div>
+
+              <button className="px-2 py-1 text-sm bg-[#28282B] text-white rounded">
+                {org.private ? "Request to join" : "Join"}
+              </button>
             </div>
           );
         })}
