@@ -1,5 +1,9 @@
-import Wrapper from "@/src/components/home/Wrapper";
-import BackNavigation from "@/src/components/home/BackNavigation";
+import dynamic from "next/dynamic";
+
+const Wrapper = dynamic(() => import("@/src/components/home/Wrapper"));
+const BackNavigation = dynamic(
+  () => import("@/src/components/home/BackNavigation")
+);
 
 export default function AuthLayout({
   children,

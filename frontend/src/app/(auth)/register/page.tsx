@@ -2,12 +2,13 @@
 
 import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-import Register from "@/src/components/auth/Register";
-import Verify from "@/src/components/auth/Verify";
+const Register = dynamic(() => import("@/src/components/auth/Register"));
+const Verify = dynamic(() => import("@/src/components/auth/Verify"));
 
 import { register, verify } from "@/src/http";
 

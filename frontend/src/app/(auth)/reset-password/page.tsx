@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 import { BiKey, BiLock } from "react-icons/bi";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
-import ErrorField from "@/src/components/common/ErrorField";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
+const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
 
 import { resetPassowrd } from "@/src/http";
 

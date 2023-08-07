@@ -1,9 +1,12 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import dynamic from "next/dynamic";
 
-import Login from "@/src/components/auth/Login";
-import ForgotPassword from "@/src/components/auth/ForgotPassword";
+const Login = dynamic(() => import("@/src/components/auth/Login"));
+const ForgotPassword = dynamic(
+  () => import("@/src/components/auth/ForgotPassword")
+);
 
 export default function LoginPage() {
   const [forgotPassword, setForgotPassword] = useState<boolean>(false);

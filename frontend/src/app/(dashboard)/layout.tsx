@@ -1,4 +1,8 @@
-import DashboardWrapper from "@/src/components/dashboard/DashboardWrapper";
+import dynamic from "next/dynamic";
+
+const DashboardWrapper = dynamic(
+  () => import("@/src/components/dashboard/DashboardWrapper")
+);
 
 export default async function DashboardLayout({
   children,
