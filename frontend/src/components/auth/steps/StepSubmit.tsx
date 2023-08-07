@@ -1,6 +1,9 @@
 import Image from "next/image";
+import dynamic from "next/dynamic";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
 
 import { DetailStepProps } from "@/src/types/auth";
 

@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { MdOutlineEmail } from "react-icons/md";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
 
 import { forgotPassword } from "@/src/http";
 

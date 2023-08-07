@@ -1,10 +1,13 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
-import ErrorField from "@/src/components/common/ErrorField";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
+const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
 
 import { RegisterFormProps } from "@/src/types/common";
 

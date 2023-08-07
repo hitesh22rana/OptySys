@@ -1,8 +1,11 @@
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 import OtpInput from "react-otp-input";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
 
 import useTimer from "@/src/hooks/useTimer";
 

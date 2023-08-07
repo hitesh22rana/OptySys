@@ -1,21 +1,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 
-import Modal from "@/src/components/common/Modal";
-import StepAbout from "@/src/components/auth/steps/StepAbout";
-import StepBanner from "@/src/components/auth/steps/StepBanner";
-import StepSubmit from "@/src/components/auth/steps/StepSubmit";
-import StepSocials from "@/src/components/auth/steps/StepSocials";
+const Modal = dynamic(() => import("@/src/components/common/Modal"));
+const StepAbout = dynamic(
+  () => import("@/src/components/auth/steps/StepAbout")
+);
+const StepBanner = dynamic(
+  () => import("@/src/components/auth/steps/StepBanner")
+);
+const StepSubmit = dynamic(
+  () => import("@/src/components/auth/steps/StepSubmit")
+);
+const StepSocials = dynamic(
+  () => import("@/src/components/auth/steps/StepSocials")
+);
 
 import { updateUser } from "@/src/http";
 
 import { useDetailsStore, useUserStore } from "@/src/stores";
 
-import { DetailsStep } from "@/src/types/auth";
-
-const steps: DetailsStep = {
+const steps = {
   1: StepBanner,
   2: StepAbout,
   3: StepSocials,

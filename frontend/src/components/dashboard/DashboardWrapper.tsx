@@ -2,13 +2,16 @@
 
 import { Fragment, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 
 import Sidebar from "@/src/components/dashboard/Sidebar";
 import Topbar from "@/src/components/dashboard/Topbar";
-import Details from "@/src/components/auth/Details";
-import LogoutAlertDialog from "@/src/components/dashboard/lib/LogoutAlertDialog";
+const Details = dynamic(() => import("@/src/components/auth/Details"));
+const LogoutAlertDialog = dynamic(
+  () => import("@/src/components/dashboard/lib/LogoutAlertDialog")
+);
 
 import { deleteCookie, getAccessToken } from "@/src/app/(actions)/common";
 

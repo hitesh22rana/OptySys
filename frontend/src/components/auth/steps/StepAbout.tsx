@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { MultiValue } from "react-select/dist/declarations/src";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
-import ErrorField from "@/src/components/common/ErrorField";
+const FormWrapper = dynamic(
+  () => import("@/src/components/common/FormWrapper")
+);
+const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
 
 import { useDetailsStore } from "@/src/stores";
 
