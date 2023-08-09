@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { getOrganization } from "@/src/http";
 
 import { useUserStore } from "@/src/stores";
+import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
 
 export default function OrganizationsPage() {
   const { accessToken } = useUserStore();
@@ -19,13 +20,8 @@ export default function OrganizationsPage() {
     return <div>Loading...</div>;
   }
 
-  console.log(data?.data);
-
   return (
-    <div className="flex flex-col w-full h-full gap-5 my-4">
-      <h2 className="md:text-4xl text-3xl font-bold text-center">
-        Explore Organizations
-      </h2>
+    <SectionWrapper heading="Explore Organizations">
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full h-full">
         {data?.data?.data?.map((org, _) => {
           return (
@@ -46,6 +42,6 @@ export default function OrganizationsPage() {
           );
         })}
       </div>
-    </div>
+    </SectionWrapper>
   );
 }

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { SlOrganization } from "react-icons/sl";
 
+import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
+
 import { ICardData } from "@/src/types/common";
 
 const cardsData: Array<ICardData> = [
@@ -19,16 +21,10 @@ const cardsData: Array<ICardData> = [
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col w-full h-full items-center">
-      <div className="flex flex-col items-center justify-center p-2 gap-4">
-        <h2 className="md:text-4xl text-3xl font-bold">
-          Explore the power of Automation
-        </h2>
-        <p className="text-gray-500 font-light md:text-lg text-base">
-          Streamlining opportunities with efficient matching and automation.
-        </p>
-      </div>
-
+    <SectionWrapper
+      heading="Explore the power of Automation"
+      subHeading="Streamlining opportunities with efficient matching and automation."
+    >
       <div className="flex flex-col items-center justify-center p-2 gap-4 3xl:max-w-4xl max-w-3xl w-full my-5">
         {cardsData.map((cardData: ICardData, index: number) => {
           return (
@@ -52,6 +48,6 @@ export default function DashboardPage() {
           );
         })}
       </div>
-    </div>
+    </SectionWrapper>
   );
 }

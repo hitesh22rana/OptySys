@@ -6,6 +6,12 @@ export interface WrapperProps {
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
 }
 
+export interface SectionWrapperProps {
+  heading: string;
+  subHeading?: string;
+  children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
+}
+
 export interface LoginFormProps {
   toggleForgotPassword: () => void;
 }
