@@ -1,7 +1,5 @@
-import dynamic from "next/dynamic";
-
-const Navbar = dynamic(() => import("@/src/components/home/Navbar"));
-const Wrapper = dynamic(() => import("@/src/components/home/Wrapper"));
+import Wrapper from "@/src/components/home/Wrapper";
+import Navbar from "@/src/components/home/Navbar";
 
 export default function Home() {
   return (
