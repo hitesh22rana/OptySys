@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import Sidebar from "@/src/components/dashboard/Sidebar";
 import Topbar from "@/src/components/dashboard/Topbar";
-const Details = dynamic(() => import("@/src/components/auth/Details"));
+import Details from "@/src/components/auth/Details";
 const LogoutAlertDialog = dynamic(
   () => import("@/src/components/dashboard/lib/LogoutAlertDialog")
 );
