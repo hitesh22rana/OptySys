@@ -9,7 +9,7 @@ passlib[bcrypt]
 PyJWT==2.8.0
 validators==0.20.0
 jinja2==3.1.2
-bardapi==0.1.29
+bardapi==0.1.32
 loguru==0.7.0
 fastapi-limiter==0.1.5
 spacy==3.6.0
