@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ReactQueryProvider } from "@/src/lib/ReactQueryProvider";
 
 const inter = Inter({
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
