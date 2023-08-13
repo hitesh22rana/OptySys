@@ -43,7 +43,7 @@ As we are leveraging MongoDB transactions in our project, it is crucial to highl
 ```env
 MONGODB_URI="<MONGODB_URI>"
 PROJECT_NAME="OptySys"
-PROJECT_DESCRIPTION="Opportunity management system."
+PROJECT_DESCRIPTION="Streamlining opportunities with efficient matching and automation."
 PROJECT_VERSION="1.0.0"
 DEBUG=true
 JWT_SECRET="secret"
