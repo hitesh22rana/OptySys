@@ -15,7 +15,7 @@ export default function StepSubmit({ onNext }: DetailStepProps) {
       buttonText="Dashboard"
       onSubmit={onNext}
     >
-      <div className="flex flex-col gap-[10px] w-full">
+      <div className="flex w-full flex-col gap-[10px]">
         <Image
           src="/images/wave.gif"
           alt="Waving"
@@ -23,7 +23,7 @@ export default function StepSubmit({ onNext }: DetailStepProps) {
           width={150}
           className="mx-auto"
         />
-        <span className="text-gray-500 font-medium text-sm">
+        <span className="text-sm font-medium text-gray-500">
           Hey there! 🎉 superstar! Ready to unleash the power of streamlining
           and automation? Don&apos;t be shy, update your details anytime you
           like, and let the streamlining wizardry work its charm! 🧙‍♂️✨

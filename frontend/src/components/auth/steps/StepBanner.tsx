@@ -15,7 +15,7 @@ export default function StepBanner({ onNext }: DetailStepProps) {
       buttonText="Start"
       onSubmit={onNext}
     >
-      <div className="flex flex-col gap-[10px] w-full">
+      <div className="flex w-full flex-col gap-[10px]">
         <Image
           src="/images/wave.gif"
           alt="Waving"
@@ -23,7 +23,7 @@ export default function StepBanner({ onNext }: DetailStepProps) {
           width={150}
           className="mx-auto"
         />
-        <span className="text-gray-500 font-medium text-sm">
+        <span className="text-sm font-medium text-gray-500">
           These details are important to activate your account and streamline
           the automation process.
         </span>

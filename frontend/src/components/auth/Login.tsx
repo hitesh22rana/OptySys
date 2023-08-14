@@ -89,57 +89,57 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
       buttonText="Login"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-3 w-full">
-        <div className="relative w-full h-full">
-          <MdOutlineEmail className="absolute text-xl top-3 left-2 text-gray-400" />
+      <div className="flex w-full flex-col gap-3">
+        <div className="relative h-full w-full">
+          <MdOutlineEmail className="absolute left-2 top-3 text-xl text-gray-400" />
           <input
             name="email"
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
             onChange={onChange}
           />
         </div>
 
-        <div className="relative w-full h-full">
-          <BiKey className="absolute text-2xl top-[9px] left-2 text-gray-400" />
+        <div className="relative h-full w-full">
+          <BiKey className="absolute left-2 top-[9px] text-2xl text-gray-400" />
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
             onChange={onChange}
           />
           {formData.showPassword ? (
             <MdVisibility
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           )}
         </div>
 
-        <div className="flex flex-row items-center justify-between w-full">
+        <div className="flex w-full flex-row items-center justify-between">
           <ErrorField error={error} />
           <button
             type="button"
             onClick={toggleForgotPassword}
-            className="text-blue-500 underline underline-offset-2 text-sm h-2"
+            className="h-2 text-sm text-blue-500 underline underline-offset-2"
           >
             Forgot password?
           </button>
         </div>
       </div>
 
-      <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
+      <div className="absolute -bottom-10 left-0 right-0 flex w-full flex-col items-center justify-start gap-4 text-gray-500">
         <div className="flex flex-row gap-2 text-sm">
           <span>Don&apos;t have an account?</span>
           <Link

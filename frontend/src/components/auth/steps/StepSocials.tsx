@@ -105,21 +105,21 @@ export default function StepSocials({ onNext }: DetailStepProps) {
       className="sm:gap-6"
     >
       <div
-        className="flex flex-col w-full h-full"
+        className="flex h-full w-full flex-col"
         style={{
           scrollbarWidth: "none",
         }}
       >
-        <div className="flex flex-col gap-4 w-full h-full">
+        <div className="flex h-full w-full flex-col gap-4">
           {socialMap.map((item, index) => {
             return (
               <div
                 key={index}
-                className="flex flex-row gap-1 2xl:flex-col items-center 2xl:items-start h-full w-full"
+                className="flex h-full w-full flex-row items-center gap-1 2xl:flex-col 2xl:items-start"
               >
                 <label
                   htmlFor={item.name}
-                  className="font-medium flex items-end text-sm w-24"
+                  className="flex w-24 items-end text-sm font-medium"
                 >
                   {item.text}
                 </label>
@@ -128,7 +128,7 @@ export default function StepSocials({ onNext }: DetailStepProps) {
                   type="text"
                   value={item.value}
                   placeholder={item.placeholder}
-                  className="outline-none border-[1px] p-2 rounded focus:border-blue-500 w-full text-gray-500 text-sm placeholder:text-xs placeholder:font-light"
+                  className="w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:border-blue-500"
                   onChange={onChange}
                 />
               </div>

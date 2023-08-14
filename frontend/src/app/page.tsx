@@ -1,6 +1,6 @@
 import Wrapper from "@/src/components/home/Wrapper";
 import Navbar from "@/src/components/home/Navbar";
-import HeroBanner from "../components/home/HeroBanner";
+import HeroBanner from "@/src/components/home/HeroBanner";
 
 export default function Home() {
   return (

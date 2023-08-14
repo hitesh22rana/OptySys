@@ -2,7 +2,7 @@ import { WrapperProps } from "@/src/types/common";
 
 export default function Wrapper({ children }: WrapperProps) {
   return (
-    <div className="flex flex-col gap-4 max-w-7xl p-3 w-full mx-auto min-h-screen">
+    <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-4 p-3">
       {children}
     </div>
   );

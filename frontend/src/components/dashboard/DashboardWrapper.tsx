@@ -48,10 +48,10 @@ export default function DashboardWrapper({ children }: WrapperProps) {
       <Details />
       <LogoutAlertDialog />
 
-      <div className="relative flex flex-row justify-end items-start mx-auto w-full h-full">
+      <div className="relative mx-auto flex h-full w-full flex-row items-start justify-end">
         <Sidebar />
         <div
-          className={`flex flex-col min-h-screen ease-in-out duration-300 3xl:max-w-[calc(100%-20rem)] md:max-w-[calc(100%-16rem)] w-full h-full py-2 md:px-5 px-3`}
+          className={`flex h-full min-h-screen w-full flex-col px-3 py-2 duration-300 ease-in-out md:max-w-[calc(100%-16rem)] md:px-5 3xl:max-w-[calc(100%-20rem)]`}
         >
           <Topbar />
           {children}

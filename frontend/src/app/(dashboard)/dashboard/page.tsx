@@ -25,25 +25,25 @@ export default function DashboardPage() {
       heading="Explore the power of Automation"
       subHeading="Streamlining opportunities with efficient matching and automation."
     >
-      <div className="flex flex-col items-center justify-center p-2 gap-4 3xl:max-w-4xl max-w-3xl w-full my-5">
+      <div className="my-5 flex w-full max-w-3xl flex-col items-center justify-center gap-4 p-2 3xl:max-w-4xl">
         {cardsData.map((cardData: ICardData, index: number) => {
           return (
             <Link
               href={cardData.path}
               key={index}
-              className={`cursor-pointer flex flex-row md:p-4 p-3 w-full items-center justify-between gap-2 rounded-md shadow ${cardData.cardBackground} ${cardData.cardShadow}`}
+              className={`flex w-full cursor-pointer flex-row items-center justify-between gap-2 rounded-md p-3 shadow md:p-4 ${cardData.cardBackground} ${cardData.cardShadow}`}
             >
               <div className="flex flex-row items-center gap-4">
                 <div
-                  className={`p-2 rounded ${cardData.iconBackground} ${cardData.iconColor}`}
+                  className={`rounded p-2 ${cardData.iconBackground} ${cardData.iconColor}`}
                 >
-                  <cardData.icon className="md:text-2xl text-xl" />
+                  <cardData.icon className="text-xl md:text-2xl" />
                 </div>
-                <span className="md:text-base text-sm font-semibold text-gray-700">
+                <span className="text-sm font-semibold text-gray-700 md:text-base">
                   {cardData.name}
                 </span>
               </div>
-              <AiOutlineArrowRight className="md:text-xl text-lg" />
+              <AiOutlineArrowRight className="text-lg md:text-xl" />
             </Link>
           );
         })}

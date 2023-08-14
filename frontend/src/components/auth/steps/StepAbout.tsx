@@ -80,22 +80,22 @@ export default function StepAbout({ onNext }: DetailStepProps) {
       buttonText="Next"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-4 w-full">
-        <div className="flex flex-col gap-[5px] w-full h-full">
-          <label htmlFor="summary" className="font-medium text-sm">
+      <div className="flex w-full flex-col gap-4">
+        <div className="flex h-full w-full flex-col gap-[5px]">
+          <label htmlFor="summary" className="text-sm font-medium">
             Briefly summarize your professional background
           </label>
           <textarea
             name="summary"
             value={summary}
             placeholder="e.g. Experienced technical specialist and IT professional, proficient in systems administration, with a background in programming."
-            className="outline-none border-[1px] h-auto max-h-32 min-h-[8rem] p-2 rounded focus:border-blue-500 w-full text-gray-500 text-sm placeholder:text-xs placeholder:font-light"
+            className="h-auto max-h-32 min-h-[8rem] w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:border-blue-500"
             onChange={onSummaryChange}
           />
         </div>
 
-        <div className="flex flex-col gap-[5px] w-full h-full">
-          <span className="font-medium text-sm">Add skills</span>
+        <div className="flex h-full w-full flex-col gap-[5px]">
+          <span className="text-sm font-medium">Add skills</span>
           <Select
             options={allSkills}
             isMulti={true}

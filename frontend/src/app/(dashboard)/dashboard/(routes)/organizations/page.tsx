@@ -22,12 +22,12 @@ export default function OrganizationsPage() {
 
   return (
     <SectionWrapper heading="Explore Organizations">
-      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full h-full">
+      <div className="grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {data?.data?.data?.map((org, _) => {
           return (
             <div
               key={org._id}
-              className="flex flex-col items-start gap-4 p-3 shadow-md border-[1px] border-gray-200 rounded"
+              className="flex flex-col items-start gap-4 rounded border-[1px] border-gray-200 p-3 shadow-md"
             >
               <div>
                 <h4>name: {org.name}</h4>
@@ -35,7 +35,7 @@ export default function OrganizationsPage() {
                 <span>total members: {org.total_members}</span>
               </div>
 
-              <button className="px-2 py-1 text-sm bg-[#28282B] text-white rounded">
+              <button className="rounded bg-[#28282B] px-2 py-1 text-sm text-white">
                 {org.private ? "Request to join" : "Join"}
               </button>
             </div>

@@ -54,19 +54,19 @@ export default function Verify({ resendOTP, onSubmit }: VerifyFormProps) {
         }}
       />
 
-      <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
+      <div className="absolute -bottom-10 left-0 right-0 flex w-full flex-col items-center justify-start gap-4 text-gray-500">
         <div className="flex flex-row gap-2  text-sm">
           <span>Haven&apos;t received OTP?</span>
           {isTimerActive ? (
             <span>
               Resend OTP in{" "}
-              <span className="text-blue-500 font-medium">{remainingTime}</span>{" "}
+              <span className="font-medium text-blue-500">{remainingTime}</span>{" "}
               seconds
             </span>
           ) : (
             <button
               type="button"
-              className="text-blue-500 font-medium"
+              className="font-medium text-blue-500"
               onClick={onResend}
             >
               Resend OTP

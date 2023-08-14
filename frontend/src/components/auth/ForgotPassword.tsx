@@ -50,19 +50,19 @@ export default function ForgotPassword({
       buttonText="Submit"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-3 w-full">
-        <div className="relative w-full h-full">
-          <MdOutlineEmail className="absolute text-xl top-3 left-2 text-gray-400" />
+      <div className="flex w-full flex-col gap-3">
+        <div className="relative h-full w-full">
+          <MdOutlineEmail className="absolute left-2 top-3 text-xl text-gray-400" />
           <input
             type="email"
             name="email"
             value={email}
             placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value)}
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
           />
         </div>
-        <div className="text-gray-500 absolute -bottom-10 left-0 right-0 flex flex-col items-center justify-start gap-4 w-full">
+        <div className="absolute -bottom-10 left-0 right-0 flex w-full flex-col items-center justify-start gap-4 text-gray-500">
           <div className="flex flex-row gap-2 text-sm">
             <span>Don&apos;t have an account?</span>
             <Link

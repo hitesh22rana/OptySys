@@ -7,9 +7,9 @@ export default function BackNavigation() {
     <nav className="absolute">
       <Link
         href="/"
-        className="flex flex-row items-center justify-start gap-2 sm:text-xl text-lg font-semibold pt-2 text-[#28282B] hover:animate-pulse"
+        className="flex flex-row items-center justify-start gap-2 pt-2 text-lg font-semibold text-[#28282B] hover:animate-pulse sm:text-xl"
       >
-        <AiOutlineArrowLeft className="sm:text-xl text-lg" />
+        <AiOutlineArrowLeft className="text-lg sm:text-xl" />
         <span>Back to main</span>
       </Link>
     </nav>

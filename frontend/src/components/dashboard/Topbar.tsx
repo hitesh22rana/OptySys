@@ -12,9 +12,9 @@ export default function Topbar() {
   const { toggleSidebar } = useDashboardStore();
 
   return (
-    <header className="flex flex-row items-center justify-between w-full">
+    <header className="flex w-full flex-row items-center justify-between">
       <Icon onClick={toggleSidebar}>
-        <RxHamburgerMenu className="md:hidden cursor-pointer text-xl" />
+        <RxHamburgerMenu className="cursor-pointer text-xl md:hidden" />
       </Icon>
 
       <div className="flex flex-row items-center gap-5">

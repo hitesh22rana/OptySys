@@ -19,7 +19,7 @@ export default function AlertDialog({ isOpen, children }: AlertDialogProps) {
 
   return (
     <div
-      className={`fixed w-screen h-screen flex items-center justify-center z-[9999] p-3 backdrop-blur inset-0 ${
+      className={`fixed inset-0 z-[9999] flex h-screen w-screen items-center justify-center p-3 backdrop-blur ${
         isOpen ? "block" : "hidden"
       }`}
     >

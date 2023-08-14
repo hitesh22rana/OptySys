@@ -110,53 +110,53 @@ export default function ResetPasswordPage() {
       buttonText="Submit"
       onSubmit={onSubmit}
     >
-      <div className="flex flex-col gap-3 w-full">
-        <div className="relative w-full h-full">
-          <BiKey className="absolute text-2xl top-[9px] left-2 text-gray-400" />
+      <div className="flex w-full flex-col gap-3">
+        <div className="relative h-full w-full">
+          <BiKey className="absolute left-2 top-[9px] text-2xl text-gray-400" />
           <input
             name="password"
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
             onChange={onChange}
           />
           {formData.showPassword ? (
             <MdVisibility
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showPassword"
               onClick={() => setShowPassword("showPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           )}
         </div>
 
-        <div className="relative w-full h-full">
-          <BiLock className="absolute text-xl top-3 left-2 text-gray-400" />
+        <div className="relative h-full w-full">
+          <BiLock className="absolute left-2 top-3 text-xl text-gray-400" />
           <input
             name="confirmPassword"
             type={formData.showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             placeholder="Confirm password"
-            className="outline-none border-[1px] px-9 py-[10px] rounded focus:border-[#28282B] w-full h-full text-gray-500 placeholder:text-sm"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
             onChange={onChange}
           />
           {formData.showConfirmPassword ? (
             <MdVisibility
               name="showConfirmPassword"
               onClick={() => setShowPassword("showConfirmPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           ) : (
             <MdVisibilityOff
               name="showConfirmPassword"
               onClick={() => setShowPassword("showConfirmPassword")}
-              className="cursor-pointer absolute text-xl top-3 right-2 text-gray-400"
+              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
             />
           )}
         </div>

@@ -5,9 +5,9 @@ export default function DropdownMenu({
   children,
 }: DropdownMenuProps) {
   return (
-    <div className="hidden group-hover:block absolute top-8 right-1 z-50 p-4">
+    <div className="absolute right-1 top-8 z-50 hidden p-4 group-hover:block">
       <div
-        className={`flex flex-col items-start justify-start bg-white border-[1px] shadow border-gray-300 p-2 pt-0 gap-2 rounded-lg rounded-tr-none ${className}`}
+        className={`flex flex-col items-start justify-start gap-2 rounded-lg rounded-tr-none border-[1px] border-gray-300 bg-white p-2 pt-0 shadow ${className}`}
       >
         {children}
       </div>
