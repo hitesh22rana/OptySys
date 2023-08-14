@@ -53,7 +53,9 @@ SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
 SMTP_USERNAME="<email>"
 SMTP_PASSWORD="<password>"
-BARD_TOKEN="<bard_token>"
+BARD_TOKEN_1PSID="<bard_token_1psid>"
+BARD_TOKEN_1PSIDCC="<bard_token_1psidcc>"
+BARD_TOKEN_1PSIDTS="<bard_token_1psidts>"
 REDIS_HOST="<redis_host_url>"
 REDIS_PORT="<redis_port>"
 REDIS_PASSWORD="<redis_password>"
@@ -87,6 +89,6 @@ This will start all the necessary services, including the backend, MongoDB, and 
 
 You can access the OptySys backend server on `http://localhost:8000`.
 
-Make sure to replace `<MONGODB_URI>`, `<email>`, `<password>`, `<bard_token>`, `<redis_host_url>`, `<redis_port>`, and `<redis_password>` with the actual values corresponding to your setup.
+Make sure to replace `<MONGODB_URI>`, `<email>`, `<password>`, `<bard_token_1psid>`, `bard_token_1psidcc`, `bard_token_1psidts`, `<redis_host_url>`, `<redis_port>`, and `<redis_password>` with the actual values corresponding to your setup.
 
 Let me know if you need any further assistance!

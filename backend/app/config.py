@@ -17,7 +17,9 @@ class Settings(BaseSettings):
     smtp_port: int
     smtp_username: str
     smtp_password: str
-    bard_token: str
+    bard_token_1psid: str
+    bard_token_1psidcc: str
+    bard_token_1psidts: str
     redis_host: str
     redis_port: int
     redis_password: str

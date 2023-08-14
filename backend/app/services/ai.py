@@ -14,7 +14,19 @@ class AiService:
     session: requests.Session = None
     bard: Bard = None
     cover_letter_compiler: re.Pattern = None
-    token: str = settings.bard_token
+
+    token_1psid: str = settings.bard_token_1psid
+    token_1psidcc: str = settings.bard_token_1psidcc
+    token_1psidts: str = settings.bard_token_1psidts
+
+    headers: dict = {
+        "Host": "bard.google.com",
+        "X-Same-Domain": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.4472.114 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        "Origin": "https://bard.google.com",
+        "Referer": "https://bard.google.com/",
+    }
 
     @classmethod
     def __init__(cls):
@@ -22,21 +34,23 @@ class AiService:
 
     @classmethod
     def _make_session(cls):
+        if cls.session is not None:
+            return
+
         try:
-            if not cls.session:
-                cls.session = requests.Session()
-                cls.session.headers = {
-                    "Host": "bard.google.com",
-                    "X-Same-Domain": "1",
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.4472.114 Safari/537.36",
-                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-                    "Origin": "https://bard.google.com",
-                    "Referer": "https://bard.google.com/",
-                }
-                cls.token = settings.bard_token
-                cls.session.cookies.set("__Secure-1PSID", cls.token)
-                cls.bard = Bard(token=cls.token, session=cls.session, timeout=30)
-                cls.cover_letter_compiler = re.compile("Dear Hiring Manager")
+            cls.session = requests.Session()
+            cls.session.headers = cls.headers
+            cls.session.cookies.set("__Secure-1PSID", cls.token_1psid)
+            cls.session.cookies.set(
+                "__Secure-1PSIDCC",
+                cls.token_1psidcc,
+            )
+            cls.session.cookies.set(
+                "__Secure-1PSIDTS",
+                cls.token_1psidts,
+            )
+            cls.bard = Bard(token=cls.token_1psid, session=cls.session, timeout=30)
+            cls.cover_letter_compiler = re.compile("Dear Hiring Manager")
 
         except Exception as e:
             logger.error(f"Error: {e}")
