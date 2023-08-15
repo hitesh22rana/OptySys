@@ -1,10 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 import Icon from "@/src/components/common/Icon";
 import Settings from "@/src/components/dashboard/lib/Settings";
-import Notifications from "@/src/components/dashboard/lib/Notifications";
+const Notifications = dynamic(
+  () => import("@/src/components/dashboard/lib/Notifications")
+);
 
 import { useDashboardStore } from "@/src/stores";
 
