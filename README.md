@@ -24,7 +24,7 @@
 </a>
 </div>
 
-## Table of Contents
+## 📜 Table of Contents
 
 -   [About](#about)
 -   [Key Features](#key-features)
@@ -32,11 +32,11 @@
 -   [Contributing](#contributing)
 -   [License](#license)
 
-## About
+## 🚀 About
 
 OptySys is an advanced opportunity management system specifically designed to enhance the process of connecting users with relevant internships and job opportunities. OptySys automates the process of sending personalized cover letters to users, enhancing the chances of successful applications.
 
-## Key Features
+## 💡 Features
 
 1. **Dashboard:** OptySys offers a centralized dashboard where organization administrators can easily manage and post new opportunities for internships or jobs.
 
@@ -44,7 +44,7 @@ OptySys is an advanced opportunity management system specifically designed to en
 
 3. **Automated Notifications:** OptySys takes the hassle out of communication by automating the notification process. When a relevant opportunity is identified for a student, OptySys automatically sends personalized email notifications to inform them about the details of the opportunity. Additionally, OptySys generates a customized cover letter for the student to submit to the recruiter, enhancing their application and increasing the likelihood of a favorable response.
 
-## Getting Started
+## 🏃 Getting Started
 
 ### To set up OptySys locally, follow these steps:-
 
@@ -58,17 +58,21 @@ git clone https://github.com/hitesh22rana/OptySys.git
 
 3. Frontend Setup: Navigate to the `frontend` directory and follow the instructions in the [README](frontend/README.md) to set up the frontend.
 
-## Contributing
+## 🗒️ Contributing
 
 We value contributions from the community as they help improve and enhance OptySys. If you would like to contribute
 follow the [Contribution Guide](CONTRIBUTING.md)
 
-## License
+## 🪪 License
 
 OptySys is licensed under the [MIT License](LICENSE.md)
 
-## Contributors 👥
+## ✨ Contributors
 
 <a href="https://github.com/hitesh22rana/OptySys/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=hitesh22rana/OptySys&all=true" />
 </a>
+
+## 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hitesh22rana/OptySys&type=Date)](https://star-history.com/#hitesh22rana/OptySys&Date)
