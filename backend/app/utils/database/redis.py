@@ -1,3 +1,6 @@
+# Purpose: Caching and Ratelimiting connection and helper functions
+# Path: backend\app\utils\database\redis.py
+
 import redis.asyncio as redis
 from fastapi_limiter import FastAPILimiter
 

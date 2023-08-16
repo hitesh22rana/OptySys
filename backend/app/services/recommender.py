@@ -1,4 +1,4 @@
-# Purpose: OpportunityRecommender service for recommending opportunities to users
+# Purpose: Recommender service for recommending opportunities to users
 # Path: backend/app/services/recommender.py
 
 from fastapi import HTTPException, status

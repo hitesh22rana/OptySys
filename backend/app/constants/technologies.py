@@ -1,3 +1,6 @@
+# Purpose: To provide a list of all the technologies
+# Path: backend\app\constants\technologies.py
+
 import csv
 
 

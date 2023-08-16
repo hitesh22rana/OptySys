@@ -1,4 +1,4 @@
-# Purpose: WebSocketService class to handle WebSocket connections
+# Purpose: WebSocketService to handle WebSocket connections
 # Path: backend/app/services/ws.py
 
 import asyncio

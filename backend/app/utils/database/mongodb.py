@@ -1,5 +1,5 @@
 # Purpose: Database connection and helper functions
-# Path: backend\app\utils\database.py
+# Path: backend\app\utils\database\mongodb.py
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import MongoClient
@@ -9,7 +9,7 @@ from app.config import settings
 from app.logger import logger
 
 """
-Connect to MongoDB server and return database object
+Connect to MongoDB server and return database connection
 """
 
 

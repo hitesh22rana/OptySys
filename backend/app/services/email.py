@@ -1,4 +1,4 @@
-# Purpose: Mail service to send emails to users
+# Purpose: Email service to send emails to users
 # Path: backend/app/services/email.py
 
 import smtplib

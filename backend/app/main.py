@@ -1,4 +1,4 @@
-# Purpose: Main file for FastAPI application
+# Purpose: Main file and entry point of the application
 # Path: backend\app\main.py
 
 from fastapi import FastAPI, Request

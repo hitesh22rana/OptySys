@@ -1,5 +1,6 @@
 # Purpose: Skills Extractor service for extracting skills
 # Path: backend/app/services/skills_extractor.py
+
 import en_core_web_sm
 from newspaper import Article
 

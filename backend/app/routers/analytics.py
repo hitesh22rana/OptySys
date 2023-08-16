@@ -1,4 +1,4 @@
-# Purpose: Authentication router for handling analytics related operations.
+# Purpose: Analytics router for handling analytics related operations.
 # Path: backend\app\routers\analytics.py
 
 from fastapi import APIRouter
