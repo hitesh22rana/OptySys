@@ -26,11 +26,11 @@
 
 ## 📜 Table of Contents
 
--   [About](#about)
--   [Key Features](#key-features)
--   [Getting Started](#getting-started)
--   [Contributing](#contributing)
--   [License](#license)
+-   [About](#about-🚀)
+-   [Features](#💡-features)
+-   [Getting Started](#🏃-getting-started)
+-   [Contributing](#🗒️-contributing)
+-   [License](#🪪-license)
 
 ## 🚀 About
 
