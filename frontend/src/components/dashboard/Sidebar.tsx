@@ -32,7 +32,7 @@ export default function Sidebar() {
       <div
         className={`md:hidden ${
           isSidebarOpen ? "block" : "hidden"
-        } fixed inset-0 z-[99] h-full w-full bg-[#00000080] backdrop-blur-lg`}
+        } fixed inset-0 z-[99] h-full w-full bg-[#00000080] bg-[url('/images/noise.png')] backdrop-blur-lg`}
         onClick={toggleSidebar}
       />
       <aside

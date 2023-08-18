@@ -19,7 +19,7 @@ export default function HeroBanner() {
       <div className="space-y-7 py-32 text-center text-4xl text-[#28282B] md:space-y-5 md:text-6xl lg:text-7xl">
         <h1 className="font-extrabold">Streamlining opportunities with</h1>
 
-        <div className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text font-extrabold text-transparent">
+        <div className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text pb-5 font-extrabold text-transparent">
           <TypewriterComponent
             options={{
               strings: ["efficient matching", "and automation."],

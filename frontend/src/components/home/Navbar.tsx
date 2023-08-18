@@ -14,14 +14,14 @@ export default function Navbar() {
           className="drop-shadow-2xl transition-opacity delay-75 hover:opacity-90 sm:h-16 sm:w-16"
         />
       </Link>
-      <div className="flex w-full flex-row items-center justify-between gap-4 sm:w-auto">
+      <div className="flex w-full flex-row items-center justify-between gap-5 sm:w-auto">
         <Link href="/login" className="w-full">
-          <button className="h-10 w-full rounded bg-[#28282B] text-base text-white hover:bg-[#353935] sm:w-24 md:text-lg">
+          <button className="focus:ring-pruple-200 h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 sm:w-28">
             Login
           </button>
         </Link>
         <Link href="/register" className="w-full">
-          <button className="h-10 w-full rounded bg-[#28282B] text-base text-white hover:bg-[#353935] sm:w-24 md:text-lg">
+          <button className="focus:ring-pruple-200 h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 sm:w-28">
             Signup
           </button>
         </Link>
