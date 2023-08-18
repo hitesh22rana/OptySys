@@ -118,6 +118,25 @@ class UserForgotPasswordRequestSchema(BaseModel):
         }
 
 
+class UserChangePasswordRequestSchema(BaseModel):
+    current_password: str = Field(
+        ...,
+        description="Password of the user",
+        min_length=8,
+        max_length=50,
+        regex="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%^&*])[a-zA-Z\d@!#$%^&*]{8,}$",
+        type="string",
+    )
+    new_password: str = Field(
+        ...,
+        description="New password of the user",
+        min_length=8,
+        max_length=50,
+        regex="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%^&*])[a-zA-Z\d@!#$%^&*]{8,}$",
+        type="string",
+    )
+
+
 class UserResetPasswordRequestSchema(BaseModel):
     password: str = Field(
         ...,

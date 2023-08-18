@@ -4,7 +4,7 @@
 from fastapi import APIRouter, Request
 
 from app.database import Users
-from app.schemas import UserUpdateRequestSchema
+from app.schemas import UserChangePasswordRequestSchema, UserUpdateRequestSchema
 
 router = APIRouter(
     tags=["Users"],
@@ -66,6 +66,28 @@ async def update_user(request: Request, user_details: UserUpdateRequestSchema):
 async def delete_user(request: Request):
     current_user = request.scope["current_user"]
     return await Users().delete_user(current_user)
+
+
+"""
+    Update method to change the password of a user.
+
+    Raises:
+        HTTPException: Fields validation error
+        HTTPException: Internal server error
+        HTTPException: Bad request error
+
+    Returns:
+        _type_: Message
+"""
+
+
+@router.patch(
+    "/change-password",
+    response_description="Change the current password to a new password",
+)
+async def update_user(request: Request, user_details: UserChangePasswordRequestSchema):
+    current_user = request.scope["current_user"]
+    return await Users().change_password(current_user, user_details)
 
 
 """

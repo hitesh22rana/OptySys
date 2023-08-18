@@ -99,6 +99,9 @@ class Organizations:
                 detail="Error: Unable to get organizations.",
             ) from e
 
+        finally:
+            await MongoDBConnector().disconnect()
+
     @classmethod
     async def create_organization(
         cls, current_user: str, organization: OrganizationBaseSchema
@@ -751,6 +754,10 @@ class Organizations:
                 detail=detail,
             ) from e
 
+        finally:
+            session.end_session()
+            await MongoDBConnector().disconnect()
+
     @classmethod
     async def extract_skills(
         cls, current_user: str, org_id: str, opportunity: OpportunitySkillsSchema
@@ -771,6 +778,9 @@ class Organizations:
                 detail="Error: Unable to extract skills",
             ) from e
 
+        finally:
+            await MongoDBConnector().disconnect()
+
     @classmethod
     async def extract_data(
         cls, current_user: str, org_id: str, opportunity: OpportunityDataSchema
@@ -790,3 +800,6 @@ class Organizations:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=detail,
             ) from e
+
+        finally:
+            await MongoDBConnector().disconnect()

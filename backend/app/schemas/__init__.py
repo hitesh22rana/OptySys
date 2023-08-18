@@ -12,6 +12,7 @@ from app.schemas.organizations import (
 )
 from app.schemas.users import (
     SocialLinks,
+    UserChangePasswordRequestSchema,
     UserDetailsSchema,
     UserForgotPasswordRequestSchema,
     UserLoginRequestSchema,

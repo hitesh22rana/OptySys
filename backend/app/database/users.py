@@ -6,7 +6,11 @@ from pymongo.errors import ConnectionFailure
 
 from app.config import settings
 from app.database import Organizations
-from app.schemas import UserResponseSchema, UserUpdateRequestSchema
+from app.schemas import (
+    UserChangePasswordRequestSchema,
+    UserResponseSchema,
+    UserUpdateRequestSchema,
+)
 from app.utils.database import MongoDBConnector
 from app.utils.hashing import Hasher
 from app.utils.jwt_handler import JwtTokenHandler
@@ -104,6 +108,9 @@ class Users:
                 detail=detail,
             ) from e
 
+        finally:
+            await MongoDBConnector().disconnect()
+
     @classmethod
     async def update_user(cls, current_user, user_details: UserUpdateRequestSchema):
         await cls.__initiate_db()
@@ -146,6 +153,67 @@ class Users:
             await MongoDBConnector().disconnect()
 
     @classmethod
+    async def change_password(
+        cls, user_id: str, user_details: UserChangePasswordRequestSchema
+    ):
+        await cls.__initiate_db()
+
+        validate_object_id_fields(user_id)
+
+        new_hashed_password = cls.hasher.get_password_hash(user_details.new_password)
+
+        try:
+            res = await cls.db[cls.name].find_one(
+                {"_id": user_id},
+                {"password": 1},
+            )
+
+            if res is None or not (
+                cls.hasher.verify_password(
+                    user_details.current_password, res["password"]
+                )
+            ):
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: Invalid credentials",
+                    }
+                )
+
+            res = await cls.db[cls.name].update_one(
+                {"_id": user_id},
+                {"$set": {"password": new_hashed_password}},
+            )
+
+            if res is None or res.modified_count == 0:
+                raise Exception(
+                    {
+                        "status_code": status.HTTP_404_NOT_FOUND,
+                        "detail": "Error: Unable to change password",
+                    }
+                )
+
+            return OK({"detail": "Success: User password changed successfully"})
+
+        except ConnectionFailure:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error: Database connection error",
+            )
+
+        except Exception as e:
+            status_code, detail = e.args[0].get("status_code", 400), e.args[0].get(
+                "detail", "Error: Bad Request"
+            )
+            raise HTTPException(
+                status_code=status_code,
+                detail=detail,
+            ) from e
+
+        finally:
+            await MongoDBConnector().disconnect()
+
+    @classmethod
     async def is_authorized_user(cls, user_id: str):
         validate_object_id_fields(user_id)
         try:
@@ -167,6 +235,9 @@ class Users:
 
         except Exception as e:
             raise e
+
+        finally:
+            await MongoDBConnector().disconnect()
 
     @classmethod
     async def join_organization(cls, current_user: str, org_id: str):
