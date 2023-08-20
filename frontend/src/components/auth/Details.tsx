@@ -5,17 +5,17 @@ import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 
 const Modal = dynamic(() => import("@/src/components/common/Modal"));
-const StepAbout = dynamic(
-  () => import("@/src/components/auth/steps/StepAbout")
-);
 const StepBanner = dynamic(
   () => import("@/src/components/auth/steps/StepBanner")
 );
-const StepSubmit = dynamic(
-  () => import("@/src/components/auth/steps/StepSubmit")
+const StepAbout = dynamic(
+  () => import("@/src/components/auth/steps/StepAbout")
 );
 const StepSocials = dynamic(
   () => import("@/src/components/auth/steps/StepSocials")
+);
+const StepSubmit = dynamic(
+  () => import("@/src/components/auth/steps/StepSubmit")
 );
 
 import { updateUser } from "@/src/http";

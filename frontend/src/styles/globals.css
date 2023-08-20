@@ -26,9 +26,7 @@ html {
     background-color: #555;
 }
 body {
-    background-color: whitesmoke;
-    background-image: url('/images/noise.png');
-    background-size: 15%;
+    background-color: #F8F9FB;
     overflow-x: hidden;
 }
 body,

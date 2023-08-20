@@ -17,7 +17,7 @@ export default function Modal({ isOpen, children }: ModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex h-screen w-screen items-center justify-center bg-[url('/images/noise.png')] p-3 backdrop-blur ${
+      className={`fixed inset-0 z-[9999] flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-[url('/images/noise.png')] p-3 backdrop-blur ${
         isOpen ? "block" : "hidden"
       }`}
     >

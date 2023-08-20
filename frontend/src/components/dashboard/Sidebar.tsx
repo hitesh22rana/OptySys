@@ -8,6 +8,7 @@ import { SlOrganization } from "react-icons/sl";
 
 import { useDashboardStore } from "@/src/stores";
 import { IRoute } from "@/src/types/common";
+import { FiLogOut } from "react-icons/fi";
 
 const montserrat = Montserrat({
   weight: "600",
@@ -16,7 +17,8 @@ const montserrat = Montserrat({
 
 export default function Sidebar() {
   const pathName = usePathname();
-  const { toggleSidebar, isSidebarOpen } = useDashboardStore();
+  const { toggleSidebar, isSidebarOpen, toggleLogoutAlert } =
+    useDashboardStore();
 
   const routes: Array<IRoute> = [
     {
@@ -29,44 +31,59 @@ export default function Sidebar() {
 
   return (
     <Fragment>
-      <div
+      <aside
         className={`md:hidden ${
           isSidebarOpen ? "block" : "hidden"
-        } fixed inset-0 z-[99] h-full w-full bg-[#00000080] bg-[url('/images/noise.png')] backdrop-blur-lg`}
+        } fixed inset-0 z-[99] h-full min-h-screen w-full overflow-auto bg-[#00000080] bg-[url('/images/noise.png')] backdrop-blur-lg`}
         onClick={toggleSidebar}
       />
       <aside
-        className={`fixed w-full max-w-[80%] flex-col bg-gray-900 px-2 py-4 transition-width duration-300 ease-in-out sm:w-64 md:max-w-full 3xl:w-80 ${
+        className={`fixed w-full max-w-[80%] flex-col bg-gray-900 px-2 py-4 sm:w-64 md:max-w-full 3xl:w-80 ${
           isSidebarOpen ? "flex" : "hidden md:flex"
-        } bottom-0 left-0 top-0 z-[999] h-screen items-center justify-start gap-5 shadow shadow-gray-200`}
+        } bottom-0 left-0 top-0 z-[999] h-full min-h-screen items-center justify-between gap-5 overflow-auto shadow shadow-gray-200`}
       >
-        <Link
-          href="/dashboard"
-          className="mb-5 flex w-full flex-row items-center justify-start gap-4"
-        >
-          <Image src="/images/logo.png" height={50} width={50} alt="logo" />
-          <h2
-            className={`text-2xl font-medium text-white ${montserrat.className}`}
+        <section className="w-full">
+          <Link
+            href="/dashboard"
+            className="mb-5 flex w-full flex-row items-center justify-start gap-4"
           >
-            OptySys
-          </h2>
-        </Link>
-        {routes.map((route: IRoute, index: number) => {
-          return (
-            <Link
-              href={route.path}
-              key={index}
-              className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 ${
-                pathName === route.path
-                  ? "bg-white/10 text-white"
-                  : "text-zinc-300"
-              }`}
+            <Image src="/images/logo.png" height={50} width={50} alt="logo" />
+            <h2
+              className={`text-2xl font-medium text-white ${montserrat.className}`}
             >
-              <route.icon className={`min-w-fit text-xl ${route.color}`} />
-              <span className="text-sm font-medium">{route.name}</span>
-            </Link>
-          );
-        })}
+              OptySys
+            </h2>
+          </Link>
+          {routes.map((route: IRoute, index: number) => {
+            return (
+              <Link
+                href={route.path}
+                key={index}
+                className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 ${
+                  pathName === route.path
+                    ? "bg-white/10 text-white"
+                    : "text-zinc-300"
+                }`}
+              >
+                <route.icon className={`min-w-fit text-xl ${route.color}`} />
+                <span className="text-sm font-medium">{route.name}</span>
+              </Link>
+            );
+          })}
+        </section>
+
+        <section className="w-full">
+          <button
+            className="flex w-full cursor-pointer flex-row items-center gap-4 rounded-md bg-white/10 px-4 py-3 text-zinc-300 transition-colors delay-75 duration-200 hover:text-white"
+            onClick={() => {
+              toggleSidebar();
+              toggleLogoutAlert();
+            }}
+          >
+            <FiLogOut className="text-xl" />
+            <span className="font-medium">Logout</span>
+          </button>
+        </section>
       </aside>
     </Fragment>
   );

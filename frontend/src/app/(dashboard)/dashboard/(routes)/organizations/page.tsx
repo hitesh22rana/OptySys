@@ -2,10 +2,12 @@
 
 import { useQuery } from "react-query";
 
+import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
+import LoadingPage from "@/src/components/common/LoadingPage";
+
 import { getOrganization } from "@/src/http";
 
 import { useUserStore } from "@/src/stores";
-import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
 
 export default function OrganizationsPage() {
   const { accessToken } = useUserStore();
@@ -17,7 +19,7 @@ export default function OrganizationsPage() {
   });
 
   if (isLoading || !data) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (

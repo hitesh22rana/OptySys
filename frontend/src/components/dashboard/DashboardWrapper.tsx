@@ -51,7 +51,7 @@ export default function DashboardWrapper({ children }: WrapperProps) {
       <div className="relative mx-auto flex h-full w-full flex-row items-start justify-end">
         <Sidebar />
         <div
-          className={`flex h-full min-h-screen w-full flex-col px-3 py-2 duration-300 ease-in-out md:max-w-[calc(100%-16rem)] md:px-5 3xl:max-w-[calc(100%-20rem)]`}
+          className={`flex h-full min-h-screen w-full flex-col px-3 py-2 md:max-w-[calc(100%-16rem)] md:px-5 3xl:max-w-[calc(100%-20rem)]`}
         >
           <Topbar />
           {children}

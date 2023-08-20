@@ -128,7 +128,7 @@ export default function StepSocials({ onNext }: DetailStepProps) {
                   type="text"
                   value={item.value}
                   placeholder={item.placeholder}
-                  className="w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:border-blue-500"
+                  className="w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:border-[#28282B]"
                   onChange={onChange}
                 />
               </div>
