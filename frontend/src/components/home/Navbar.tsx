@@ -16,12 +16,12 @@ export default function Navbar() {
       </Link>
       <div className="flex w-full flex-row items-center justify-between gap-5 sm:w-auto">
         <Link href="/login" className="w-full">
-          <button className="focus:ring-pruple-200 h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 sm:w-28">
+          <button className="h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 focus:ring-purple-200 sm:w-28">
             Login
           </button>
         </Link>
         <Link href="/register" className="w-full">
-          <button className="focus:ring-pruple-200 h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 sm:w-28">
+          <button className="h-10 w-full rounded bg-gradient-to-r from-purple-500 to-pink-500 text-lg font-semibold text-white hover:bg-gradient-to-l focus:outline-none focus:ring-4 focus:ring-purple-200 sm:w-28">
             Signup
           </button>
         </Link>

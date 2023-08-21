@@ -1,21 +1,19 @@
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiUser, BiKey, BiLock } from "react-icons/bi";
 
-const FormWrapper = dynamic(
-  () => import("@/src/components/common/FormWrapper")
-);
-const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
+import FormWrapper from "@/src/components/common/FormWrapper";
+import ErrorField from "@/src/components/common/ErrorField";
 
 import { RegisterFormProps } from "@/src/types/common";
 
 export default function Register({
-  error,
   formData,
-  setShowPassword,
   onChange,
+  setShowPassword,
+  error,
+  disabled,
   onSubmit,
 }: RegisterFormProps) {
   return (
@@ -23,6 +21,7 @@ export default function Register({
       title="Register"
       subtitle="Create your account and let the fun begin!"
       buttonText="Register"
+      disabled={disabled}
       onSubmit={onSubmit}
     >
       <div className="flex w-full flex-col gap-3">
@@ -33,7 +32,7 @@ export default function Register({
             type="text"
             value={formData.name}
             placeholder="Enter name"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
         </div>
@@ -45,7 +44,7 @@ export default function Register({
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
         </div>
@@ -57,7 +56,7 @@ export default function Register({
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
           {formData.showPassword ? (
@@ -82,7 +81,7 @@ export default function Register({
             type={formData.showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             placeholder="Confirm password"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
           {formData.showConfirmPassword ? (

@@ -13,7 +13,7 @@ export default function HeroBanner() {
         width={200}
         alt="logo"
         draggable={false}
-        className="absolute bottom-0 left-0 right-0 top-0 m-auto h-96 w-96 bg-cover opacity-10 blur-[2px]"
+        className="absolute bottom-0 left-0 right-0 top-0 m-auto h-96 w-96 bg-cover opacity-10 blur-sm"
       />
 
       <div className="space-y-7 py-32 text-center text-4xl text-[#28282B] md:space-y-5 md:text-6xl lg:text-7xl">

@@ -89,7 +89,7 @@ export default function StepAbout({ onNext }: DetailStepProps) {
             name="summary"
             value={summary}
             placeholder="e.g. Experienced technical specialist and IT professional, proficient in systems administration, with a background in programming."
-            className="h-auto max-h-32 min-h-[8rem] w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:border-[#28282B]"
+            className="h-auto max-h-32 min-h-[8rem] w-full rounded border-[1px] p-2 text-sm text-gray-500 outline-none placeholder:text-xs placeholder:font-light focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onSummaryChange}
           />
         </div>
@@ -111,7 +111,7 @@ export default function StepAbout({ onNext }: DetailStepProps) {
               }),
               control: (provided) => ({
                 ...provided,
-                outline: "1px solid#28282B",
+                outline: "1px solid #28282B",
                 border: "none",
               }),
             }}

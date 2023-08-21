@@ -34,6 +34,7 @@ export interface FormProps {
   title: string;
   subtitle: string;
   buttonText: string;
+  disabled?: boolean;
   className?: string;
 
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;

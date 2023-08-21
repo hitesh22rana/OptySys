@@ -3,17 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 
-const FormWrapper = dynamic(
-  () => import("@/src/components/common/FormWrapper")
-);
-const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
+import FormWrapper from "@/src/components/common/FormWrapper";
+import ErrorField from "@/src/components/common/ErrorField";
 
 import { login } from "@/src/http";
 
@@ -26,6 +23,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
   const router = useRouter();
 
   const [formData, setFormData] = useState<LoginFormData>({} as LoginFormData);
+  const [disabled, setDisabled] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -56,6 +54,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
     const errorMessage = getLoginFormErrors(email, password);
 
     setError(errorMessage);
+    setDisabled(errorMessage !== null);
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -87,6 +86,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
       title="Login"
       subtitle="Login to manage your account"
       buttonText="Login"
+      disabled={disabled}
       onSubmit={onSubmit}
     >
       <div className="flex w-full flex-col gap-3">
@@ -97,7 +97,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
         </div>
@@ -109,7 +109,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:border-[#28282B]"
+            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
           />
           {formData.showPassword ? (

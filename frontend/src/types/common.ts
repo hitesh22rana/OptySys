@@ -21,10 +21,11 @@ export interface forgotPasswordFormProps {
 }
 
 export interface RegisterFormProps {
-  error: string | null;
   formData: RegisterFormData;
   setShowPassword: (value: string) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: string | null;
+  disabled: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 

@@ -21,6 +21,7 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>(
     {} as RegisterFormData
   );
+  const [disabled, setDisabled] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -78,6 +79,7 @@ export default function RegisterPage() {
     );
 
     setError(errorMessage);
+    setDisabled(errorMessage !== null);
   }
 
   function setShowPassword(name: string) {
@@ -152,10 +154,11 @@ export default function RegisterPage() {
     <Fragment>
       {!formData.token ? (
         <Register
-          error={error}
           formData={formData}
           setShowPassword={setShowPassword}
           onChange={onChange}
+          error={error}
+          disabled={disabled}
           onSubmit={registerUser}
         />
       ) : (
