@@ -9,6 +9,7 @@ import { SlOrganization } from "react-icons/sl";
 import { useDashboardStore } from "@/src/stores";
 import { IRoute } from "@/src/types/common";
 import { FiLogOut } from "react-icons/fi";
+import { BiUser } from "react-icons/bi";
 
 const montserrat = Montserrat({
   weight: "600",
@@ -27,6 +28,12 @@ export default function Sidebar() {
       path: "/dashboard/organizations",
       color: "text-violet-500",
     },
+    {
+      name: "Profile",
+      icon: BiUser,
+      path: "/dashboard/profile",
+      color: "text-blue-500",
+    },
   ];
 
   return (
@@ -42,7 +49,7 @@ export default function Sidebar() {
           isSidebarOpen ? "flex" : "hidden md:flex"
         } bottom-0 left-0 top-0 z-[999] h-full min-h-screen items-center justify-between gap-5 overflow-auto shadow shadow-gray-200`}
       >
-        <section className="w-full">
+        <section className="h-full w-full">
           <Link
             href="/dashboard"
             className="mb-5 flex w-full flex-row items-center justify-start gap-4"
@@ -54,22 +61,25 @@ export default function Sidebar() {
               OptySys
             </h2>
           </Link>
-          {routes.map((route: IRoute, index: number) => {
-            return (
-              <Link
-                href={route.path}
-                key={index}
-                className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 ${
-                  pathName === route.path
-                    ? "bg-white/10 text-white"
-                    : "text-zinc-300"
-                }`}
-              >
-                <route.icon className={`min-w-fit text-xl ${route.color}`} />
-                <span className="text-sm font-medium">{route.name}</span>
-              </Link>
-            );
-          })}
+
+          <nav className="my-5 flex w-full flex-col gap-2">
+            {routes.map((route: IRoute, index: number) => {
+              return (
+                <Link
+                  href={route.path}
+                  key={index}
+                  className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 ${
+                    pathName === route.path
+                      ? "bg-white/10 text-white"
+                      : "text-zinc-300"
+                  }`}
+                >
+                  <route.icon className={`min-w-fit text-xl ${route.color}`} />
+                  <span className="text-sm font-medium">{route.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
         </section>
 
         <section className="w-full">

@@ -23,7 +23,7 @@ export default function FormWrapper({
       {children}
       <button
         name="submit"
-        className="rounded bg-[#28282B] px-2 py-2 text-lg text-white transition-all duration-300 hover:bg-[#353935] focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:cursor-not-allowed hover:disabled:blur-[2px] sm:py-3 sm:text-xl"
+        className="rounded bg-[#28282B] px-2 py-2 text-lg text-white transition-all duration-300 hover:bg-[#353935] focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:cursor-not-allowed hover:disabled:blur-[1px] sm:py-3 sm:text-xl"
         type="submit"
         disabled={disabled}
       >

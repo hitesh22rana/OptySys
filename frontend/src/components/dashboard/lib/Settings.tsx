@@ -11,29 +11,29 @@ export default function Settings() {
   const { toggleLogoutAlert } = useDashboardStore();
 
   return (
-    <div className="group relative flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-100 border-[1px] border-transparent hover:border-gray-200">
+    <div className="group relative flex cursor-pointer items-center justify-center rounded-full border-[1px] border-transparent hover:border-gray-200 hover:bg-gray-100">
       <Icon>
         <FiSettings className="text-2xl" />
       </Icon>
 
       {accessToken && (
         <DropdownMenu className="w-auto max-w-[250px]">
-          <div className="cursor-text flex items-center w-full gap-2 justify-start p-2 transition-all duration-200 border-b-2 pb-3">
-            <BiUser className="text-xl min-w-fit" />
+          <div className="flex w-full cursor-text items-center justify-start gap-2 border-b-2 p-2 pb-3 transition-all duration-200">
+            <BiUser className="min-w-fit text-xl" />
             <div className="flex flex-col items-start justify-start">
-              <span className="font-medium text-sm text-gray-600 line-clamp-1">
+              <span className="line-clamp-1 text-sm font-medium text-gray-600">
                 {user?.name}
               </span>
-              <span className="font-medium text-xs text-gray-600 line-clamp-1">
+              <span className="line-clamp-1 text-xs font-medium text-gray-600">
                 {user?.email}
               </span>
             </div>
           </div>
           <button
-            className="flex items-center w-full gap-2 justify-start cursor-pointer transition-all duration-200 hover:bg-gray-100 rounded-md p-2"
+            className="flex w-full cursor-pointer items-center justify-start gap-2 rounded-md p-2 transition-all duration-200 hover:bg-gray-100"
             onClick={toggleLogoutAlert}
           >
-            <FiLogOut className="text-gray-600 text-xl" />
+            <FiLogOut className="text-xl text-gray-600" />
             <span className="font-medium text-gray-600">Logout</span>
           </button>
         </DropdownMenu>
