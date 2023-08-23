@@ -23,7 +23,10 @@ export default function OrganizationsPage() {
   }
 
   return (
-    <SectionWrapper heading="Explore Organizations">
+    <SectionWrapper
+      heading="Discover Organizations"
+      subHeading="Find and connect with organizations that align with your goals."
+    >
       <div className="grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {data?.data?.data?.map((org, _) => {
           return (
