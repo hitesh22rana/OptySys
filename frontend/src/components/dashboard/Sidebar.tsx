@@ -68,7 +68,7 @@ export default function Sidebar() {
                 <Link
                   href={route.path}
                   key={index}
-                  className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 ${
+                  className={`flex w-full cursor-pointer flex-row items-center gap-4 rounded-md px-4 py-3 text-white hover:bg-white/10 hover:brightness-90 ${
                     pathName === route.path
                       ? "bg-white/10 text-white"
                       : "text-zinc-300"

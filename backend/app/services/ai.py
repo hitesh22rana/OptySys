@@ -4,7 +4,7 @@
 import re
 
 import requests
-from bardapi import Bard
+from bardapi import SESSION_HEADERS, Bard
 
 from app.config import settings
 from app.logger import logger
@@ -20,15 +20,6 @@ class AiService:
     token_1psidcc: str = settings.bard_token_1psidcc
     token_1psidts: str = settings.bard_token_1psidts
 
-    headers: dict = {
-        "Host": "bard.google.com",
-        "X-Same-Domain": "1",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.4472.114 Safari/537.36",
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        "Origin": "https://bard.google.com",
-        "Referer": "https://bard.google.com/",
-    }
-
     @classmethod
     def __init__(cls):
         cls._make_session()
@@ -40,7 +31,7 @@ class AiService:
 
         try:
             cls.session = requests.Session()
-            cls.session.headers = cls.headers
+            cls.session.headers = SESSION_HEADERS
             cls.session.cookies.set("__Secure-1PSID", cls.token_1psid)
             cls.session.cookies.set(
                 "__Secure-1PSIDCC",

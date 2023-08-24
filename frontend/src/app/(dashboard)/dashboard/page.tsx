@@ -1,7 +1,8 @@
 import Link from "next/link";
 
-import { AiOutlineArrowRight } from "react-icons/ai";
 import { SlOrganization } from "react-icons/sl";
+import { BiUser } from "react-icons/bi";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
 
@@ -17,6 +18,15 @@ const cardsData: Array<ICardData> = [
     iconBackground: "bg-violet-100",
     cardShadow: "shadow-violet-500",
   },
+  {
+    name: "Profile",
+    icon: BiUser,
+    path: "/dashboard/profile",
+    cardBackground: "bg-blue-50",
+    iconColor: "text-blue-500",
+    iconBackground: "bg-blue-100",
+    cardShadow: "shadow-blue-500",
+  },
 ];
 
 export default function DashboardPage() {
@@ -31,7 +41,7 @@ export default function DashboardPage() {
             <Link
               href={cardData.path}
               key={index}
-              className={`flex w-full cursor-pointer flex-row items-center justify-between gap-2 rounded-md p-3 shadow md:p-4 ${cardData.cardBackground} ${cardData.cardShadow}`}
+              className={`group/dashboard-links flex w-full cursor-pointer flex-row items-center justify-between gap-2 rounded-md p-3 shadow hover:drop-shadow md:p-4 ${cardData.cardBackground} ${cardData.cardShadow}`}
             >
               <div className="flex flex-row items-center gap-4">
                 <div
@@ -39,11 +49,11 @@ export default function DashboardPage() {
                 >
                   <cardData.icon className="text-xl md:text-2xl" />
                 </div>
-                <span className="text-sm font-semibold text-gray-700 md:text-base">
+                <span className="text-sm font-semibold text-gray-500 md:text-base">
                   {cardData.name}
                 </span>
               </div>
-              <AiOutlineArrowRight className="text-lg md:text-xl" />
+              <AiOutlineArrowRight className="text-lg text-gray-500 transition-transform delay-75 duration-200 group-hover/dashboard-links:translate-x-[6px] md:text-xl" />
             </Link>
           );
         })}
