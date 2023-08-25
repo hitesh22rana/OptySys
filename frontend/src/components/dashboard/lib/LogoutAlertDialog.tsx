@@ -31,23 +31,23 @@ export default function LogoutAlertDialog() {
 
   return (
     <AlertDialog isOpen={isLogoutAlert}>
-      <div className="flex flex-col sm:px-5 p-3 max-w-lg gap-5 shadow-lg drop-shadow-sm border-[1px] border-gray-200 bg-white w-full rounded-md">
-        <h3 className="sm:text-xl text-lg font-medium">
+      <div className="flex w-full max-w-lg flex-col gap-5 rounded-md border-[1px] border-gray-200 bg-white p-3 shadow-lg drop-shadow-sm sm:px-5">
+        <h3 className="text-lg font-medium sm:text-xl sm:font-semibold">
           Are you sure you want to logout?
         </h3>
-        <p className="sm:text-base text-sm font-normal text-gray-500">
+        <p className="text-sm font-normal text-gray-500 sm:text-base">
           This action will log you out of your account. You will need to log in
           again to access your account.
         </p>
-        <div className="flex flex-row items-center w-full justify-end gap-2">
+        <div className="flex w-full flex-row items-center justify-end gap-2">
           <button
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shadow-sm bg-inherit hover:bg-gray-50 sm:h-9 h-8 sm:px-4 px-3 py-2"
+            className="focus-visible:ring-ring inline-flex h-8 items-center justify-center rounded-md border bg-inherit px-3 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4"
             onClick={toggleLogoutAlert}
           >
             cancel
           </button>
           <button
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shadow-sm bg-[#28282B] hover:bg-[#36454F] text-gray-50 sm:h-9 h-8 sm:px-4 px-3 py-2"
+            className="focus-visible:ring-ring inline-flex h-8 items-center justify-center rounded-md border bg-[#28282B] px-3 py-2 text-sm font-medium text-gray-50 shadow-sm transition-colors hover:bg-[#36454F] focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4"
             onClick={handleLogout}
           >
             continue

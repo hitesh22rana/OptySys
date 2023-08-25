@@ -17,16 +17,16 @@ export default function Notifications() {
   );
 
   return (
-    <div className="group relative flex items-center justify-center rounded-full cursor-pointer">
+    <div className="group relative flex cursor-pointer items-center justify-center rounded-full">
       <Icon disabled={!isReady}>
         {isReady && notifications.length > 0 && (
-          <div className="absolute bg-red-500 top-2 right-[10px] w-[8px] h-[8px] rounded-full" />
+          <div className="absolute right-[10px] top-2 h-[8px] w-[8px] rounded-full bg-red-500" />
         )}
         <FaRegBell className="text-2xl" />
       </Icon>
       {isReady && notifications.length > 0 && (
         <DropdownMenu className="max-h-96 w-[280px]">
-          <h3 className="font-medium border-b border-gray-200 p-2 w-full">
+          <h3 className="w-full border-b border-gray-200 p-2 font-medium">
             You have {notifications.length} new notifications.
           </h3>
           <div className="flex flex-col items-start justify-start gap-4">
@@ -34,9 +34,9 @@ export default function Notifications() {
               (notification: IJsonNotification, index: number) => (
                 <div
                   key={index}
-                  className="flex flex-row items-center justify-start w-full border-l-2 border-blue-500 p-2"
+                  className="flex w-full flex-row items-center justify-start border-l-2 border-blue-500 p-2"
                 >
-                  <span className="text-sm font-medium w-full">
+                  <span className="w-full text-sm font-medium">
                     {notification.data["title"]}
                   </span>
                 </div>
