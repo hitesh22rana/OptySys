@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
-import Select from "react-select";
-import { MultiValue } from "react-select/dist/declarations/src";
+import Select, { MultiValue } from "react-select";
 
 const FormWrapper = dynamic(
   () => import("@/src/components/common/FormWrapper")
@@ -111,7 +110,7 @@ export default function StepAbout({ onNext }: DetailStepProps) {
               }),
               control: (provided) => ({
                 ...provided,
-                outline: "1px solid #28282B",
+                outline: "1px solid rgb(107, 114, 128)",
                 border: "none",
               }),
             }}

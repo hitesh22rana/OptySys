@@ -21,3 +21,9 @@ export async function getSkillsList(): Promise<Array<IOption>> {
 
   return skills;
 }
+
+export function defaultSkills(skills: Array<string>): Array<IOption> {
+  return skills?.map((skill: string) => {
+    return { value: skill, label: capitalize(skill) };
+  });
+}
