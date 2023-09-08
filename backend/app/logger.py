@@ -11,12 +11,7 @@ from app.config import settings
 logger.remove(0)
 logger.configure(
     handlers=[
-        dict(sink=sys.stdout, level="TRACE", colorize=True),
-        dict(sink=sys.stdout, level="DEBUG", colorize=True),
         dict(sink=sys.stdout, level="INFO", colorize=True),
-        dict(sink=sys.stdout, level="SUCCESS", colorize=True),
-        dict(sink=sys.stdout, level="WARNING", colorize=True),
-        dict(sink=sys.stderr, level="ERROR", colorize=True),
         dict(sink=sys.stderr, level="CRITICAL", colorize=True),
     ],
 )
