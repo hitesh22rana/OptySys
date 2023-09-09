@@ -3,9 +3,7 @@ import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 
-const FormWrapper = dynamic(
-  () => import("@/src/components/common/FormWrapper")
-);
+const FormWrapper = dynamic(() => import("@/src/components/ui/FormWrapper"));
 
 import { useDetailsStore } from "@/src/stores";
 

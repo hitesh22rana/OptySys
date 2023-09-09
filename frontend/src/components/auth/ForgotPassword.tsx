@@ -7,8 +7,9 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { MdOutlineEmail } from "react-icons/md";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
-import ErrorField from "@/src/components/common/ErrorField";
+import FormWrapper from "@/src/components/ui/FormWrapper";
+import InputField from "@/src/components/ui/InputField";
+import ErrorField from "@/src/components/ui/ErrorField";
 
 import { forgotPassword } from "@/src/http";
 
@@ -62,18 +63,15 @@ export default function ForgotPassword({
       disabled={disabled}
       onSubmit={onSubmit}
     >
-      <div className="flex w-full flex-col gap-3">
-        <div className="relative h-full w-full">
-          <MdOutlineEmail className="absolute left-2 top-3 text-xl text-gray-400" />
-          <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter email"
-            onChange={onChange}
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-          />
-        </div>
+      <section className="flex w-full flex-col gap-3">
+        <InputField
+          name="email"
+          type="email"
+          value={email}
+          placeholder="Enter email"
+          onChange={onChange}
+          IconLeft={MdOutlineEmail}
+        />
 
         <ErrorField error={error} />
 
@@ -88,7 +86,7 @@ export default function ForgotPassword({
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </FormWrapper>
   );
 }

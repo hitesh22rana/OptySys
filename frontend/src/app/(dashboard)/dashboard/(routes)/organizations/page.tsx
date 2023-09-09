@@ -3,7 +3,7 @@
 import { useQuery } from "react-query";
 
 import SectionWrapper from "@/src/components/dashboard/SectionWrapper";
-import LoadingPage from "@/src/components/common/LoadingPage";
+import LoadingPage from "@/src/components/ui/LoadingPage";
 
 import { getOrganization } from "@/src/http";
 

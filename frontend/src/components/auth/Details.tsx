@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import { toast } from "react-toastify";
 
-const Modal = dynamic(() => import("@/src/components/common/Modal"));
+const Modal = dynamic(() => import("@/src/components/ui/Modal"));
 const StepBanner = dynamic(
   () => import("@/src/components/auth/steps/StepBanner")
 );

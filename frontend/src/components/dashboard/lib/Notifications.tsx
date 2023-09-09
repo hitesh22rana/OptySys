@@ -1,7 +1,7 @@
 import { FaRegBell } from "react-icons/fa";
 
-import Icon from "@/src/components/common/Icon";
-import DropdownMenu from "@/src/components/common/DropdownMenu";
+import Icon from "@/src/components/ui/Icon";
+import DropdownMenu from "@/src/components/ui/DropdownMenu";
 
 import useNotification from "@/src/hooks/useNotifications";
 

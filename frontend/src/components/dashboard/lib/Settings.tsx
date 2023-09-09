@@ -1,8 +1,8 @@
 import { BiUser } from "react-icons/bi";
 import { FiLogOut, FiSettings } from "react-icons/fi";
 
-import DropdownMenu from "@/src/components/common/DropdownMenu";
-import Icon from "@/src/components/common/Icon";
+import DropdownMenu from "@/src/components/ui/DropdownMenu";
+import Icon from "@/src/components/ui/Icon";
 
 import { useDashboardStore, useUserStore } from "@/src/stores";
 

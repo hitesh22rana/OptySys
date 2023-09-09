@@ -1,3 +1,4 @@
+import { HTMLInputTypeAttribute } from "react";
 import { IconType } from "react-icons/lib";
 
 import { RegisterFormData } from "@/src/types/auth";
@@ -10,6 +11,20 @@ export interface SectionWrapperProps {
   heading: string;
   subHeading?: string;
   children: string | JSX.Element | Array<JSX.Element> | React.ReactNode;
+}
+
+export interface InputFieldProps {
+  name: string;
+  type: HTMLInputTypeAttribute;
+  value: string;
+  placeholder: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+
+  IconLeft?: IconType;
+  IconRight?: IconType;
+
+  onLeftIconClick?: () => void;
+  onRightIconClick?: () => void;
 }
 
 export interface LoginFormProps {

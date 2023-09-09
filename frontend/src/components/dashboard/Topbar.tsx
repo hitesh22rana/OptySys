@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import Icon from "@/src/components/common/Icon";
+import Icon from "@/src/components/ui/Icon";
 import Settings from "@/src/components/dashboard/lib/Settings";
 const Notifications = dynamic(
   () => import("@/src/components/dashboard/lib/Notifications")

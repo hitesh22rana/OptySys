@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 import { MdOutlineEmail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 
-import FormWrapper from "@/src/components/common/FormWrapper";
-import ErrorField from "@/src/components/common/ErrorField";
+import FormWrapper from "@/src/components/ui/FormWrapper";
+import InputField from "@/src/components/ui/InputField";
+import ErrorField from "@/src/components/ui/ErrorField";
 
 import { login } from "@/src/http";
 
@@ -89,42 +90,27 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
       disabled={disabled}
       onSubmit={onSubmit}
     >
-      <div className="flex w-full flex-col gap-3">
-        <div className="relative h-full w-full">
-          <MdOutlineEmail className="absolute left-2 top-3 text-xl text-gray-400" />
-          <input
+      <section className="flex w-full flex-col gap-3">
+        <div className="flex w-full flex-col gap-4">
+          <InputField
             name="email"
             type="email"
             value={formData.email}
             placeholder="Enter email"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
+            IconLeft={MdOutlineEmail}
           />
-        </div>
 
-        <div className="relative h-full w-full">
-          <BiKey className="absolute left-2 top-[9px] text-2xl text-gray-400" />
-          <input
+          <InputField
             name="password"
             type={formData.showPassword ? "text" : "password"}
             value={formData.password}
             placeholder="Enter password"
-            className="h-full w-full rounded border-[1px] px-9 py-[10px] text-gray-500 outline-none placeholder:text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             onChange={onChange}
+            IconLeft={BiKey}
+            IconRight={formData.showPassword ? MdVisibility : MdVisibilityOff}
+            onRightIconClick={() => setShowPassword("showPassword")}
           />
-          {formData.showPassword ? (
-            <MdVisibility
-              name="showPassword"
-              onClick={() => setShowPassword("showPassword")}
-              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
-            />
-          ) : (
-            <MdVisibilityOff
-              name="showPassword"
-              onClick={() => setShowPassword("showPassword")}
-              className="absolute right-2 top-3 cursor-pointer text-xl text-gray-400"
-            />
-          )}
         </div>
 
         <div className="flex w-full flex-row items-center justify-between">
@@ -137,7 +123,7 @@ export default function Login({ toggleForgotPassword }: LoginFormProps) {
             Forgot password?
           </button>
         </div>
-      </div>
+      </section>
 
       <div className="absolute -bottom-10 left-0 right-0 flex w-full flex-col items-center justify-start gap-4 text-gray-500">
         <div className="flex flex-row gap-2 text-sm">

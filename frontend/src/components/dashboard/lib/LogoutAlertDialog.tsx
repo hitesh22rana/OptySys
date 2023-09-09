@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
-import AlertDialog from "@/src/components/common/AlertDialog";
+import AlertDialog from "@/src/components/ui/AlertDialog";
 
 import { logout } from "@/src/http";
 

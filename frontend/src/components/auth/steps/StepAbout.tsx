@@ -4,10 +4,8 @@ import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 import Select, { MultiValue } from "react-select";
 
-const FormWrapper = dynamic(
-  () => import("@/src/components/common/FormWrapper")
-);
-const ErrorField = dynamic(() => import("@/src/components/common/ErrorField"));
+const FormWrapper = dynamic(() => import("@/src/components/ui/FormWrapper"));
+const ErrorField = dynamic(() => import("@/src/components/ui/ErrorField"));
 
 import { useDetailsStore } from "@/src/stores";
 
